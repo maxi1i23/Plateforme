@@ -1,0 +1,32 @@
+const pool = require('../db/db')
+
+module.exports = {
+    getAllBriefing: async () => {
+        const result = await pool.query('SELECT * FROM briefing')
+        return result.rows;
+    },
+    getOneById: async(idBriefing)=>{
+        const result=await pool.query(`SELECT * FROM briefing WHERE idBriefing=${idBriefing}`);
+        return result.rows[0];
+    },
+    createBriefing: async(nomBriefing, contenuBriefing, idManager)=>{
+        const result=await pool.query(
+            `INSERT INTO briefing(nomBriefing, contenuBriefing, idManager) VALUES ($1,$2,$3) RETURNING *`,
+            [nomBriefing, contenuBriefing, idManager]
+        );
+        return result.rows[0];
+    },
+
+    updateBriefing: async (idBriefing, nomBriefing, contenuBriefing, idManager)=>{
+        const result=await pool.query(
+            `UPDATE briefing SET nomBriefing=$1, contenuBriefing=$2, idManager=$3 WHERE idbriefing=$4 RETURNING *`,
+            [nomBriefing,contenuBriefing,idManager,idBriefing]
+        );
+        return result.rows[0];
+    },
+
+    deleteBriefing: async(idBriefing)=>{
+        const result=await pool.query(`DELETE FROM briefing WHERE idbriefing=$1`,[idBriefing]);
+        return result.rowCount > 0;
+    }
+}

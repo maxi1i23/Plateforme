@@ -22,7 +22,7 @@ CREATE TABLE formation(
     idFormation SERIAL PRIMARY KEY,
     nomFormation VARCHAR(50) NOT NULL,
     descriptionFormation TEXT NOT NULL,
-    dateFormation DATE NOT NULL,
+    dateFormation timestamp DEFAULT now(),
     idUtilisateurManager INTEGER REFERENCES utilisateur(idUtilisateur)
 );
 
@@ -30,14 +30,14 @@ CREATE TABLE briefing(
     idBriefing SERIAL PRIMARY KEY,
     nomBriefing VARCHAR(50) NOT NULL,
     contenuBriefing TEXT NOT NULL,
-    dateBriefing DATE NOT NULL,
+    dateBriefing timestamp DEFAULT now(),
     idManager INTEGER REFERENCES utilisateur(idUtilisateur)
 );
 
 CREATE TABLE notification(
     idNotification SERIAL PRIMARY KEY,
     contenu TEXT NOT NULL,
-    dateNotification DATE NOT NULL,
+    dateNotification timestamp DEFAULT now(),
     statut BOOLEAN DEFAULT FALSE,
     raisonNotification VARCHAR(255),
     idUtilisateurDestinataire INTEGER REFERENCES utilisateur(idUtilisateur)
