@@ -18,7 +18,7 @@ exports.register = async (req, res) => {
       const hashPassword = await bcrypt.hash(motDePasseUtilisateur, 10)
 
       // Faire l'inscription de l'utilisateur
-      const user = User.createUser(nomUtilisateur, emailUtilisateur,hashPassword,roleUtilisateur)
+      const user = await User.createUser(nomUtilisateur, emailUtilisateur,hashPassword,roleUtilisateur)
       return res.status(201).json({message : 'Utilisateur crée avec succés'})
       
    } catch (error) {
@@ -28,6 +28,7 @@ exports.register = async (req, res) => {
 }
 
 exports.login = async (req, res) => {
+   console.log(req.body)
    try {
       const { emailUtilisateur, motDePasseUtilisateur } = req.body
 
@@ -46,7 +47,7 @@ exports.login = async (req, res) => {
 
       // Générer le token pour la connéxion
       const token = jwt.sign(
-         {id: existingUser.idutilisateur, email: existingUser.emailutilisateur},
+         {id: existingUser.idutilisateur, email: existingUser.emailutilisateur, role: existingUser.roleutilisateur},
          process.env.JWT_SECRET, {expiresIn: '24h'}
       );
 
@@ -57,7 +58,7 @@ exports.login = async (req, res) => {
 
    } catch (error) {
       console.log(error)
-      return res.status(500).json({error: 'Erreur du serveur'})
+      return res.status(500).json({message: error.message})
    }
 }
 

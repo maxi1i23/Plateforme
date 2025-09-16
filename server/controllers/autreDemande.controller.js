@@ -4,7 +4,10 @@ exports.createAutreDemande = async (req, res) => {
     try {
         const { nomAutreDemande, descriptionAutreDemande, dateAutreDemande, statutAutreDemande, idAgentAutreDemande, idManagerTraiterAutreDemande } = req.body
 
-        const result = await AutreDemande.createAutreDemande(nomAutreDemande, descriptionAutreDemande, dateAutreDemande, statutAutreDemande, idAgentAutreDemande, idManagerTraiterAutreDemande)
+        // Récupérer l'id de l'agent depuis le token
+        // const idAgentAutreDemande = req.user.id;  // req.user défini par middleware auth
+
+        const result = await AutreDemande.createAutreDemande(nomAutreDemande, descriptionAutreDemande, dateAutreDemande, idAgentAutreDemande, idManagerTraiterAutreDemande)
 
         if(result){
             return res.json({
@@ -27,7 +30,8 @@ exports.createAutreDemande = async (req, res) => {
 exports.getAutreDemandeById = async(req,res)=>{
     try{
         const id = req.params.id;
-        const autreDemande=await AutreDemande.getAutreDemandeById(id);
+        console.log(id)
+        const autreDemande= await AutreDemande.getAutreDemandeById(id);
         if(autreDemande){
             return res.status(201).json({autreDemande});
         }

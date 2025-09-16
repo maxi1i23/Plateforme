@@ -9,7 +9,7 @@ module.exports = {
     },
     getAll: async () => {
         const result = await pool.query('SELECT * FROM utilisateur')
-        return result.rows[0]
+        return result.rows
     },
 
     findById: async (idUtilisateur) => {

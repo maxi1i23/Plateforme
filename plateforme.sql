@@ -48,7 +48,8 @@ CREATE TABLE autreDemande(
     idAutreDemande SERIAL PRIMARY KEY,
     nomAutreDemande VARCHAR(50) NOT NULL,
     descriptionAutreDemande TEXT NOT NULL,
-    dateAutreDemande DATE NOT NULL,
+    dateCreationAutreDemande TIMESTAMP DEFAULT NOW(),
+    dateDemande DATE NOT NULL,
     statutAutreDemande VARCHAR(50),
     idAgentAutreDemande INTEGER REFERENCES utilisateur(idUtilisateur),
     idManagerTraiterAutreDemande INTEGER REFERENCES utilisateur(idUtilisateur)
