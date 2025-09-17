@@ -4,7 +4,7 @@ const auth = require('../middleware/auth.middleware')
 const authorizeRole = require('../middleware/authorizeRole.middleware')
 
 router.use(auth)
-//router.use(authorizeRole('Admin'))
+router.use(authorizeRole('Admin'))
 
 router.get('/', userController.getAllUsers)
 router.put('/update/:id', userController.updateUser )

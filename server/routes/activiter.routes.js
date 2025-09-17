@@ -1,10 +1,12 @@
 const router = require('express').Router();
 const activiterController = require('../controllers/activiter.controller');
 
-const authMiddleware = require('../middlewares/auth'); // pour récupérer req.user
-router.use(authMiddleware); // toutes les routes nécessitent login
+const auth = require('../middleware/auth.middleware')
+const authorizeRole = require('../middleware/authorizeRole.middleware')
 
-router.post('/add', activiterController.createActiviter);
+router.use(auth) // Middleware d'authentification pour toutes les routes de ce fichier
+
+router.post('/add', authorizeRole('Agent', 'Admin'), activiterController.createActiviter);
 router.get('/activites', activiterController.getActiviterByAgent);
 router.get('/performances', activiterController.getPerformanceByAgent);
 router.put('/:id', activiterController.updateActiviter);
