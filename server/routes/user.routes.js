@@ -3,7 +3,7 @@ const router = require('express').Router();
 const auth = require('../middleware/auth.middleware')
 const authorizeRole = require('../middleware/authorizeRole.middleware')
 
-//router.use(auth)
+router.use(auth)
 //router.use(authorizeRole('Admin'))
 
 router.get('/', userController.getAllUsers)

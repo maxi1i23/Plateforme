@@ -20,7 +20,10 @@ const messageRouter = require('./routes/message.routes')
 // Middleware
 app.use(bodyParser.json())
 app.use(cookieParser())
-app.use(cors())
+app.use(cors({
+    origin: "http://localhost:5173", // front React
+    credentials: true
+ }));
 
 // Router for the API
 app.use('/api/auth', authRouter)

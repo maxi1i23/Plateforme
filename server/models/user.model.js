@@ -8,7 +8,7 @@ module.exports = {
         return result.rows[0]
     },
     getAll: async () => {
-        const result = await pool.query('SELECT * FROM utilisateur')
+        const result = await pool.query('SELECT * FROM utilisateur ORDER BY idutilisateur ASC')
         return result.rows
     },
 
@@ -38,6 +38,6 @@ module.exports = {
 
     deleteUser: async(idUtilisateur) => {
         const result = await pool.query(`DELETE FROM utilisateur WHERE idutilisateur=$1`, [idUtilisateur]);
-        return result.rowCount;
+        return result.rowCount > 0;
     },
 }

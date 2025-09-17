@@ -54,6 +54,7 @@ exports.login = async (req, res) => {
       // Enregistrer le token dans les cookie
       res.cookie('jwtToken', token, 
          {httpOnly: true})
+         console.log("connexio reussie")
       res.status(200).json({message : "Connection Reussie", token})
 
    } catch (error) {
@@ -63,7 +64,6 @@ exports.login = async (req, res) => {
 }
 
 exports.logout = (req,res) => {
-   console.log("Deconnexion")
    res.clearCookie('jwtToken');
    res.status(200).json({ message: 'Déconnecté avec succès' });
 }
