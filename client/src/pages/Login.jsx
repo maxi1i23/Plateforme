@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { AuthContext } from '../context/AuthContext';
 import { jwtDecode } from 'jwt-decode';
 import vite from '../assets/favicon.png'
+import { Mail, Lock } from 'lucide-react';
 
 export default function Login() {
   const navigate = useNavigate();
@@ -27,43 +28,49 @@ export default function Login() {
   };
 
   return (
-    <div className="flex items-center justify-center p-4 w-full max-w-md max-h-full">
-      <div className="relative bg-white rounded-lg shadow-sm dark:bg-gray-700">
-        <div className='p-4 md:p-5  rounded-t dark:border-gray-600 border-gray-200'>
-          <div className='flex items-center'>
-            <img src={vite} className='h-40' alt="Logo_Success_MDG" />
-          </div>
-          <h2 className='text-xl font-semibold text-gray-900 dark:text-white'>Connexion aux plateforme Success MDG</h2>
-        </div>
-        <div className='p-4 md:p-5'>
-          <form onSubmit={handleSubmit}>
+    <div className="flex items-center justify-center min-h-screen bg-gray-100 dark:bg-gray-900 p-4">
+      <div className="w-full max-w-md bg-white dark:bg-gray-800 rounded-lg shadow-lg overflow-hidden">
+        <div className="p-6 text-center">
+          <img src={vite} className="h-20 mx-auto mb-4" alt="Logo_Success_MDG" />
+          <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-6">
+            Plateforme Success MDG
+          </h2>
 
-            <div>
-              <label htmlFor="" className='block mb-2 text-sm font-medium text-gray-900 dark:text-white'>Adresse email :</label>
+          <form onSubmit={handleSubmit} className="space-y-4">
+
+            {/* Email */}
+            <div className="relative">
+              <Mail className="absolute top-1/2 left-3 -translate-y-1/2 text-gray-400" size={20} />
               <input
+                type="email"
                 value={email}
                 onChange={e => setEmail(e.target.value)}
-                placeholder="email"
-                className='bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white '
-              />
-            </div>
-            <div>
-              <label htmlFor="" className='block mb-2 text-sm font-medium text-gray-900 dark:text-white'>Mot de passe :</label>
-              <input
-                value={password}
-                onChange={e => setPassword(e.target.value)}
-                type="password"
-                placeholder='.......'
-                className='bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white'
+                placeholder="Adresse email"
+                required
+                className="pl-10 pr-3 py-2 w-full rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white"
               />
             </div>
 
-            <div>
-              <button type="submit"
-                className='w-full mt-2 text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800'>
-                Se connecter
-              </button>
+            {/* Mot de passe */}
+            <div className="relative">
+              <Lock className="absolute top-1/2 left-3 -translate-y-1/2 text-gray-400" size={20} />
+              <input
+                type="password"
+                value={password}
+                onChange={e => setPassword(e.target.value)}
+                placeholder="Mot de passe"
+                required
+                className="pl-10 pr-3 py-2 w-full rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white"
+              />
             </div>
+
+            {/* Bouton */}
+            <button
+              type="submit"
+              className="w-full py-2.5 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-1 transition-all"
+            >
+              Se connecter
+            </button>
           </form>
         </div>
       </div>
