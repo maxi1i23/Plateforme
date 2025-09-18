@@ -25,9 +25,9 @@ exports.getFormation = async(req,res)=>{
 
 exports.createFormation = async(req, res) => {
     try {
-        const {nomFormation, descriptionFormation, dateFormation, idUtilisateurManager} = req.body;
+        const {nomFormation, descriptionFormation, idUtilisateurManager} = req.body;
 
-        const result = await Formation.createFormation(nomFormation, descriptionFormation, dateFormation, idUtilisateurManager);
+        const result = await Formation.createFormation(nomFormation, descriptionFormation, idUtilisateurManager);
         if(result){
             return res.status(201).send({ message: "Formation créée avec succès", formation: result });
         }else{

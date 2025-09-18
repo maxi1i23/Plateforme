@@ -2,12 +2,12 @@ const AutreDemande = require('../models/autreDemande.model');
 
 exports.createAutreDemande = async (req, res) => {
     try {
-        const { nomAutreDemande, descriptionAutreDemande, dateAutreDemande, statutAutreDemande, idAgentAutreDemande, idManagerTraiterAutreDemande } = req.body
+        const { nomAutreDemande, descriptionAutreDemande, dateDemande, idAgentAutreDemande, idManagerTraiterAutreDemande } = req.body
 
         // Récupérer l'id de l'agent depuis le token
         // const idAgentAutreDemande = req.user.id;  // req.user défini par middleware auth
 
-        const result = await AutreDemande.createAutreDemande(nomAutreDemande, descriptionAutreDemande, dateAutreDemande, idAgentAutreDemande, idManagerTraiterAutreDemande)
+        const result = await AutreDemande.createAutreDemande(nomAutreDemande, descriptionAutreDemande, dateDemande, idAgentAutreDemande, idManagerTraiterAutreDemande)
 
         if(result){
             return res.json({
@@ -43,7 +43,7 @@ exports.getAutreDemandeById = async(req,res)=>{
 exports.getAutreDemandes = async(req,res)=>{
     try{
         const result=await AutreDemande.getAutreDemande();
-        return res.status(201).json({result});
+        return res.status(201).json(result);
     }catch(err){
         console.log(err);
         return res.status(500).send("Server Error");

@@ -1,15 +1,25 @@
 const router = require('express').Router();
 const activiterController = require('../controllers/activiter.controller');
 
-const auth = require('../middleware/auth.middleware')
-const authorizeRole = require('../middleware/authorizeRole.middleware')
+const auth = require('../middleware/auth.middleware');
+const authorizeRole = require('../middleware/authorizeRole.middleware');
 
-router.use(auth) // Middleware d'authentification pour toutes les routes de ce fichier
+// 🔹 Toutes les routes nécessitent une authentification
+router.use(auth);
 
-router.post('/add', authorizeRole('Agent', 'Admin'), activiterController.createActiviter);
-router.get('/activites', activiterController.getActiviterByAgent);
-router.get('/performances', activiterController.getPerformanceByAgent);
+// Créer une activité
+router.post('/', authorizeRole('Agent', 'Admin'), activiterController.createActiviter);
+
+// Récupérer toutes les activités d’un agent
+router.get('/', activiterController.getActiviterByAgent);
+
+// Récupérer les performances d’un agent
+router.get('/performance', activiterController.getPerformanceByAgent);
+
+// Modifier une activité
 router.put('/:id', activiterController.updateActiviter);
-router.delete('/:id', activiterController.deleteActiviter);
+
+// Supprimer une activité
+router.delete('/delete/:id', activiterController.deleteActiviter);
 
 module.exports = router;

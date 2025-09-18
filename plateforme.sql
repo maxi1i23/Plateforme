@@ -23,7 +23,8 @@ CREATE TABLE formation(
     nomFormation VARCHAR(50) NOT NULL,
     descriptionFormation TEXT NOT NULL,
     dateFormation timestamp DEFAULT now(),
-    idUtilisateurManager INTEGER REFERENCES utilisateur(idUtilisateur)
+    
+     INTEGER REFERENCES utilisateur(idUtilisateur)
 );
 
 CREATE TABLE briefing(

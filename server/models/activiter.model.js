@@ -56,19 +56,17 @@ module.exports = {
   },
 
   // Récupérer toutes les activités d'un agent
-  getActiviterByAgent: async (idAgent) => {
+  getActiviterByAgent: async () => {
     const result = await pool.query(
-      'SELECT * FROM activiter WHERE idAgent=$1 ORDER BY dateActiviter DESC',
-      [idAgent]
+      'SELECT * FROM activiter  ORDER BY dateActiviter DESC'
     );
     return result.rows;
   },
 
   // Récupérer toutes les performances d'un agent
-  getPerformanceByAgent: async (idAgent) => {
+  getPerformanceByAgent: async () => {
     const result = await pool.query(
-      'SELECT * FROM performance WHERE idAgent=$1 ORDER BY mois DESC, semaine DESC',
-      [idAgent]
+      'SELECT * FROM performance  ORDER BY mois DESC, semaine DESC'
     );
     return result.rows;
   },

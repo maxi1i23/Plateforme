@@ -16,6 +16,7 @@ const notificationRouter = require('./routes/notification.routes')
 const autreDemandeRouter = require('./routes/autreDemande.routes')
 const demandeCongerRouter = require('./routes/demandeConger.routes')
 const messageRouter = require('./routes/message.routes')
+const activiterRouter = require('./routes/activiter.routes')
 
 // Middleware
 app.use(bodyParser.json())
@@ -34,5 +35,6 @@ app.use('/api/notification', notificationRouter)
 app.use('/api/autreDemande', autreDemandeRouter)
 app.use('/api/demandeConger', demandeCongerRouter)
 app.use('/api/message', messageRouter)
+app.use('/api/activiter',activiterRouter)
 
 app.listen(8000)

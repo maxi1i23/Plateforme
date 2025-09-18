@@ -20,7 +20,7 @@ module.exports = {
     createAutreDemande: async (
         nomAutreDemande,
         descriptionAutreDemande,
-        dateAutreDemande,
+        dateDemande,
         idAgentAutreDemande,
         idManagerTraiterAutreDemande
     ) => {
@@ -32,7 +32,7 @@ module.exports = {
             [
                 nomAutreDemande,
                 descriptionAutreDemande,
-                dateAutreDemande,
+                dateDemande,
                 idAgentAutreDemande,
                 idManagerTraiterAutreDemande
             ]

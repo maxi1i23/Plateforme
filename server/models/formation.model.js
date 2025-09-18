@@ -22,18 +22,18 @@ module.exports = {
         }
     },
 
-    createFormation: async(nomFormation, descriptionFormation, dateFormation, idUtilisateurManager)=>{
+    createFormation: async(nomFormation, descriptionFormation, idUtilisateurManager)=>{
         const result = await pool.query(
-            'INSERT INTO formation (nomformation, descriptionformation, dateformation, idutilisateurmanager) VALUES ($1, $2, $3, $4) RETURNING *', 
-            [nomFormation, descriptionFormation, dateFormation, idUtilisateurManager]
+            'INSERT INTO formation (nomformation, descriptionformation, idutilisateurmanager) VALUES ($1, $2, $3) RETURNING *', 
+            [nomFormation, descriptionFormation, idUtilisateurManager]
         );
         return result.rows[0];
     }, 
 
-    updateFormation: async(idFormation, nomFormation, descriptionFormation, dateFormation, idUtilisateurManager)=>{
+    updateFormation: async (idFormation, nomFormation, descriptionFormation, idUtilisateurManager)=>{
         const result = await pool.query(
-            'UPDATE formation SET nomformation=$1, descriptionformation=$2, dateformation=$3, idutilisateurmanager=$4 WHERE idformation=$5 RETURNING *',
-            [nomFormation, descriptionFormation, dateFormation,idUtilisateurManager, idFormation]
+            'UPDATE formation SET nomformation=$1, descriptionformation=$2, idutilisateurmanager=$3 WHERE idformation=$4 RETURNING *',
+            [nomFormation, descriptionFormation, idUtilisateurManager, idFormation]
         );
         return result.rows[0];
     },
