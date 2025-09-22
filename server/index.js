@@ -17,6 +17,7 @@ const autreDemandeRouter = require('./routes/autreDemande.routes')
 const demandeCongerRouter = require('./routes/demandeConger.routes')
 const messageRouter = require('./routes/message.routes')
 const activiterRouter = require('./routes/activiter.routes')
+const createDefaultAdmin = require('./function/createAdmin')
 
 // Middleware
 app.use(bodyParser.json())
@@ -39,4 +40,7 @@ app.use('/api/activiter',activiterRouter)
 
 
 
-app.listen(8000)
+app.listen(8000, async () => {
+  console.log("Server started on port 8000")
+  createDefaultAdmin();
+})

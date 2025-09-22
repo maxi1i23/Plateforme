@@ -6,7 +6,7 @@ import { Calendar, User, FileText, MoreVertical, Edit, Trash, X, Plus, Search, C
 import { AuthContext } from "../../context/AuthContext"
 import Swal from "sweetalert2"
 
-const BriefingList = () => {
+const BriefingListManager = () => {
   const [briefingList, setBriefingList] = useState([])
   const [filteredBriefings, setFilteredBriefings] = useState([])
   const [searchTerm, setSearchTerm] = useState("")
@@ -16,7 +16,7 @@ const BriefingList = () => {
   const [loading, setLoading] = useState(true)
   const { user } = useContext(AuthContext)
 
-    // 🔎 Sécurisation de la recherche
+  // 🔎 Sécurisation de la recherche
   useEffect(() => {
     const filtered = briefingList.filter((briefing) => {
       const nom = briefing.nombriefing || briefing.nomBriefing || ""
@@ -27,7 +27,7 @@ const BriefingList = () => {
       )
     })
     setFilteredBriefings(filtered)
-  }, [briefingList, searchTerm]) 
+  }, [briefingList, searchTerm])
 
   // Récupérer la liste des briefings
   const getBriefing = async () => {
@@ -156,36 +156,35 @@ const BriefingList = () => {
   }, [])
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100 p-6">
-      <div className="bg-white/80 backdrop-blur-sm rounded-2xl shadow-xl border border-white/20 p-8 mb-8">
-        <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-6">
-          <div>
-            <h2 className="text-4xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent mb-2">
-              Briefings Manager
-            </h2>
-            <p className="text-gray-600">Gérez vos briefings et communications d'équipe</p>
-          </div>
+    <div className="min-h-screen bg-gradient-to-br from-indigo-50 via-white to-purple-50 p-6">
+      <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center mb-8 gap-4">
 
-          <div className="flex flex-col sm:flex-row gap-4 w-full lg:w-auto">
-            <div className="relative">
-              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
-              <input
-                type="text"
-                placeholder="Rechercher un briefing..."
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-                className="pl-10 pr-4 py-3 bg-white/70 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 w-full sm:w-80"
-              />
-            </div>
-
-            <button
-              onClick={() => setCreatingBriefing({ nombriefing: "", contenubriefing: "" })}
-              className="flex items-center justify-center gap-2 bg-gradient-to-r from-blue-600 to-purple-600 text-white px-6 py-3 rounded-xl hover:from-blue-700 hover:to-purple-700 transition-all duration-200 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 font-medium"
-            >
-              <Plus size={20} /> Créer un briefing
-            </button>
-          </div>
+        <div>
+          <h2 className="text-4xl font-bold bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent mb-2">
+            Gestion des Briefings
+          </h2>
+          <p className="text-gray-600">Gérez vos briefings et communications d'équipe</p>
         </div>
+
+        <div className="flex flex-col sm:flex-row gap-4 w-full lg:w-auto">
+          <div className="relative">
+            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
+            <input
+              type="text"
+              placeholder="Rechercher un briefing..."
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              className="pl-10 pr-4 py-3 bg-white/70 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 w-full sm:w-80"
+            />
+          </div>
+
+          <button
+            onClick={() => setCreatingBriefing({ nombriefing: "", contenubriefing: "" })}
+            className="flex items-center justify-center gap-2 bg-gradient-to-r from-blue-600 to-purple-600 text-white px-6 py-3 rounded-xl hover:from-blue-700 hover:to-purple-700 transition-all duration-200 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 font-medium">
+            <Plus size={20} /> Créer un briefing
+          </button>
+        </div>
+
       </div>
 
       {loading ? (
@@ -246,14 +245,14 @@ const BriefingList = () => {
           <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
             {filteredBriefings.map((briefing, index) => (
               <div
-               key={briefing.idbriefing}
+                key={briefing.idbriefing}
                 className="group relative bg-white/80 backdrop-blur-sm border border-white/20 rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-1 overflow-hidden"
                 style={{ animationDelay: `${index * 100}ms` }}
               >
                 <div className="absolute inset-0 bg-gradient-to-br from-blue-500/5 to-purple-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
 
                 <div className="relative p-6">
-                 
+                  
                     <div className="absolute top-4 right-4 menu-briefing">
                       <button
                         onClick={() => setOpenMenuId(openMenuId === briefing.idbriefing ? null : briefing.idbriefing)}
@@ -311,6 +310,12 @@ const BriefingList = () => {
                       </div>
                       <span className="text-sm font-medium text-gray-600">Manager #{briefing.idmanager}</span>
                     </div>
+
+                    {briefing.idmanager === user.idutilisateur && (
+                      <div className="bg-blue-100 text-blue-600 px-2 py-1 rounded-full text-xs font-medium">
+                        Mes briefings
+                      </div>
+                    )}
                   </div>
                 </div>
               </div>
@@ -462,4 +467,4 @@ const BriefingList = () => {
   )
 }
 
-export default BriefingList
+export default BriefingListManager

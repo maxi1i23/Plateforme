@@ -19,7 +19,7 @@ import {
 import { AuthContext } from "../../context/AuthContext"
 import Swal from "sweetalert2"
 
-const FormationList = () => {
+const FormationListManager = () => {
   const [formationList, setFormationList] = useState([])
   const [filteredFormations, setFilteredFormations] = useState([])
   const [searchTerm, setSearchTerm] = useState("")
@@ -146,15 +146,33 @@ const FormationList = () => {
             </h1>
             <p className="text-gray-600">Organisez et suivez vos programmes de formation</p>
           </div>
+
+          <div className="flex flex-col sm:flex-row gap-4 w-full lg:w-auto">
+
+          <div className="relative max-w-md">
+            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
+            <input
+              type="text"
+              placeholder="Rechercher une formation..."
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              className="pl-10 pr-4 py-3 bg-white/70 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 w-full sm:w-80"
+            />
+          </div>
+
+
+
           <button
             onClick={() => setCreatingFormation({ nomformation: "", descriptionformation: "" })}
-            className="flex items-center gap-2 bg-gradient-to-r from-indigo-600 to-purple-600 text-white px-6 py-3 rounded-xl hover:from-indigo-700 hover:to-purple-700 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-1"
-          >
+            className="flex items-center gap-2 bg-gradient-to-r from-indigo-600 to-purple-600 text-white px-6 py-3 rounded-xl hover:from-indigo-700 hover:to-purple-700 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-1">
             <Plus size={20} /> Créer une formation
           </button>
+
+          </div>
+          
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-1 gap-6 mb-8">
           <div className="bg-white/70 backdrop-blur-sm p-6 rounded-2xl shadow-lg border border-white/20 hover:shadow-xl transition-all duration-300">
             <div className="flex items-center justify-between">
               <div>
@@ -167,54 +185,11 @@ const FormationList = () => {
             </div>
           </div>
 
-          <div className="bg-white/70 backdrop-blur-sm p-6 rounded-2xl shadow-lg border border-white/20 hover:shadow-xl transition-all duration-300">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-sm font-medium text-gray-600">Mes Formations</p>
-                <p className="text-3xl font-bold text-green-600">{myFormations}</p>
-              </div>
-              <div className="p-3 bg-gradient-to-br from-green-500 to-emerald-600 rounded-xl">
-                <User className="w-6 h-6 text-white" />
-              </div>
-            </div>
-          </div>
-
-          <div className="bg-white/70 backdrop-blur-sm p-6 rounded-2xl shadow-lg border border-white/20 hover:shadow-xl transition-all duration-300">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-sm font-medium text-gray-600">Terminées</p>
-                <p className="text-3xl font-bold text-blue-600">{completedFormations}</p>
-              </div>
-              <div className="p-3 bg-gradient-to-br from-blue-500 to-cyan-600 rounded-xl">
-                <Award className="w-6 h-6 text-white" />
-              </div>
-            </div>
-          </div>
-
-          <div className="bg-white/70 backdrop-blur-sm p-6 rounded-2xl shadow-lg border border-white/20 hover:shadow-xl transition-all duration-300">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-sm font-medium text-gray-600">En Cours</p>
-                <p className="text-3xl font-bold text-orange-600">{activeFormations}</p>
-              </div>
-              <div className="p-3 bg-gradient-to-br from-orange-500 to-red-600 rounded-xl">
-                <TrendingUp className="w-6 h-6 text-white" />
-              </div>
-            </div>
-          </div>
+          
         </div>
 
         <div className="mb-8">
-          <div className="relative max-w-md">
-            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
-            <input
-              type="text"
-              placeholder="Rechercher une formation..."
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-              className="w-full pl-10 pr-4 py-3 bg-white/70 backdrop-blur-sm border border-white/20 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all duration-300"
-            />
-          </div>
+          
         </div>
 
         {isLoading ? (
@@ -228,7 +203,7 @@ const FormationList = () => {
                 key={formation.idformation}
                 className="relative p-6 bg-white/70 backdrop-blur-sm border border-white/20 rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 group"
               >
-                {formation.idutilisateurmanager === user.idutilisateur && (
+                {formation.idutilisateurmanager === user.idutilisateur || user.role === "Admin" && (
                   <div className="absolute top-4 right-4 menu-formation">
                     <button
                       onClick={() => setOpenMenuId(openMenuId === formation.idformation ? null : formation.idformation)}
@@ -409,4 +384,4 @@ const FormationList = () => {
   )
 }
 
-export default FormationList
+export default FormationListManager
