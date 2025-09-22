@@ -9,6 +9,7 @@ import LayoutAdmin from './layouts/LayoutAdmin';
 import LayoutManager from './layouts/LayoutManager';
 import LayoutAgent from './layouts/LayoutAgent';
 
+// Pour la section Admin
 import UserList from './pages/admin/UserList';
 import FormationList from './pages/admin/FormationList';
 import BriefingList from './pages/admin/BriefingList'
@@ -17,9 +18,24 @@ import AutreDemande from './pages/admin/AutreDemande'
 import ActiviterList from './pages/admin/ActiviterList'
 import Dashboard from './pages/admin/Dashboard';
 
-/*import DashboardAdmin from './pages/admin/DashboardAdmin';
+// Pour la section Manager
 import DashboardManager from './pages/manager/DashboardManager';
-import DashboardAgent from './pages/agent/DashboardAgent';*/
+import CongerListManager from './pages/manager/CongerListManager';
+import AutreDemandeListManager from './pages/manager/AutreDemandeListManager';
+import BriefingListManager from './pages/manager/BriefingListManager';
+import DiscussionsManager from './pages/manager/DiscussionsManager';
+import ActiviterListManager from './pages/manager/ActiviterListManager';
+import FormationListManager from './pages/manager/FormationListManager';
+
+// Pour la section Agent
+import BriefingListAgent from './pages/agent/BriefingListAgent';
+import FormationListAgent from './pages/agent/FormationListAgent';
+import CongerListAgent from './pages/agent/CongerListAgent';
+import AutreDemandeAgent from './pages/agent/AutreDemandeAgent';
+import ActiviterListAgent from './pages/agent/ActiviterListAgent';
+import DashboardAgent from './pages/agent/DashboardAgent';
+
+
 
 function App(){
   return (
@@ -44,14 +60,26 @@ function App(){
           {/* Manager */}
           <Route element={<PrivateRoute allowedRoles={['Manager']} />}>
             <Route path="/manager" element={<LayoutManager />}>
-              <Route index element={<h1>Dashboard manager</h1>} />
+              <Route index element={<DashboardManager/>} />
+              <Route path="conger" element={<CongerListManager />}/>
+              <Route path="demandes" element={<AutreDemandeListManager />}/>
+              <Route path="briefing" element={<BriefingListManager />}/>
+              <Route path="discussions" element={<DiscussionsManager/>}/>
+              <Route path="activiter" element={<ActiviterListManager/>}/>
+              <Route path="formations" element={<FormationListManager/>}/>
             </Route>
           </Route>
 
           {/* Agent */}
           <Route element={<PrivateRoute allowedRoles={['Agent']} />}>
             <Route path="/agent" element={<LayoutAgent />}>
-              <Route index element={<h1>Dashboard agent</h1>} />
+              <Route index element={<DashboardAgent/>} />
+              <Route path="conger" element={<CongerListAgent />}/>
+              <Route path="demandes" element={<AutreDemandeAgent />}/>
+              <Route path="briefing" element={<BriefingListAgent />}/>
+              <Route path="discussions" element={<DiscussionsManager/>}/>
+              <Route path="activiter" element={<ActiviterListAgent/>}/>
+              <Route path="formations" element={<FormationListAgent/>}/>
             </Route>
           </Route>
 

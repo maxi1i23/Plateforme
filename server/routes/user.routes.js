@@ -4,10 +4,10 @@ const auth = require('../middleware/auth.middleware')
 const authorizeRole = require('../middleware/authorizeRole.middleware')
 
 router.use(auth)
-router.use(authorizeRole('Admin'))
+
 
 router.get('/', userController.getAllUsers)
-router.put('/update/:id', userController.updateUser )
-router.delete('/delete/:id', userController.deleteUser )
+router.put('/update/:id',authorizeRole('Admin'), userController.updateUser )
+router.delete('/delete/:id',authorizeRole('Admin'), userController.deleteUser )
 
 module.exports = router;

@@ -17,8 +17,9 @@ exports.getAllDemandesCongers = async (req, res) => {
 // Récupérer une demande par ID
 exports.getDemandeCongerById = async (req, res) => {
     try {
-        const id = req.params.id;
-        const result = await DemandeConger.getDemandeCongerbyId(id);
+        const id = req.user.id;
+        console.log(id)
+        const result = await DemandeConger.getDemandeCongerbyUser(id);
         if (result) {
             return res.status(200).json(result);
         } else {
@@ -32,9 +33,9 @@ exports.getDemandeCongerById = async (req, res) => {
 // Créer une nouvelle demande
 exports.createDemandeConger = async (req, res) => {
     try {
-        const { typeConger, dateDebutConger, dateFinConger, idAgentDemander, idManagerTraiter } = req.body;
+        const { typeConger, dateDebutConger, dateFinConger, idManagerTraiter } = req.body;
         // Récupérer l'id de l'agent depuis le token
-        // const idAgentDemander = req.user.id;  // req.user défini par middleware auth
+        const idAgentDemander = req.user.id;  // req.user défini par middleware auth
         const result = await DemandeConger.creerDemandeConger(typeConger, dateDebutConger, dateFinConger, idAgentDemander, idManagerTraiter);
         
         return res.status(201).json({
@@ -62,6 +63,7 @@ exports.updateDemandeConger = async (req, res) => {
             return res.status(404).send("Demande de congé introuvable");
         }
     } catch (error) {
+        console.log(error.message)
         return res.status(500).send(error);
     }
 };

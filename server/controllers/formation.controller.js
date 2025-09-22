@@ -54,7 +54,8 @@ exports.deleteFormation = async(req, res) => {
 exports.updateFormation = async (req, res) => {
     try {
       const id = req.params.id;
-      const { nomFormation, descriptionFormation,dateFormation,idUtilisateurManager } = req.body;
+      const { nomFormation, descriptionFormation,dateFormation } = req.body;
+      const idUtilisateurManager=req.user.id;
       const result = await Formation.updateFormation(id, nomFormation, descriptionFormation, dateFormation, idUtilisateurManager);
       if(result){
         return res.status(200).send({ message: "Formation modifiée avec succès" });

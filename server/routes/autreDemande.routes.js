@@ -13,9 +13,9 @@ router.get('/:id', autreDemandeController.getAutreDemandeById);
 router.put('/update/:id', authorizeRole('Agent', 'Admin'), autreDemandeController.updateAutreDemande);
 
 // Manager peut traiter les demandes
-router.put('/traiter/:id', authorizeRole('Manager') , autreDemandeController.updateAutreDemande);
+router.put('/traiter/:id', authorizeRole('Manager') , autreDemandeController.traiterDemande);
 
 // Mise à jour et suppression réservées à l'agent ou admin
-router.delete('/delete/:id',authorizeRole('Admin'), autreDemandeController.deleteAutreDemande);
+router.delete('/delete/:id',authorizeRole('Admin', 'Agent'), autreDemandeController.deleteAutreDemande);
 
 module.exports = router;

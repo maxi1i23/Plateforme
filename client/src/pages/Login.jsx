@@ -13,6 +13,7 @@ export default function Login() {
   const { login } = useContext(AuthContext)
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
+  const [worngConnection, setWorngConnection] = useState(false)
 
   const handleSubmit = async (e) => {
     e.preventDefault()
@@ -25,7 +26,7 @@ export default function Login() {
       else navigate("/agent")
     } catch (err) {
       console.error(err?.response?.data || err.message)
-      alert("Erreur connexion")
+      setWorngConnection(true)
     }
   }
 
@@ -35,6 +36,14 @@ export default function Login() {
         <div className="p-8 text-center">
           <img src={vite || "/placeholder.svg"} className="h-16 mx-auto mb-6" alt="Logo_Success_MDG" />
           <h2 className="text-2xl font-semibold text-gray-800 mb-8">Plateforme Success MDG</h2>
+
+          {
+            worngConnection && (
+              <div className="p-4 mb-4 text-sm text-red-800 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400">
+                Identifiant ou mot de passe incorrect.
+              </div>
+            )
+          }
 
           <form onSubmit={handleSubmit} className="space-y-6">
             {/* Email */}

@@ -9,6 +9,6 @@ router.get('/:id', briefingController.getOneBriefing);
 router.get('/', briefingController.getAllBriefings);
 router.post('/add', authorizeRole('Manager', 'Admin'), briefingController.createBriefing);
 router.put('/update/:id', authorizeRole('Manager', 'Admin'),  briefingController.updateBriefing);
-router.delete('/delete/:id', authorizeRole('Admin'), briefingController.deleteBriefing);
+router.delete('/delete/:id', authorizeRole('Admin', 'Manager'), briefingController.deleteBriefing);
 
 module.exports = router

@@ -3,6 +3,7 @@ const Message = require('../models/message.model');
 exports.createMessage = async (req, res) => {
     try {
         const { contenuMessage, idUtilisateurExpediteur, idUtilisateurRecepteur } = req.body;
+        console.log(req.user.id)
         const result = await Message.createMessage(contenuMessage, idUtilisateurExpediteur, idUtilisateurRecepteur);
         if(result){
             return res.status(201).json({message: "Le message a été envoyé avec succès"}, result);
@@ -11,6 +12,20 @@ exports.createMessage = async (req, res) => {
         }
     } catch (error) {
         return res.status(500).json(error);
+    }
+}
+
+exports.getMessageByID = async(req,res)=>{
+    const id = req.params.id;
+    try {
+        const result = await Message.getMessageById(id);
+        if(result){
+            return res.status(200).json(result)
+        }else{
+            return res.status(404).json({message:"Aucun message trouvé "});
+        }
+    }catch(err){
+        return res.status(500).json(err);
     }
 }
 

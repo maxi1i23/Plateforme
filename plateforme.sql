@@ -79,7 +79,7 @@ CREATE TABLE activiter(
     nbAppelle INTEGER NOT NULL,
     pauses INTEGER NOT NULL,
     dureeAppelle FLOAT NOT NULL,
-    dateActiviter DATE NOT NULL,
+    dateActiviter DATE DEFAULT CURRENT_DATE,
     idAgent INTEGER REFERENCES utilisateur(idUtilisateur),
     idPerformance INTEGER REFERENCES performance(idPerformance)
 );

@@ -2,10 +2,10 @@ const AutreDemande = require('../models/autreDemande.model');
 
 exports.createAutreDemande = async (req, res) => {
     try {
-        const { nomAutreDemande, descriptionAutreDemande, dateDemande, idAgentAutreDemande, idManagerTraiterAutreDemande } = req.body
+        const { nomAutreDemande, descriptionAutreDemande, dateDemande, idManagerTraiterAutreDemande } = req.body
 
         // Récupérer l'id de l'agent depuis le token
-        // const idAgentAutreDemande = req.user.id;  // req.user défini par middleware auth
+        const idAgentAutreDemande = req.user.id;  // req.user défini par middleware auth
 
         const result = await AutreDemande.createAutreDemande(nomAutreDemande, descriptionAutreDemande, dateDemande, idAgentAutreDemande, idManagerTraiterAutreDemande)
 
@@ -60,7 +60,7 @@ exports.deleteAutreDemande = async (req,res)=>{
             return res.status(404).json({message:'Une erreur est survenue'})
         }
     }catch(err){
-        console.log(err);
+        console.log(err.message);
         return res.status(500).send("Erreur serveur");
     }
 }
@@ -68,8 +68,8 @@ exports.deleteAutreDemande = async (req,res)=>{
 exports.updateAutreDemande = async (req,res)=>{
     try{
         const id=req.params.id;
-        const {nomAutreDemande,descriptionAutreDemande,dateAutreDemande,statutAutreDemande,idAgentAutreDemande,idManagerTraiterAutreDemande}=req.body;
-        const result = await AutreDemande.updateAutreDemande(id,nomAutreDemande,descriptionAutreDemande,dateAutreDemande,statutAutreDemande,idAgentAutreDemande,idManagerTraiterAutreDemande);
+        const {nomAutreDemande,descriptionAutreDemande,dateDemande,idManagerTraiterAutreDemande}=req.body;
+        const result = await AutreDemande.updateAutreDemande(id,nomAutreDemande,descriptionAutreDemande,dateDemande,idManagerTraiterAutreDemande);
         if(result){
             return res.status(201).json({message:'La demande a bien été modifié'})
         }else{
@@ -80,3 +80,23 @@ exports.updateAutreDemande = async (req,res)=>{
         return res.status(500).send("Erreur serveur");
     }
 }
+
+exports.traiterDemande = async (req, res) => {
+    try {
+        const id = req.params.id;
+        const { statutAutreDemande } = req.body;
+        const result = await AutreDemande.traiterAutreDemande(id, statutAutreDemande);
+        
+        if (result) {
+            return res.status(200).json({
+                message: `La demande a été traitée avec succès`,
+                statut: statutConger,
+                demande: result
+            });
+        } else {
+            return res.status(404).send("Demande introuvable");
+        }
+    } catch (error) {
+        return res.status(500).send(error);
+    }
+};

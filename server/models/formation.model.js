@@ -3,23 +3,13 @@ const pool = require('../db/db');
 
 module.exports = {
     getAll: async () => {
-        try {
-            const result = await pool.query('SELECT * FROM formation');
-            return result.rows;
-        } catch (err) {
-            console.log('Erreur lors de la récupération des formations : ', err);
-            res.status(500).send({ message: "Erreur lors de la récupération des formations" });
-        }
+        const result = await pool.query('SELECT * FROM formation');
+        return result.rows;
     },
 
     findById: async(id)=>{
-        try {
-            const result = await pool.query('SELECT * FROM formation WHERE idformation=$1', [id]);
-            return result.rows[0];
-        } catch (err) {
-            console.log('Erreur lors de la récupération du formations : ', err);
-            res.status(500).send({ message: "Erreur lors de la récupération des formations" });
-        }
+        const result = await pool.query('SELECT * FROM formation WHERE idutilisateurmanager=$1', [id]);
+        return result.rows;
     },
 
     createFormation: async(nomFormation, descriptionFormation, idUtilisateurManager)=>{

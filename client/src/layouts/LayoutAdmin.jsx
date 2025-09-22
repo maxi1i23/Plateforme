@@ -14,11 +14,7 @@ import {
   BarChart3,
   LogOut,
   Menu,
-  X,
-  Bell,
-  Search,
-  Settings,
-  ChevronDown,
+  X
 } from "lucide-react"
 
 export default function LayoutAdmin() {
@@ -43,97 +39,102 @@ export default function LayoutAdmin() {
   }
 
   return (
-    <div className="flex min-h-screen bg-gradient-to-br from-slate-50 to-slate-100">
-      {/* Sidebar */}
+    <div className="flex min-h-screen bg-gray-100">
+      {/* Sidebar (desktop + mobile) */}
       <aside
-        className={`${sidebarOpen ? "w-72" : "w-20"} bg-gradient-to-b from-slate-900 via-slate-800 to-slate-900 text-slate-200 flex flex-col transition-all duration-300 ease-in-out shadow-2xl border-r border-slate-700/50`}
+        className={`fixed top-0 left-0 h-screen w-64 bg-white/90 backdrop-blur-md border-r border-gray-200/50 text-gray-700 flex flex-col shadow-xl z-50 
+          transform transition-transform duration-300 
+          ${sidebarOpen ? "translate-x-0" : "-translate-x-full"} 
+          md:translate-x-0`} // 👈 visible par défaut sur desktop
       >
-        {/* Header */}
-        <div className="p-6 border-b border-slate-700/50 bg-slate-800/50 backdrop-blur-sm">
-          <div className="flex items-center justify-between">
-            {sidebarOpen && (
-              <div>
-                <h2 className="text-2xl font-bold bg-gradient-to-r from-amber-400 to-orange-500 bg-clip-text text-transparent">
-                  SUCCESS MDG
-                </h2>
-                <p className="text-sm text-slate-400 mt-1">Gestion de la plateforme</p>
-              </div>
-            )}
-            <button
-              onClick={() => setSidebarOpen(!sidebarOpen)}
-              className="p-2 rounded-lg bg-slate-700/50 hover:bg-slate-600/50 transition-colors duration-200"
-            >
-              {sidebarOpen ? <X size={18} /> : <Menu size={18} />}
-            </button>
+        {/* Logo */}
+        <div className="p-6 border-b border-gray-200/50 bg-gradient-to-r from-gray-50 to-white flex items-center justify-between">
+          <div className="flex items-center gap-3">
+            <div className="w-10 h-10 bg-gradient-to-br from-gray-600 to-gray-800 rounded-xl flex items-center justify-center">
+              <span className="text-white font-bold text-lg">S</span>
+            </div>
+            <div>
+              <h2 className="text-xl font-bold text-gray-800">SUCCESS MDG</h2>
+              <p className="text-sm text-gray-500">Espace Administrateur</p>
+            </div>
           </div>
+          {/* Bouton X (mobile) */}
+          <button
+            className="md:hidden text-gray-600 hover:text-gray-900"
+            onClick={() => setSidebarOpen(false)}
+          >
+            <X size={22} />
+          </button>
         </div>
 
         {/* Navigation */}
-        <nav className="flex-1 p-4 space-y-2">
+        <nav className="flex-1 p-4 space-y-2 overflow-y-auto">
           {menuItems.map(({ to, label, icon: Icon }) => {
             const active = location.pathname === to
             return (
               <Link
                 key={to}
                 to={to}
-                className={`group flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-200 relative overflow-hidden
+                onClick={() => setSidebarOpen(false)} // 👈 ferme menu après clic
+                className={`flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-300 group relative overflow-hidden
                   ${
                     active
-                      ? "bg-gradient-to-r from-amber-500 to-orange-500 text-white shadow-lg shadow-amber-500/25"
-                      : "hover:bg-slate-700/50 hover:text-white hover:shadow-md"
+                      ? "bg-gradient-to-r from-gray-600 to-gray-700 text-white shadow-lg transform scale-105"
+                      : "hover:bg-gray-100 hover:text-gray-800 hover:shadow-md hover:transform hover:scale-102"
                   }`}
               >
                 {active && (
-                  <div className="absolute inset-0 bg-gradient-to-r from-amber-400/20 to-orange-500/20 animate-pulse" />
+                  <div className="absolute inset-0 bg-gradient-to-r from-gray-600/20 to-gray-700/20 animate-pulse"></div>
                 )}
                 <Icon
                   size={20}
-                  className={`${active ? "text-white" : "text-slate-400 group-hover:text-white"} transition-colors duration-200 relative z-10`}
+                  className={`relative z-10 ${active ? "text-white" : "text-gray-600 group-hover:text-gray-800"}`}
                 />
-                {sidebarOpen && (
-                  <span className={`font-medium relative z-10 ${active ? "text-white" : "text-slate-300"}`}>
-                    {label}
-                  </span>
-                )}
-                {!sidebarOpen && (
-                  <div className="absolute left-full ml-2 px-2 py-1 bg-slate-800 text-white text-sm rounded-md opacity-0 group-hover:opacity-100 transition-opacity duration-200 whitespace-nowrap z-50">
-                    {label}
-                  </div>
-                )}
+                <span
+                  className={`relative z-10 font-medium ${active ? "text-white" : "text-gray-700 group-hover:text-gray-800"}`}
+                >
+                  {label}
+                </span>
+                {active && <div className="absolute right-2 w-2 h-2 bg-white rounded-full animate-pulse"></div>}
               </Link>
             )
           })}
         </nav>
 
-        {/* User Profile & Logout */}
-        <div className="p-4 border-t border-slate-700/50 bg-slate-800/30">
-          {sidebarOpen && (
-            <div className="mb-3 p-3 bg-slate-700/30 rounded-lg">
-              <div className="flex items-center gap-3">
-                <div className="w-10 h-10 bg-gradient-to-r from-amber-400 to-orange-500 rounded-full flex items-center justify-center text-white font-bold">
-                  {user?.nomutilisateur?.charAt(0)?.toUpperCase() || "U"}
-                </div>
-                <div className="flex-1 min-w-0">
-                  <p className="text-sm font-medium text-white truncate">{user?.nomutilisateur || "Utilisateur"}</p>
-                  <p className="text-xs text-slate-400">Administrateur</p>
-                </div>
-              </div>
-            </div>
-          )}
+        {/* Logout */}
+        <div className="p-4 border-t border-gray-200/50 bg-gradient-to-r from-gray-50 to-white">
           <button
             onClick={logout}
-            className={`flex items-center gap-3 w-full px-4 py-3 rounded-xl bg-gradient-to-r from-red-500 to-red-600 text-white hover:from-red-600 hover:to-red-700 transition-all duration-200 shadow-lg hover:shadow-red-500/25 ${!sidebarOpen ? "justify-center" : ""}`}
+            className="flex items-center gap-3 w-full px-4 py-3 rounded-xl bg-gradient-to-r from-gray-600 to-gray-700 text-white 
+              hover:from-gray-400 hover:to-gray-700 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-105 group cursor-pointer"
           >
-            <LogOut size={18} />
-            {sidebarOpen && <span className="font-medium">Déconnexion</span>}
+            <LogOut size={20} className="group-hover:rotate-12 transition-transform duration-300" />
+            <span className="font-medium">Déconnexion</span>
           </button>
         </div>
       </aside>
 
-      {/* Main Content */}
-      <div className="flex flex-col flex-1">
+      {/* Overlay sombre sur mobile */}
+      {sidebarOpen && (
+        <div
+          className="fixed inset-0 bg-black/40 z-40 md:hidden"
+          onClick={() => setSidebarOpen(false)}
+        />
+      )}
+
+      {/* Contenu principal */}
+      <div className="flex flex-col flex-1 md:ml-64">
         {/* Navbar */}
-        <header className="h-16 bg-white/80 backdrop-blur-md shadow-sm border-b border-slate-200/50 flex items-center justify-between px-6 sticky top-0 z-40">
+        <header className="h-16 bg-white/80 backdrop-blur-md shadow-sm border-b border-slate-200/50 flex items-center justify-between px-6 sticky top-0 z-30">
+          {/* Bouton hamburger (mobile) */}
+          <button
+            className="md:hidden text-gray-600 hover:text-gray-900"
+            onClick={() => setSidebarOpen(true)}
+          >
+            <Menu size={24} />
+          </button>
+
+          {/* Titre */}
           <div className="flex items-center gap-4">
             <h1 className="text-xl font-bold text-slate-800">{getCurrentPageTitle()}</h1>
             <div className="hidden md:flex items-center gap-2 text-sm text-slate-500">
@@ -149,47 +150,28 @@ export default function LayoutAdmin() {
             </div>
           </div>
 
-          <div className="flex items-center gap-4">
-            {/* User Menu */}
+          {/* Profil */}
+          <div className="flex items-center gap-3">
             <div className="relative">
-              <button
-                onClick={() => setShowUserMenu(!showUserMenu)}
-                className="flex items-center gap-3 p-2 rounded-lg bg-slate-100 hover:bg-slate-200 transition-colors duration-200"
-              >
-                <div className="w-8 h-8 bg-gradient-to-r from-amber-400 to-orange-500 rounded-full flex items-center justify-center text-white text-sm font-bold">
-                  {user?.nomutilisateur?.charAt(0)?.toUpperCase() || "U"}
-                </div>
-                <div className="hidden md:block text-left">
-                  <p className="text-sm font-medium text-slate-700">{user?.nomutilisateur || "Utilisateur"}</p>
-                  <div className="flex items-center gap-1">
-                    <span className="w-2 h-2 bg-green-500 rounded-full"></span>
-                    <span className="text-xs text-slate-500">En ligne</span>
-                  </div>
-                </div>
-                
-              </button>
-
-              {/* User Dropdown */}
-              
+              <div className="w-8 h-8 bg-gradient-to-r from-amber-400 to-orange-500 rounded-full flex items-center justify-center text-white text-sm font-bold">
+                {user?.nomutilisateur?.charAt(0)?.toUpperCase() || "U"}
+              </div>
+            </div>
+            <div className="hidden md:block text-left">
+              <p className="text-sm font-medium text-slate-700">{user?.nomutilisateur || "Utilisateur"}</p>
+              <div className="flex items-center gap-1">
+                <span className="w-2 h-2 bg-green-500 rounded-full"></span>
+                <span className="text-xs text-slate-500">En ligne</span>
+              </div>
             </div>
           </div>
         </header>
 
-        {/* Contenu des pages */}
-        <main className="flex-1 p-6 overflow-auto">
-          <div className="max-w-7xl mx-auto">
-            <Outlet />
-          </div>
+        {/* Contenu */}
+        <main className="flex-1 p-6">
+          <Outlet />
         </main>
       </div>
-
-      {/* Mobile Overlay */}
-      {sidebarOpen && (
-        <div
-          className="fixed inset-0 bg-black/50 backdrop-blur-sm md:hidden z-30"
-          onClick={() => setSidebarOpen(false)}
-        />
-      )}
     </div>
   )
 }

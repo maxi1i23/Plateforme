@@ -17,10 +17,10 @@ module.exports = {
         return result.rows[0];
     },
 
-    updateBriefing: async (idBriefing, nomBriefing, contenuBriefing, idManager)=>{
+    updateBriefing: async (idBriefing, nomBriefing, contenuBriefing)=>{
         const result=await pool.query(
-            `UPDATE briefing SET nomBriefing=$1, contenuBriefing=$2, idManager=$3 WHERE idbriefing=$4 RETURNING *`,
-            [nomBriefing,contenuBriefing,idManager,idBriefing]
+            `UPDATE briefing SET nomBriefing=$1, contenuBriefing=$2 WHERE idbriefing=$3 RETURNING *`,
+            [nomBriefing,contenuBriefing,idBriefing]
         );
         return result.rows[0];
     },

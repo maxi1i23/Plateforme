@@ -49,8 +49,8 @@ exports.createBriefing = async (req, res) => {
 exports.updateBriefing = async(req,res)=>{
     try{
         const id = req.params.id;
-        const {nomBriefing, contenuBriefing, idManager} = req.body;
-        const result = await Briefing.updateBriefing(id, nomBriefing, contenuBriefing, idManager);
+        const {nomBriefing, contenuBriefing} = req.body;
+        const result = await Briefing.updateBriefing(id, nomBriefing, contenuBriefing);
         if(result){
             return res.status(201).json({message:'Briefing modifié avec succès'});
         }else{

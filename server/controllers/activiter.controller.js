@@ -3,10 +3,10 @@ const Activiter = require('../models/activiter.model');
 // 🔹 Créer une activité
 exports.createActiviter = async (req, res) => {
   try {
-    const { nbAppelle, pauses, dureeAppelle, dateActiviter } = req.body;
+    const { nbAppelle, pauses, dureeAppelle } = req.body;
     const idAgent = req.user.id; // récup via middleware JWT
 
-    const activite = await Activiter.createActiviter(nbAppelle, pauses, dureeAppelle, dateActiviter, idAgent);
+    const activite = await Activiter.createActiviter(nbAppelle, pauses, dureeAppelle, idAgent);
 
     return res.status(201).json({ message: "Activité créée avec succès", activite });
   } catch (error) {

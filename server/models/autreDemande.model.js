@@ -45,9 +45,7 @@ module.exports = {
         id,
         nomAutreDemande,
         descriptionAutreDemande,
-        dateAutreDemande,
-        statutAutreDemande,
-        idAgentAutreDemande,
+        dateDemande,
         idManagerTraiterAutreDemande
     ) => {
         const result = await pool.query(
@@ -55,17 +53,13 @@ module.exports = {
             SET nomAutreDemande = $1, 
                 descriptionAutreDemande = $2, 
                 dateDemande = $3, 
-                statutAutreDemande = $4, 
-                idAgentAutreDemande = $5, 
-                idManagerTraiterAutreDemande = $6 
-            WHERE idAutreDemande = $7 
+                idManagerTraiterAutreDemande = $4 
+            WHERE idAutreDemande = $5 
             RETURNING *`,
             [
                 nomAutreDemande,
                 descriptionAutreDemande,
-                dateAutreDemande,
-                statutAutreDemande,
-                idAgentAutreDemande,
+                dateDemande,
                 idManagerTraiterAutreDemande,
                 id
             ]

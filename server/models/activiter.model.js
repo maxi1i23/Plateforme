@@ -3,9 +3,9 @@ const pool = require('../db/db');
 module.exports = {
 
   // Créer une activité et mettre à jour la performance
-  createActiviter: async (nbAppelle, pauses, dureeAppelle, dateActiviter, idAgent) => {
-    // Calculer semaine et mois
-    const date = new Date(dateActiviter);
+  createActiviter: async (nbAppelle, pauses, dureeAppelle, idAgent , dateActiviter=null) => {
+    // Fix dateActiviter
+    const date = dateActiviter ? new Date(dateActiviter) : new Date();
     const semaine = Math.ceil(date.getDate() / 7);
     const mois = date.getMonth() + 1;
 
@@ -30,7 +30,7 @@ module.exports = {
     // Insérer l'activité
     const activiteResult = await pool.query(
       'INSERT INTO activiter(nbAppelle, pauses, dureeAppelle, dateActiviter, idAgent, idPerformance) VALUES($1,$2,$3,$4,$5,$6) RETURNING *',
-      [nbAppelle, pauses, dureeAppelle, dateActiviter, idAgent, idPerformance]
+      [nbAppelle, pauses, dureeAppelle, date, idAgent, idPerformance]
     );
 
     // Recalculer productiviter
@@ -58,7 +58,7 @@ module.exports = {
   // Récupérer toutes les activités d'un agent
   getActiviterByAgent: async () => {
     const result = await pool.query(
-      'SELECT * FROM activiter  ORDER BY dateActiviter DESC'
+      'SELECT * FROM activiter ORDER BY dateActiviter DESC'
     );
     return result.rows;
   },
@@ -66,17 +66,20 @@ module.exports = {
   // Récupérer toutes les performances d'un agent
   getPerformanceByAgent: async () => {
     const result = await pool.query(
-      'SELECT * FROM performance  ORDER BY mois DESC, semaine DESC'
+      'SELECT * FROM performance ORDER BY mois DESC, semaine DESC'
     );
     return result.rows;
   },
 
   // Modifier une activité et recalculer la performance
   updateActiviter: async (idActiviter, nbAppelle, pauses, dureeAppelle, dateActiviter) => {
+    // Fix dateActiviter
+    const date = dateActiviter ? new Date(dateActiviter) : new Date();
+
     // Mettre à jour l'activité
     const activiteResult = await pool.query(
       'UPDATE activiter SET nbAppelle=$1, pauses=$2, dureeAppelle=$3, dateActiviter=$4 WHERE idActiviter=$5 RETURNING *',
-      [nbAppelle, pauses, dureeAppelle, dateActiviter, idActiviter]
+      [nbAppelle, pauses, dureeAppelle, date, idActiviter]
     );
 
     if (activiteResult.rows.length > 0) {

@@ -5,6 +5,10 @@ module.exports = {
         const messages = await pool.query('SELECT * FROM message ORDER BY dateMessage DESC');
         return messages.rows;
     },
+    getMessageById: async (id) => {
+        const messages = await pool.query('SELECT * FROM message WHERE idutilisateurrecepteur=$1', [id]);
+        return messages.rows;
+    },
 
     createMessage: async (contenuMessage, idUtilisateurExpediteur, idUtilisateurRecepteur) => {
         const etat = false
