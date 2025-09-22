@@ -6,7 +6,7 @@ import { useNavigate } from "react-router-dom"
 import { AuthContext } from "../context/AuthContext"
 import { jwtDecode } from "jwt-decode"
 import vite from "../assets/favicon.png"
-import { Mail, Lock } from "lucide-react"
+import { Mail, Lock, EyeOff, Eye } from "lucide-react"
 
 export default function Login() {
   const navigate = useNavigate()
@@ -14,6 +14,7 @@ export default function Login() {
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
   const [worngConnection, setWorngConnection] = useState(false)
+  const [showPassword, setShowPassword] = useState(false)
 
   const handleSubmit = async (e) => {
     e.preventDefault()
@@ -63,13 +64,20 @@ export default function Login() {
             <div className="relative">
               <Lock className="absolute top-1/2 left-3 -translate-y-1/2 text-gray-300" size={18} />
               <input
-                type="password"
+                type={showPassword ? "text" : "password"}
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 placeholder="Mot de passe"
                 required
                 className="pl-10 pr-4 py-3 w-full rounded-lg border border-gray-200 focus:outline-none focus:ring-1 focus:ring-gray-300 focus:border-gray-300 bg-white text-gray-700 placeholder-gray-400"
               />
+              {
+                showPassword ? <EyeOff className="absolute top-1/2 right-3 -translate-y-1/2 text-gray-300 cursor-pointer" size={18} 
+                onClick={()=>setShowPassword(!showPassword)}/> 
+                : 
+                <Eye className="absolute top-1/2 right-3 -translate-y-1/2 text-gray-300 cursor-pointer" size={18}
+                onClick={()=>setShowPassword(!showPassword)}/>
+              }
             </div>
 
             {/* Bouton */}
