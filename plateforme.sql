@@ -11,12 +11,22 @@ CREATE TABLE utilisateur (
 
 CREATE TABLE message (
     idMessage SERIAL PRIMARY KEY,
-    contenuMessage TEXT NOT NULL,
+    contenuMessage TEXT,
     dateMessage TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     etat BOOLEAN DEFAULT FALSE,
     idUtilisateurExpediteur INTEGER REFERENCES utilisateur(idUtilisateur) ON DELETE CASCADE ON UPDATE CASCADE,
     idUtilisateurRecepteur INTEGER REFERENCES utilisateur(idUtilisateur) ON DELETE CASCADE ON UPDATE CASCADE
 );
+
+CREATE TABLE fichierMessage (
+    idFichier SERIAL PRIMARY KEY,
+    nomFichier VARCHAR(255) NOT NULL,
+    urlFichier TEXT NOT NULL, -- ou chemin local
+    typeFichier VARCHAR(50),  -- ex: image/png, application/pdf
+    idMessage INTEGER REFERENCES message(idMessage) ON DELETE CASCADE ON UPDATE CASCADE
+);
+
+
 
 CREATE TABLE formation(
     idFormation SERIAL PRIMARY KEY,

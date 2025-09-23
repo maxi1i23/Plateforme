@@ -1,5 +1,5 @@
 import { Outlet, Link, useLocation } from "react-router-dom"
-import { useContext, useState } from "react"
+import { useContext, useState, useEffect } from "react"
 import { AuthContext } from "../context/AuthContext"
 import {
   Users,
@@ -11,8 +11,12 @@ import {
   MessageCircle,
   LogOut,
   Menu,
-  X,
+  X, Bell
 } from "lucide-react"
+import { io } from "socket.io-client"
+
+// Connexion au serveur Socket.IO
+const socket = io("http://localhost:8000")
 
 export default function LayoutManager() {
   const { logout, user } = useContext(AuthContext)
@@ -28,6 +32,13 @@ export default function LayoutManager() {
     { to: "/manager/activiter", label: "Activité & Performance", icon: BarChart3 },
     { to: "/manager/formations", label: "Formations", icon: BookOpen },
   ]
+
+   // Rejoindre sa room Socket.IO (room personnelle = userId)
+   useEffect(() => {
+
+    if (!user) return ""
+    socket.emit("joinRoom", user.idutilisateur)
+  }, [user])
 
   const getCurrentPageTitle = () => {
     const currentItem = menuItems.find((item) => item.to === location.pathname)
@@ -73,10 +84,9 @@ export default function LayoutManager() {
                 to={to}
                 onClick={() => setSidebarOpen(false)} // 👈 ferme menu après clic
                 className={`flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-300 group relative overflow-hidden
-                  ${
-                    active
-                      ? "bg-gradient-to-r from-gray-600 to-gray-700 text-white shadow-lg transform scale-105"
-                      : "hover:bg-gray-100 hover:text-gray-800 hover:shadow-md hover:transform hover:scale-102"
+                  ${active
+                    ? "bg-gradient-to-r from-gray-600 to-gray-700 text-white shadow-lg transform scale-105"
+                    : "hover:bg-gray-100 hover:text-gray-800 hover:shadow-md hover:transform hover:scale-102"
                   }`}
               >
                 {active && (
@@ -148,6 +158,18 @@ export default function LayoutManager() {
 
           {/* Profil */}
           <div className="flex items-center gap-3">
+            <div className="relative">
+              <button className="p-3 hover:bg-gradient-to-r hover:from-slate-100 hover:to-slate-200 rounded-full transition-all duration-200 shadow-sm">
+                <Bell size={20} className="text-slate-600" />
+              </button>
+              <div className="absolute -top-1 -right-1 w-3 h-3 bg-gradient-to-r from-red-500 to-red-600 rounded-full animate-pulse shadow-lg" />
+            </div>
+            <div className="relative">
+              <button className="p-3 hover:bg-gradient-to-r hover:from-slate-100 hover:to-slate-200 rounded-full transition-all duration-200 shadow-sm">
+                <MessageCircle size={20} className="text-slate-600" />
+              </button>
+              <div className="absolute -top-1 -right-1 w-3 h-3 bg-gradient-to-r from-red-500 to-red-600 rounded-full animate-pulse shadow-lg" />
+            </div>
             <div className="relative">
               <div className="w-8 h-8 bg-gradient-to-r from-amber-400 to-orange-500 rounded-full flex items-center justify-center text-white text-sm font-bold">
                 {user?.nomutilisateur?.charAt(0)?.toUpperCase() || "U"}
