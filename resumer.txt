@@ -1,0 +1,15 @@
+-- Notification générale (destinataire NULL)
+INSERT INTO notification (contenu, raisonNotification, idUtilisateurDestinataire)
+VALUES ('Nouvelle formation prévue ce vendredi à 10h', 'formation', NULL);
+
+-- Notification ciblée (destinataire précis, ex: utilisateur id=3)
+INSERT INTO notification (contenu, raisonNotification, idUtilisateurDestinataire)
+VALUES ('Vous êtes convié au briefing de lundi matin', 'briefing', 10);
+
+-- Notification générale de type briefing
+INSERT INTO notification (contenu, raisonNotification, idUtilisateurDestinataire)
+VALUES ('Briefing d\'équipe ce mercredi à 14h en salle 2', 'briefing', NULL);
+
+-- Notification ciblée pour rappeler une formation
+INSERT INTO notification (contenu, raisonNotification, idUtilisateurDestinataire)
+VALUES ('N\'oubliez pas votre formation de demain matin', 'formation', 13);

@@ -18,16 +18,6 @@ CREATE TABLE message (
     idUtilisateurRecepteur INTEGER REFERENCES utilisateur(idUtilisateur) ON DELETE CASCADE ON UPDATE CASCADE
 );
 
-CREATE TABLE fichierMessage (
-    idFichier SERIAL PRIMARY KEY,
-    nomFichier VARCHAR(255) NOT NULL,
-    urlFichier TEXT NOT NULL, -- ou chemin local
-    typeFichier VARCHAR(50),  -- ex: image/png, application/pdf
-    idMessage INTEGER REFERENCES message(idMessage) ON DELETE CASCADE ON UPDATE CASCADE
-);
-
-
-
 CREATE TABLE formation(
     idFormation SERIAL PRIMARY KEY,
     nomFormation VARCHAR(50) NOT NULL,
@@ -96,3 +86,37 @@ CREATE TABLE activiter(
     idAgent INTEGER REFERENCES utilisateur(idUtilisateur) ON DELETE CASCADE ON UPDATE CASCADE,
     idPerformance INTEGER REFERENCES performance(idPerformance) ON DELETE CASCADE ON UPDATE CASCADE
 );
+
+-- Recement ajouter les tables suivantes :
+
+CREATE TABLE fichierMessage (
+    idFichier SERIAL PRIMARY KEY,
+    nomFichier VARCHAR(255) NOT NULL,
+    urlFichier TEXT NOT NULL, -- ou chemin local
+    typeFichier VARCHAR(50),  -- ex: image/png, application/pdf
+    idMessage INTEGER REFERENCES message(idMessage) ON DELETE CASCADE ON UPDATE CASCADE
+); 
+
+-- Table des groupes
+CREATE TABLE groupe (
+    idGroupe SERIAL PRIMARY KEY,
+    nomGroupe VARCHAR(100) NOT NULL,
+    dateCreation TIMESTAMP DEFAULT now()
+);
+
+-- Membres du groupe
+CREATE TABLE groupeMembre (
+    idMembre SERIAL PRIMARY KEY,
+    idGroupe INT NOT NULL REFERENCES groupe(idGroupe) ON DELETE CASCADE,
+    idUtilisateur INT NOT NULL REFERENCES utilisateur(idUtilisateur) ON DELETE CASCADE,
+    dateAjout TIMESTAMP DEFAULT now(),
+    UNIQUE(idGroupe, idUtilisateur) -- éviter doublons
+);
+
+-- On modifie message
+ALTER TABLE message
+    ADD COLUMN idGroupe INT REFERENCES groupe(idGroupe) ON DELETE CASCADE;
+
+-- Règle métier :
+--  - Si idUtilisateurRecepteur est non NULL => message privé
+--  - Si idGroupe est non NULL => message de groupe

@@ -20,6 +20,7 @@ const autreDemandeRouter = require("./routes/autreDemande.routes")
 const demandeCongerRouter = require("./routes/demandeConger.routes")
 const messageRouter = require("./routes/message.routes")
 const activiterRouter = require("./routes/activiter.routes")
+const groupeRouter = require("./routes/groupe.routes")
 
 // Fonction création admin par défaut
 const createDefaultAdmin = require("./function/createAdmin")
@@ -54,6 +55,7 @@ app.use("/api/autreDemande", autreDemandeRouter)
 app.use("/api/demandeConger", demandeCongerRouter)
 app.use("/api/message", messageRouter)
 app.use("/api/activiter", activiterRouter)
+app.use("/api/groupe", groupeRouter)
 
 // ---------------------
 // Serveur HTTP + Socket.IO
@@ -66,9 +68,6 @@ const io = new Server(server, {
   },
 })
 
-// Passer io au controller message
-//messageController.setIO(io)
-
 // ---------------------
 // Gestion des utilisateurs en ligne
 // ---------------------
@@ -77,7 +76,7 @@ const onlineUsers = new Map() // key: userId, value: Set(socketId)
 io.on("connection", (socket) => {
   console.log("Nouvelle connexion Socket.IO:", socket.id)
 
-  // L'utilisateur rejoint sa "room"
+  // ---------- UTILISATEUR ----------
   socket.on("joinRoom", (userId) => {
     if (!onlineUsers.has(userId)) {
       onlineUsers.set(userId, new Set())
@@ -87,53 +86,66 @@ io.on("connection", (socket) => {
     console.log(`Utilisateur ${userId} connecté avec socket ${socket.id}`)
   })
 
+  // -------Rejoindre une groupe -------
+  socket.on("joinGroup", (idGroupe) => {
+    socket.join(idGroupe.toString());
+  });
+
+  // ---------- GROUPE ----------
+  socket.on("joinGroup", (idGroupe) => {
+    socket.join(`groupe_${idGroupe}`);
+    console.log(`Socket ${socket.id} a rejoint le groupe ${idGroupe}`);
+  });
+
+  // ---------- NOTIFICATIONS ----------
   socket.on('emettreNotification', (notificationData) => {
-    console.log(data);
+    console.log(notificationData);
     io.emit('NouvelleNotification', notificationData)
   })
 
-  socket.on('Demande', (data)=>{
+  // ---------- DEMANDES ----------
+  socket.on('Demande', (data) => {
     console.log(data);
     io.to(data.idutilisateurdestinataire.toString()).emit('NouvelleDemande', data);
   })
 
-  socket.on('Publication', (data)=>{
+  // ---------- PUBLICATIONS ----------
+  socket.on('Publication', (data) => {
     console.log(data);
     io.emit('NouvellePublication', data);
   })
 
-  socket.on('SendNouveauMessage', (data)=>{
+  // ---------- MESSAGE PRIVÉ ----------
+  socket.on('SendNouveauMessage', (data) => {
     console.log(data);
-    io.to(data.idUtilisateurRecepteur.toString()).emit('NouveauxMessage', data);
+    io.to(data.idUtilisateurRecepteur?.toString() || data.idgroupe.toString()).emit('NouveauxMessage', data);
+    io.to(data.idUtilisateurExpediteur.toString()).emit("NouveauxMessage", data);
   })
 
-  // Envoi de message via socket (optionnel si tu passes par API)
-  socket.on("sendMessage", (msg) => {
+  // ---------- MESSAGE DE GROUPE ----------
+  socket.on("sendGroupMessage", (msg) => {
+    // msg doit contenir { idGroupe, idUtilisateurExpediteur, contenumessage, fichiers? }
+    console.log("Message de groupe :", msg);
+    io.to(`groupe_${msg.idGroupe}`).emit("receiveGroupMessage", msg);
+  });
 
-    
+  // ---------- MESSAGE PRIVÉ SI EN LIGNE  ----------
+  socket.on("sendMessage", (msg) => {
 
     const idUtilisateurRecepteur = msg.idUtilisateurRecepteur || msg.idutilisateurrecepteur
     const idUtilisateurExpediteur = msg.idUtilisateurExpediteur || msg.idutilisateurexpediteur
-    
+    const idGroupe = msg.idGroupe || msg.idgroupe;
 
-    io.to(idUtilisateurRecepteur.toString()).emit("receiveMessage", msg)
+    console.log(msg);
+
+    io.to(idUtilisateurRecepteur?.toString() || msg.idgroupe.toString()).emit("receiveMessage", msg)
     io.to(idUtilisateurExpediteur.toString()).emit("receiveMessage", msg)
-    /*// Émettre au destinataire si en ligne
-    if (onlineUsers.has(idUtilisateurRecepteur)) {
-      onlineUsers.get(idUtilisateurRecepteur).forEach((sockId) => {
-        console.log("id Utilisateur Recepteur : " + idUtilisateurRecepteur )
-        io.to(sockId).emit("receiveMessage", msg)
-      })
-    }// Émettre aussi à l'expéditeur
-    if (onlineUsers.has(idUtilisateurExpediteur)) {
-      onlineUsers.get(idUtilisateurExpediteur).forEach((sockId) => {
-        console.log("id Utilisateur Expediteur : " + idUtilisateurExpediteur )
-        io.to(sockId).emit("receiveMessage", msg)
-      })
-    }*/
+    if (idGroupe) {
+      io.to(`groupe_${idGroupe}`).emit("receiveMessage", msg);
+    }
   })
 
-  // Déconnexion
+  // ---------- DÉCONNEXION ----------
   socket.on("disconnect", () => {
     console.log("Socket déconnecté:", socket.id)
     for (let [userId, sockets] of onlineUsers.entries()) {

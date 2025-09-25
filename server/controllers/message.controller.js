@@ -9,40 +9,37 @@ exports.setIO = (socketIO) => {
 // Création d'un message
 exports.createMessage = async (req, res) => {
   try {
-    const { contenuMessage, idUtilisateurExpediteur, idUtilisateurRecepteur } = req.body;
+    const { contenuMessage, idUtilisateurExpediteur, idUtilisateurRecepteur, idGroupe } = req.body;
 
-    // 1️⃣ Créer le message en base
+    // Créer le message en base
     const message = await Message.createMessage(
       contenuMessage,
       idUtilisateurExpediteur,
-      idUtilisateurRecepteur
+      idUtilisateurRecepteur || null,
+      idGroupe || null
     );
 
-    // 2️⃣ Ajouter les fichiers si présents
+    // Ajouter les fichiers si présents
     let fichiers = [];
     if (req.files && req.files.length > 0) {
       fichiers = await Message.FichierMessage.addFiles(message.idmessage, req.files);
     }
 
-    // 3️⃣ Préparer l'objet normalisé pour le frontend
+    
+    // Préparer l'objet normalisé pour le frontend
     const messageWithFiles = {
       idmessage: message.idmessage,
       contenumessage: message.contenumessage,
-      datemessage: message.dateMessage ? new Date(message.dateMessage).toISOString() : new Date().toISOString(),
-      idutilisateurexpediteur: idUtilisateurExpediteur,
-      idutilisateurrecepteur: idUtilisateurRecepteur,
+      datemessage: message.datemessage ? new Date(message.datemessage).toISOString() : new Date().toISOString(),
+      idutilisateurexpediteur: message.idutilisateurexpediteur,
+      idutilisateurrecepteur: message.idutilisateurrecepteur,
+      idgroupe: message.idgroupe,
       fichiers
     };
 
+    console.log(message);
 
-    // Émission temps réel via Socket.IO
-    /*
-    if (io) {
-      console.log(messageWithFiles)
-      io.to(idUtilisateurRecepteur).emit('receiveMessage', messageWithFiles);
-      io.to(idUtilisateurExpediteur).emit('receiveMessage', messageWithFiles);
-    }*/
-
+    // L'emissions se fais dans index js
     return res.status(201).json({
       message: "Message envoyé avec succès",
       data: messageWithFiles
@@ -68,6 +65,30 @@ exports.getMessageByID = async (req, res) => {
       datemessage: msg.dateMessage ? new Date(msg.datemessage).toISOString() : new Date().toISOString(),
       idutilisateurexpediteur: msg.idutilisateurexpediteur,
       idutilisateurrecepteur: msg.idutilisateurrecepteur,
+      fichiers: msg.fichiers || []
+    }));
+
+    res.status(200).json(normalized);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: "Erreur serveur", error: err });
+  }
+};
+exports.getMessageGroupe = async (req, res) => {
+  try {
+    const currentUserId = req.user.id; // connecté
+    const idGroupe = parseInt(req.params.idGroupe);
+
+    const messages = await Message.getMessagesGroup(currentUserId, idGroupe);
+
+    // Normalisation pour React
+    const normalized = messages.map(msg => ({
+      idmessage: msg.idmessage,
+      contenumessage: msg.contenumessage,
+      datemessage: msg.dateMessage ? new Date(msg.datemessage).toISOString() : new Date().toISOString(),
+      idutilisateurexpediteur: msg.idutilisateurexpediteur,
+      nomutilisateur: msg.nomutilisateur,
+      idgroupe: msg.idgroupe,
       fichiers: msg.fichiers || []
     }));
 

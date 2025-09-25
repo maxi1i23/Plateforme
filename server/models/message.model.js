@@ -26,6 +26,20 @@ module.exports = {
         const result = await pool.query(query, [userId1, userId2]);
         return result.rows;
     },
+    getMessagesGroup: async (userId1, idGroupe) => {
+        const query = `
+      SELECT m.*, COALESCE(json_agg(f.*) FILTER (WHERE f.idmessage IS NOT NULL), '[]') AS fichiers, u.nomutilisateur
+      FROM message m
+      LEFT JOIN fichiermessage f ON f.idmessage = m.idmessage
+      JOIN groupe g ON g.idgroupe = m.idgroupe
+      JOIN utilisateur u ON u.idutilisateur = m.idutilisateurexpediteur
+      WHERE m.idGroupe = $1
+      GROUP BY m.idmessage, u.nomutilisateur
+      ORDER BY m.datemessage ASC
+    `;
+        const result = await pool.query(query, [ idGroupe]);
+        return result.rows;
+    },
     getMessageById: async (id) => {
         const messages = await pool.query(
             `SELECT m.*, json_agg(f.*) AS fichiers 
@@ -56,11 +70,11 @@ module.exports = {
     }
     ,
 
-    createMessage: async (contenuMessage, idUtilisateurExpediteur, idUtilisateurRecepteur) => {
+    createMessage: async (contenuMessage, idUtilisateurExpediteur, idUtilisateurRecepteur, idGroupe) => {
         const etat = false
         const newMessage = await pool.query(
-            'INSERT INTO message(contenuMessage, etat, idUtilisateurExpediteur, idUtilisateurRecepteur) VALUES($1,$2,$3,$4) RETURNING *',
-            [contenuMessage, etat, idUtilisateurExpediteur, idUtilisateurRecepteur]
+            'INSERT INTO message(contenuMessage, etat, idUtilisateurExpediteur, idUtilisateurRecepteur, idGroupe) VALUES($1,$2,$3,$4, $5) RETURNING *',
+            [contenuMessage, etat, idUtilisateurExpediteur, idUtilisateurRecepteur, idGroupe]
         );
         return newMessage.rows[0];
     },
