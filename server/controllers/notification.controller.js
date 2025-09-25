@@ -4,10 +4,7 @@ module.exports.getAllNotifications = async (req, res) => {
     try {
         const result = await Notification.getAllNotifications();
         if(result){
-            return res.json({
-                notifications : result,
-                message : "Liste des notifications"
-            })
+            return res.json(result)
         }
         else{
             return res.status(401).json({message:"Aucune notification"})
@@ -40,16 +37,13 @@ module.exports.createNotification = async(req,res)=>{
         const {contenu, raisonNotification, idUtilisateurDestinataire} = req.body;
         const result = await Notification.createNotification(contenu, raisonNotification, idUtilisateurDestinataire);
         if(result){
-            return res.json({
-                notification : result,
-                message : "notification ajouté avec succès"
-            })
+            return res.json(result)
         }
         else{
             return res.status(401).json({message:"Erreur lors de l'ajout"})
         }
     }catch(error){
-        res.status(500).json({ error: error.message });
+        res.status(500).json(error.message);
     }
 }
 module.exports.updateNotification = async(req,res)=>{

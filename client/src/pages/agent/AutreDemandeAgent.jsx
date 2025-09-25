@@ -3,6 +3,7 @@ import api from "../../services/api"
 import { AuthContext } from "../../context/AuthContext"
 import Swal from "sweetalert2"
 import { Search, Plus, X } from "lucide-react";
+import { useSocket } from "../../context/SocketContext";
 
 const AutreDemandeAgent = () => {
     const [listDemande, setListDemande] = useState([])
@@ -13,6 +14,7 @@ const AutreDemandeAgent = () => {
     const [createDemande, setCreateDemande] = useState(false)
     const [managerList, setManagerList] = useState([])
     const [editingDemande, setEditingDemande] = useState(null)
+    const { socket} = useSocket()
 
     const getDemande = async () => {
         try {
@@ -87,6 +89,7 @@ const AutreDemandeAgent = () => {
             setListDemande((prev)=>[response.data,  ...prev])
             setCreateDemande(false)
             getDemande();
+
             Swal.fire({
                 icon: "success",
                 title: "Demande envoyée",

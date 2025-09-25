@@ -11,13 +11,13 @@ import {
   BarElement,
   Title,
   Tooltip,
-  Legend,
+  Legend,Filler
 } from "chart.js"
 import { Calendar, Activity, Phone, TrendingUp, Clock, Target } from "lucide-react"
 import api from "../../services/api"
 import { AuthContext } from "../../context/AuthContext"
 
-ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, BarElement, Title, Tooltip, Legend)
+ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, BarElement, Title, Tooltip, Legend, Filler)
 
 const DashboardAgent = () => {
   const { user } = useContext(AuthContext)

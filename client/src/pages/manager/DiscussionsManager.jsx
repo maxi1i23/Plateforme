@@ -4,10 +4,10 @@ import { useState, useEffect, useContext, useRef } from "react"
 import { AuthContext } from "../../context/AuthContext"
 import api from "../../services/api"
 import { Send, Search, Paperclip, Circle } from "lucide-react"
-import { io } from "socket.io-client"
+import  io  from "socket.io-client"
 
 // Connexion au serveur Socket.IO
-const socket = io("http://localhost:8000")
+const socket = io.connect("http://localhost:8000")
 
 const DiscussionsManager = () => {
   const { user } = useContext(AuthContext) // Récupère l'utilisateur connecté
@@ -54,30 +54,44 @@ const DiscussionsManager = () => {
   useEffect(() => {
 
     if (!user) return ""
-    socket.emit("joinRoom", user.idutilisateur)
+    socket.emit("joinRoom", user.idutilisateur.toString())
   }, [user])
 
   // Écoute des messages entrants en temps réel
   useEffect(() => {
+    
     const handleReceiveMessage = (msg) => {
-      console.log("Received message:", msg) 
-      if (!selectedUser) return ""
-      // Ajouter le message seulement si c'est avec l'utilisateur actuellement sélectionné
+      
+       // Maintenant, cette ligne affichera la valeur correcte
+      
       if (
-        msg.idutilisateurexpediteur === selectedUser.idutilisateur ||
-        msg.idutilisateurrecepteur === selectedUser.idutilisateur
+        selectedUser && // Vérifiez que selectedUser n'est pas null
+        (msg.idutilisateurexpediteur.toString() === selectedUser.idutilisateur.toString() ||
+        msg.idutilisateurrecepteur.toString() === selectedUser.idutilisateur.toString())
       ) {
-        setMessages(prev => [...prev, msg])
+        
+        setMessages(prev => {
+          // Si un message avec le même id existe déjà, on ne fait rien
+          if (prev.find(m => m.idmessage === msg.idmessage)) {
+            return prev;
+          }
+          // Sinon, on ajoute le nouveau message
+          return [...prev, msg];
+        });
       }
-    }
-
-    socket.on("receiveMessage", handleReceiveMessage)
-    return () => socket.off("receiveMessage", handleReceiveMessage)
-  }, [selectedUser])
+    };
+  
+    socket.on("receiveMessage", handleReceiveMessage);
+    return () => socket.off("receiveMessage", handleReceiveMessage);
+  }, [selectedUser]);
 
   // Charger les messages quand on change de conversation
   useEffect(() => {
     if (!selectedUser) return
+
+    // Clear the messages state for the new conversation
+    setMessages([]);
+
     getMessages(selectedUser.idutilisateur)
     /* Plan B ................
     const intervalId = setInterval(() => {
@@ -107,10 +121,12 @@ const DiscussionsManager = () => {
       })
 
       const msg = res.data.data // message normalisé renvoyé par le backend
+      socket.emit("sendMessage", msg)
+      socket.emit("SendNouveauMessage", msg)
 
       
 
-      setMessages(prev => [...prev, msg]) // Ajouter le message localement
+      // setMessages(prev => [...prev, msg]) // Ajouter le message localement
       //getMessages(selectedUser.idutilisateur)
       setNewMessage("") // Réinitialiser input
       setSelectedFiles([]) // Réinitialiser fichiers
@@ -200,7 +216,7 @@ const DiscussionsManager = () => {
             {/* Messages */}
             <div className="flex-1 overflow-y-auto p-6 space-y-4 bg-gradient-to-b from-gray-50/30 to-white dark:from-gray-900 dark:to-gray-900">
               {messages.map((msg, index) => {
-                const isOwn = msg.idutilisateurexpediteur === user.idutilisateur
+                const isOwn = msg.idutilisateurexpediteur == user.idutilisateur
                 const showAvatar = index === 0 || messages[index - 1].idutilisateurexpediteur !== msg.idutilisateurexpediteur
 
                 return (

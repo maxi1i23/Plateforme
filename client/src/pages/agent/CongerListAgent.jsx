@@ -5,6 +5,7 @@ import api from "../../services/api";
 import { AuthContext } from "../../context/AuthContext";
 import Swal from "sweetalert2";
 import { Search, Plus, X } from "lucide-react";
+import { useSocket } from '../../context/SocketContext'
 
 const CongerListAgent = () => {
     const [listConger, setListConger] = useState([]);
@@ -15,6 +16,7 @@ const CongerListAgent = () => {
     const [createDemandeConger, setDemandeConger] = useState(false)
     const [managerList, setManagerList] = useState([])
     const [editingConger, setEditingConger] = useState(null)
+    const { socket } = useSocket() // Initialisation du socket
 
     const getConger = async () => {
         try {
@@ -66,6 +68,15 @@ const stats = {
             setListConger((prev)=>[response.data,  ...prev])
             setDemandeConger(false)
             getConger();
+            const notification = await api.post('notification/add',
+                {
+                    contenu : "Nouvelle demande de congé", 
+                    raisonNotification: "Demande de conger", 
+                    idUtilisateurDestinataire: createDemandeConger.idManagerTraiter
+                }
+            )
+            // Creation de la notification via socket
+            socket.emit('Demande', notification.data)
             Swal.fire({
                 icon: "success",
                 title: "Demande de conger envoyée",
@@ -618,7 +629,7 @@ const stats = {
                 )
             }
 
-        <style jsx>{`
+        <style>{`
         @keyframes blob {
           0% {
             transform: translate(0px, 0px) scale(1);

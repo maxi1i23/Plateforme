@@ -1,6 +1,7 @@
 // src/App.jsx
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { AuthProvider } from './context/AuthContext';
+import { SocketProvider } from "./context/SocketContext";
 import PrivateRoute from './components/PrivateRoute';
 import './App.css'
 
@@ -8,6 +9,7 @@ import Login from './pages/Login';
 import LayoutAdmin from './layouts/LayoutAdmin';
 import LayoutManager from './layouts/LayoutManager';
 import LayoutAgent from './layouts/LayoutAgent';
+import Notification from './components/Notification';
 
 // Pour la section Admin
 import UserList from './pages/admin/UserList';
@@ -40,6 +42,7 @@ import DashboardAgent from './pages/agent/DashboardAgent';
 function App(){
   return (
     <AuthProvider>
+      <SocketProvider>
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<Login />} />
@@ -67,6 +70,7 @@ function App(){
               <Route path="discussions" element={<DiscussionsManager/>}/>
               <Route path="activiter" element={<ActiviterListManager/>}/>
               <Route path="formations" element={<FormationListManager/>}/>
+              <Route path="notifications" element={<Notification/>}/>
             </Route>
           </Route>
 
@@ -80,12 +84,14 @@ function App(){
               <Route path="discussions" element={<DiscussionsManager/>}/>
               <Route path="activiter" element={<ActiviterListAgent/>}/>
               <Route path="formations" element={<FormationListAgent/>}/>
+              <Route path="notifications" element={<Notification/>}/>
             </Route>
           </Route>
 
           <Route path="/unauthorized" element={<div>403 - Accès refusé</div>} />
         </Routes>
       </BrowserRouter>
+      </SocketProvider>
     </AuthProvider>
   );
 }

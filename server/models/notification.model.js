@@ -2,7 +2,7 @@ const pool = require('../db/db');
 
 module.exports = {
     getAllNotifications: async () => {
-        const notifications = await pool.query('SELECT * FROM notification');
+        const notifications = await pool.query('SELECT * FROM notification ORDER BY datenotification DESC');
         return notifications.rows;
     },
 

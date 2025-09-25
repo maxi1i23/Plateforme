@@ -34,11 +34,14 @@ exports.createMessage = async (req, res) => {
       fichiers
     };
 
+
     // Émission temps réel via Socket.IO
+    /*
     if (io) {
+      console.log(messageWithFiles)
       io.to(idUtilisateurRecepteur).emit('receiveMessage', messageWithFiles);
       io.to(idUtilisateurExpediteur).emit('receiveMessage', messageWithFiles);
-    }
+    }*/
 
     return res.status(201).json({
       message: "Message envoyé avec succès",
@@ -67,8 +70,6 @@ exports.getMessageByID = async (req, res) => {
       idutilisateurrecepteur: msg.idutilisateurrecepteur,
       fichiers: msg.fichiers || []
     }));
-    console.log("Original:", messages[0]);
-    console.log("Normalized:", normalized[0]);
 
     res.status(200).json(normalized);
   } catch (err) {

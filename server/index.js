@@ -67,7 +67,7 @@ const io = new Server(server, {
 })
 
 // Passer io au controller message
-messageController.setIO(io)
+//messageController.setIO(io)
 
 // ---------------------
 // Gestion des utilisateurs en ligne
@@ -87,24 +87,50 @@ io.on("connection", (socket) => {
     console.log(`Utilisateur ${userId} connecté avec socket ${socket.id}`)
   })
 
+  socket.on('emettreNotification', (notificationData) => {
+    console.log(data);
+    io.emit('NouvelleNotification', notificationData)
+  })
+
+  socket.on('Demande', (data)=>{
+    console.log(data);
+    io.to(data.idutilisateurdestinataire.toString()).emit('NouvelleDemande', data);
+  })
+
+  socket.on('Publication', (data)=>{
+    console.log(data);
+    io.emit('NouvellePublication', data);
+  })
+
+  socket.on('SendNouveauMessage', (data)=>{
+    console.log(data);
+    io.to(data.idUtilisateurRecepteur.toString()).emit('NouveauxMessage', data);
+  })
+
   // Envoi de message via socket (optionnel si tu passes par API)
   socket.on("sendMessage", (msg) => {
+
+    
+
     const idUtilisateurRecepteur = msg.idUtilisateurRecepteur || msg.idutilisateurrecepteur
     const idUtilisateurExpediteur = msg.idUtilisateurExpediteur || msg.idutilisateurexpediteur
+    
 
-    // Émettre au destinataire si en ligne
+    io.to(idUtilisateurRecepteur.toString()).emit("receiveMessage", msg)
+    io.to(idUtilisateurExpediteur.toString()).emit("receiveMessage", msg)
+    /*// Émettre au destinataire si en ligne
     if (onlineUsers.has(idUtilisateurRecepteur)) {
       onlineUsers.get(idUtilisateurRecepteur).forEach((sockId) => {
+        console.log("id Utilisateur Recepteur : " + idUtilisateurRecepteur )
         io.to(sockId).emit("receiveMessage", msg)
       })
-    }
-
-    // Émettre aussi à l'expéditeur
+    }// Émettre aussi à l'expéditeur
     if (onlineUsers.has(idUtilisateurExpediteur)) {
       onlineUsers.get(idUtilisateurExpediteur).forEach((sockId) => {
+        console.log("id Utilisateur Expediteur : " + idUtilisateurExpediteur )
         io.to(sockId).emit("receiveMessage", msg)
       })
-    }
+    }*/
   })
 
   // Déconnexion
@@ -131,6 +157,5 @@ module.exports.io = io
 // Démarrage du serveur
 // ---------------------
 server.listen(8000, async () => {
-  console.log("✅ Server started on port 8000")
   createDefaultAdmin()
 })

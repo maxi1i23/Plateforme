@@ -5,6 +5,7 @@ import api from "../../services/api"
 import { Calendar, User, FileText, MoreVertical, Edit, Trash, X, Plus, Search, Clock } from "lucide-react"
 import { AuthContext } from "../../context/AuthContext"
 import Swal from "sweetalert2"
+import { useSocket } from "../../context/SocketContext"
 
 const BriefingListManager = () => {
   const [briefingList, setBriefingList] = useState([])
@@ -15,6 +16,7 @@ const BriefingListManager = () => {
   const [creatingBriefing, setCreatingBriefing] = useState(false)
   const [loading, setLoading] = useState(true)
   const { user } = useContext(AuthContext)
+  const {socket} = useSocket()
 
   // 🔎 Sécurisation de la recherche
   useEffect(() => {
@@ -123,9 +125,18 @@ const BriefingListManager = () => {
       setBriefingList((prev) => [response.data, ...prev])
       setCreatingBriefing(false)
       getBriefing()
+
+      const notification = await api.post('/notification/add',{
+        raisonNotification:'Nouvelle briefing créée',
+        contenu:`La briefing ${creatingBriefing.nombriefing} a été créée par le manager ${ user.idutilisateur}.`
+      })
+
+      // Creation de la notification via socket
+      socket.emit('Publication', notification.data)
+
       Swal.fire({
         icon: "success",
-        title: "Briefing créé avec succès",
+        title: "Briefing publiée avec succès",
         showConfirmButton: false,
         timer: 1500,
       })
@@ -133,7 +144,7 @@ const BriefingListManager = () => {
       console.error("Erreur création :", error)
       Swal.fire({
         icon: "error",
-        title: "Erreur lors de la création",
+        title: "Erreur lors de la publication",
         showConfirmButton: false,
         timer: 1500,
       })

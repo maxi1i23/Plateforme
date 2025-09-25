@@ -3,11 +3,12 @@ const path = require("path");
 
 module.exports = {
     getAllMessages: async () => {
-        const messages = await pool.query(`SELECT m.*, json_agg(f.*) AS fichiers
-                                            FROM message m
-                                            LEFT JOIN fichiermessage f ON f.idmessage = m.idmessage
-                                            GROUP BY m.idmessage
-                                            ORDER BY m.datemessage ASC;
+        const messages = await pool.query(
+            `SELECT m.*, json_agg(f.*) AS fichiers 
+            FROM message m 
+            LEFT JOIN fichiermessage f ON f.idmessage = m.idmessage 
+            GROUP BY m.idmessage 
+            ORDER BY m.datemessage ASC;
         `);
         return messages.rows;
     },
@@ -26,13 +27,13 @@ module.exports = {
         return result.rows;
     },
     getMessageById: async (id) => {
-        const messages = await pool.query(`SELECT m.*, json_agg(f.*) AS fichiers
-                                            FROM message m
-                                            LEFT JOIN fichiermessage f ON f.idmessage = m.idmessage
-                                            WHERE m.idutilisateurrecepteur = $1
-                                            GROUP BY m.idmessage
-                                            ORDER BY m.datemessage ASC;
-                                            `, [id]);
+        const messages = await pool.query(
+            `SELECT m.*, json_agg(f.*) AS fichiers 
+            FROM message m LEFT JOIN fichiermessage f ON f.idmessage = m.idmessage 
+            WHERE m.idutilisateurrecepteur = $1 
+            GROUP BY m.idmessage 
+            ORDER BY m.datemessage ASC;`, [id]
+        );
         return messages.rows;
     },
 
@@ -44,7 +45,7 @@ module.exports = {
                 const urlFichier = `/uploads/${path.basename(file.path)}`; // URL accessible depuis le navigateur
                 return pool.query(
                     `INSERT INTO fichiermessage (nomfichier, urlfichier, typefichier, idmessage) 
-         VALUES ($1, $2, $3, $4) RETURNING *`,
+                    VALUES ($1, $2, $3, $4) RETURNING *`,
                     [file.originalname, urlFichier, file.mimetype, idMessage]
                 );
             });

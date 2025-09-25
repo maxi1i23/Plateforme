@@ -1,5 +1,5 @@
 import { Outlet, Link, useLocation } from "react-router-dom"
-import { useContext, useState, useEffect } from "react"
+import { useContext, useState, useEffect, use } from "react"
 import { AuthContext } from "../context/AuthContext"
 import {
   Users,
@@ -13,32 +13,53 @@ import {
   Menu,
   X, Bell
 } from "lucide-react"
-import { io } from "socket.io-client"
-
-// Connexion au serveur Socket.IO
-const socket = io("http://localhost:8000")
+import { useSocket } from '../context/SocketContext'
 
 export default function LayoutManager() {
   const { logout, user } = useContext(AuthContext)
   const location = useLocation()
   const [sidebarOpen, setSidebarOpen] = useState(false) // 👈 état sidebar mobile
+  const { socket } = useSocket() // Initialisation de socket
+  const [notificationCount, setNotificationCount] = useState(0);
+  const [messageCount, setMessageCount] = useState(0);
 
   const menuItems = [
     { to: "/manager", label: "Tableau de bord", icon: BarChart3 },
     { to: "/manager/conger", label: "Demandes de congé", icon: CalendarDays },
     { to: "/manager/demandes", label: "Autres demandes", icon: FileText },
     { to: "/manager/briefing", label: "Briefings", icon: Presentation },
-    { to: "/manager/discussions", label: "Discussion", icon: MessageCircle },
     { to: "/manager/activiter", label: "Activité & Performance", icon: BarChart3 },
     { to: "/manager/formations", label: "Formations", icon: BookOpen },
   ]
 
-   // Rejoindre sa room Socket.IO (room personnelle = userId)
-   useEffect(() => {
 
-    if (!user) return ""
-    socket.emit("joinRoom", user.idutilisateur)
-  }, [user])
+  useEffect(() => {
+    if (!socket) return;
+
+    const handleNouvelleDemande = (data) => {
+      console.log(" Nouvelle demande reçue:", data);
+      setNotificationCount(prev => prev + 1);
+    };
+
+    const handleNouvellePublication = (data) => {
+      console.log("📰 Nouvelle publication reçue:", data);
+      setNotificationCount(prev => prev + 1);
+    };
+
+    const handleMessage = (data) => {
+      console.log("💌 Nouveau message reçu:", data);
+      setMessageCount(prev => prev + 1);
+    }
+
+    socket.on("NouvelleDemande", handleNouvelleDemande);
+    socket.on("NouvellePublication", handleNouvellePublication);
+    socket.on("NouveauxMessage", handleMessage);
+
+    return () => {
+      socket.off("NouvelleDemande", handleNouvelleDemande);
+      socket.off("NouvellePublication", handleNouvellePublication);
+    };
+  }, [socket]);
 
   const getCurrentPageTitle = () => {
     const currentItem = menuItems.find((item) => item.to === location.pathname)
@@ -158,23 +179,56 @@ export default function LayoutManager() {
 
           {/* Profil */}
           <div className="flex items-center gap-3">
+
+            {/* Notifications */}
             <div className="relative">
-              <button className="p-3 hover:bg-gradient-to-r hover:from-slate-100 hover:to-slate-200 rounded-full transition-all duration-200 shadow-sm">
+              <Link
+                to="/manager/notifications"
+                aria-label="Notifications"
+                className="inline-flex p-3 rounded-full hover:bg-gradient-to-r hover:from-slate-100 hover:to-slate-200 transition-all duration-200 shadow-sm"
+                onClick={()=>setNotificationCount(0)}
+              >
                 <Bell size={20} className="text-slate-600" />
-              </button>
-              <div className="absolute -top-1 -right-1 w-3 h-3 bg-gradient-to-r from-red-500 to-red-600 rounded-full animate-pulse shadow-lg" />
+              </Link>
+
+              {notificationCount > 0 && (
+                <span
+                  className="pointer-events-none absolute -top-1 -right-1 bg-gradient-to-r from-red-500 to-red-600 text-white text-xs font-bold px-1.5 py-0.5 rounded-full shadow-lg min-w-[18px] h-[18px] flex items-center justify-center"
+                  aria-hidden="true"
+                >
+                  {notificationCount > 99 ? "99+" : notificationCount}
+                </span>
+              )}
             </div>
+            {/* Messages */}
             <div className="relative">
-              <button className="p-3 hover:bg-gradient-to-r hover:from-slate-100 hover:to-slate-200 rounded-full transition-all duration-200 shadow-sm">
+              <Link
+                to="/manager/discussions"
+                aria-label="Discussions"
+                className="inline-flex p-3 rounded-full hover:bg-gradient-to-r hover:from-slate-100 hover:to-slate-200 transition-all duration-200 shadow-sm"
+                onClick={()=>setMessageCount(0)}
+              >
                 <MessageCircle size={20} className="text-slate-600" />
-              </button>
-              <div className="absolute -top-1 -right-1 w-3 h-3 bg-gradient-to-r from-red-500 to-red-600 rounded-full animate-pulse shadow-lg" />
+              </Link>
+
+              {messageCount > 0 && (
+                <span
+                  className="pointer-events-none absolute -top-1 -right-1 bg-gradient-to-r from-red-500 to-red-600 text-white text-xs font-bold px-1.5 py-0.5 rounded-full shadow-lg min-w-[18px] h-[18px] flex items-center justify-center"
+                  aria-hidden="true"
+                >
+                  {messageCount > 99 ? "99+" : messageCount}
+                </span>
+              )}
             </div>
+
+
+
             <div className="relative">
               <div className="w-8 h-8 bg-gradient-to-r from-amber-400 to-orange-500 rounded-full flex items-center justify-center text-white text-sm font-bold">
                 {user?.nomutilisateur?.charAt(0)?.toUpperCase() || "U"}
               </div>
             </div>
+
             <div className="hidden md:block text-left">
               <p className="text-sm font-medium text-slate-700">{user?.nomutilisateur || "Utilisateur"}</p>
               <div className="flex items-center gap-1">
@@ -182,6 +236,7 @@ export default function LayoutManager() {
                 <span className="text-xs text-slate-500">En ligne</span>
               </div>
             </div>
+
           </div>
         </header>
 

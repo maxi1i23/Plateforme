@@ -18,6 +18,7 @@ import {
 } from "lucide-react"
 import { AuthContext } from "../../context/AuthContext"
 import Swal from "sweetalert2"
+import { useSocket } from '../../context/SocketContext'
 
 const FormationListManager = () => {
   const [formationList, setFormationList] = useState([])
@@ -28,6 +29,7 @@ const FormationListManager = () => {
   const [creatingFormation, setCreatingFormation] = useState(false)
   const [isLoading, setIsLoading] = useState(true)
   const { user } = useContext(AuthContext)
+  const { socket } = useSocket() // Initialisation du socke
 
   // 🔎 Correction de la recherche (évite les erreurs undefined)
   useEffect(() => {
@@ -106,8 +108,30 @@ const FormationListManager = () => {
       setFormationList((prev) => [response.data, ...prev])
       setCreatingFormation(false)
       getFormation()
+
+      const notification = await api.post('/notification/add',{
+        raisonNotification:'Nouvelle formation créée',
+        contenu:`La formation ${creatingFormation.nomformation} a été créée par le manager ${ user.idutilisateur}.`
+      })
+
+      // Creation de la notification via socket
+      socket.emit('Publication', notification.data)
+
+      Swal.fire({
+        icon: "success",
+        title: "Formation publiée avec succès",
+        showConfirmButton: false,
+        timer: 1500,
+      })
+
     } catch (error) {
       console.error("Erreur création :", error)
+      Swal.fire({
+        icon: "error",
+        title: "Erreur lors de la publication",
+        showConfirmButton: false,
+        timer: 1500,
+      })
     }
   }
 
