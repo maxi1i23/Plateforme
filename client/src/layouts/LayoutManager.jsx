@@ -28,10 +28,10 @@ export default function LayoutManager() {
     { to: "/manager/conger", label: "Demandes de congé", icon: CalendarDays },
     { to: "/manager/demandes", label: "Autres demandes", icon: FileText },
     { to: "/manager/briefing", label: "Briefings", icon: Presentation },
-    { to: "/manager/activiter", label: "Activité & Performance", icon: BarChart3 },
     { to: "/manager/formations", label: "Formations", icon: BookOpen },
   ]
 
+  // { to: "/manager/activiter", label: "Activité & Performance", icon: BarChart3 },
 
   useEffect(() => {
     if (!socket) return;
@@ -205,7 +205,7 @@ export default function LayoutManager() {
               <Link
                 to="/manager/discussions"
                 aria-label="Discussions"
-                className="inline-flex p-3 rounded-full hover:bg-gradient-to-r hover:from-slate-100 hover:to-slate-200 transition-all duration-200 shadow-sm"
+                className="inline-flex p-3 rounded-full hover:bg-gradient-to-r hover:from-slate-100 hover:to-slate-200 transition-all duration-200 shadow-sm  "
                 onClick={()=>setMessageCount(0)}
               >
                 <MessageCircle size={20} className="text-slate-600" />

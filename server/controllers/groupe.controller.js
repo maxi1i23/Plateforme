@@ -80,3 +80,16 @@ exports.listerGroupesUtilisateur = async (req, res) => {
         return res.status(500).json({ error: "Erreur interne serveur" });
     }
 };
+
+
+exports.quitterGroupe = async (req, res)=>{
+    try {
+        const idUtilisateur = req.user.id
+        const idGroupe = req.params.idGroupe
+        await GroupeMembre.deleteGroupeMembre(idGroupe, idUtilisateur)
+        return res.status(200).json({message : "L'utilisateur a été supprimer du groupe"})
+    } catch (error) {
+        console.log(error.message)
+        return res.status(500).json(error)
+    }
+}

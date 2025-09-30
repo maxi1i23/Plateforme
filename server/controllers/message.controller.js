@@ -65,6 +65,7 @@ exports.getMessageByID = async (req, res) => {
       datemessage: msg.dateMessage ? new Date(msg.datemessage).toISOString() : new Date().toISOString(),
       idutilisateurexpediteur: msg.idutilisateurexpediteur,
       idutilisateurrecepteur: msg.idutilisateurrecepteur,
+      nomutilisateur: msg.nomutilisateur,
       fichiers: msg.fichiers || []
     }));
 

@@ -57,6 +57,8 @@ function App(){
               <Route path="conger" element={<CongerList />}/>
               <Route path="autre" element={<AutreDemande/>}/>
               <Route path="activiter" element={<ActiviterList/>}/>
+              <Route path="discussions" element={<DiscussionsManager/>}/>
+              <Route path="notifications" element={<Notification/>}/>
             </Route>
           </Route>
 

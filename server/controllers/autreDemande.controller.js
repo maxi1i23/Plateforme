@@ -33,10 +33,9 @@ exports.getAutreDemandeById = async(req,res)=>{
         console.log(id)
         const autreDemande= await AutreDemande.getAutreDemandeById(id);
         if(autreDemande){
-            return res.status(201).json({autreDemande});
+            return res.status(201).json(autreDemande);
         }
     }catch(err){
-        console.log(err);
         return res.status(500).send("Server Error");
     }
 }
@@ -45,7 +44,6 @@ exports.getAutreDemandes = async(req,res)=>{
         const result=await AutreDemande.getAutreDemande();
         return res.status(201).json(result);
     }catch(err){
-        console.log(err);
         return res.status(500).send("Server Error");
     }
 }
@@ -60,7 +58,6 @@ exports.deleteAutreDemande = async (req,res)=>{
             return res.status(404).json({message:'Une erreur est survenue'})
         }
     }catch(err){
-        console.log(err.message);
         return res.status(500).send("Erreur serveur");
     }
 }
@@ -76,7 +73,6 @@ exports.updateAutreDemande = async (req,res)=>{
             return res.status(404).json({message:'Une erreur est survenue'})
         }
     }catch(err){
-        console.log(err);
         return res.status(500).send("Erreur serveur");
     }
 }
@@ -88,11 +84,8 @@ exports.traiterDemande = async (req, res) => {
         const result = await AutreDemande.traiterAutreDemande(id, statutAutreDemande);
         
         if (result) {
-            return res.status(200).json({
-                message: `La demande a été traitée avec succès`,
-                statut: statutConger,
-                demande: result
-            });
+            return res.status(200).json(result);
+           
         } else {
             return res.status(404).send("Demande introuvable");
         }

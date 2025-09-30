@@ -15,12 +15,13 @@ module.exports = {
     // Récupérer tous les messages entre deux utilisateurs
     getMessagesBetweenUsers: async (userId1, userId2) => {
         const query = `
-      SELECT m.*, COALESCE(json_agg(f.*) FILTER (WHERE f.idmessage IS NOT NULL), '[]') AS fichiers
+      SELECT m.*, COALESCE(json_agg(f.*) FILTER (WHERE f.idmessage IS NOT NULL), '[]') AS fichiers, u.nomutilisateur
       FROM message m
       LEFT JOIN fichiermessage f ON f.idmessage = m.idmessage
+      JOIN utilisateur u ON u.idutilisateur = m.idutilisateurexpediteur
       WHERE (m.idutilisateurexpediteur = $1 AND m.idutilisateurrecepteur = $2)
          OR (m.idutilisateurexpediteur = $2 AND m.idutilisateurrecepteur = $1)
-      GROUP BY m.idmessage
+      GROUP BY m.idmessage, u.nomutilisateur
       ORDER BY m.datemessage ASC
     `;
         const result = await pool.query(query, [userId1, userId2]);

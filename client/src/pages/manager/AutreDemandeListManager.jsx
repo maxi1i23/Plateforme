@@ -38,8 +38,10 @@ const AutreDemandeListManager = () => {
         timer: 1500,
       })
       getDemande()
+      console.log("OKKKK")
     } catch (err) {
-      console.error(err)
+      console.error(err.message)
+      console.log("Nonnnnnnn")
       Swal.fire("Erreur", "Échec du traitement de la demande", "error")
     }
   }

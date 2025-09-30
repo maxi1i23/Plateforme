@@ -85,7 +85,7 @@ module.exports = {
             RETURNING *`,
             [statutAutreDemande, id]
         );
-        return result.rows[0];
+        return result;
     }
     
 };

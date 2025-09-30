@@ -18,4 +18,7 @@ router.get("/:idGroupe/membres", groupeController.listerMembres);
 // Lister les groupes d’un utilisateur
 router.get("/utilisateur/:idUtilisateur", groupeController.listerGroupesUtilisateur);
 
+// Quitter la groupe
+router.delete("/quitter/:idGroupe", groupeController.quitterGroupe)
+
 module.exports = router;

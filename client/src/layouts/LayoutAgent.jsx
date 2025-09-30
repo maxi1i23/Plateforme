@@ -51,7 +51,7 @@ export default function LayoutAgent() {
     socket.on("NouveauxMessage", handleMessage);
 
     return () => {
-      socket.off("NouvellePublication", handler); // cleanup
+      socket.off("NouvellePublication", handleNouvellePublication); // cleanup
     };
   }, [socket]);
 

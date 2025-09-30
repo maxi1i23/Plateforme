@@ -3,7 +3,7 @@
 import { useState, useEffect, useContext, useRef } from "react"
 import { AuthContext } from "../../context/AuthContext"
 import api from "../../services/api"
-import { Send, Search, Paperclip, Circle, ArrowLeft, PlusCircle } from "lucide-react"
+import { Send, Search, Paperclip, Circle, ArrowLeft, PlusCircle, LogOut } from "lucide-react"
 import io from "socket.io-client"
 import Swal from 'sweetalert2'
 
@@ -44,6 +44,30 @@ const DiscussionsManager = () => {
     } catch (err) {
       console.error(err)
       Swal.fire({ icon: 'error', title: 'Erreur lors de la création du groupe' })
+    }
+  }
+
+  // Quitter un groupe 
+  const handleQuitte = async () => {
+    console.log(selectedGroupe)
+    try {
+      await api.delete("/groupe/quitter/" + selectedGroupe.idgroupe)
+      Swal.fire({
+        title: "Succés",
+        icon: "success",
+        text: "Vous avez quitter le groupe !",
+        timer: 1500
+      })
+      getGroupe();
+
+    } catch (error) {
+      console.log(error.message)
+      Swal.fire({
+        title: "Erreur",
+        icon: "error",
+        text: "Veuillez réessayer! une erreur est survenue",
+        timer: 1500
+      })
     }
   }
 
@@ -215,8 +239,8 @@ const DiscussionsManager = () => {
                 setSelectedUser(null);
               }}
               className={`p-4 cursor-pointer transition-all duration-200 hover:bg-white/50 dark:hover:bg-gray-700/50 border-b border-gray-100 dark:border-gray-800 ${selectedGroupe?.idgroupe === g.idgroupe
-                  ? "bg-blue-50 dark:bg-blue-900/20 border-l-4 border-l-blue-500"
-                  : ""
+                ? "bg-blue-50 dark:bg-blue-900/20 border-l-4 border-l-blue-500"
+                : ""
                 }`}
             >
               <div className="flex items-center space-x-3">
@@ -247,8 +271,8 @@ const DiscussionsManager = () => {
                 setSelectedGroupe(null);
               }}
               className={`p-4 cursor-pointer transition-all duration-200 hover:bg-white/50 dark:hover:bg-gray-700/50 border-b border-gray-100 dark:border-gray-800 ${selectedUser?.idutilisateur === u.idutilisateur
-                  ? "bg-blue-50 dark:bg-blue-900/20 border-l-4 border-l-blue-500"
-                  : ""
+                ? "bg-blue-50 dark:bg-blue-900/20 border-l-4 border-l-blue-500"
+                : ""
                 }`}
             >
               <div className="flex items-center space-x-3">
@@ -278,16 +302,41 @@ const DiscussionsManager = () => {
           <>
             {/* Header */}
             <div className="p-4 border-b border-gray-200 dark:border-gray-700 bg-gradient-to-r from-blue-50 to-purple-50 dark:from-gray-800 dark:to-gray-800 flex items-center space-x-3">
-              <button onClick={() => { setSelectedUser(null); setSelectedGroupe(null) }} className="md:hidden p-2 rounded-full hover:bg-gray-200 dark:hover:bg-gray-700">
+              <button
+                onClick={() => {
+                  setSelectedUser(null);
+                  setSelectedGroupe(null);
+                }}
+                className="md:hidden p-2 rounded-full hover:bg-gray-200 dark:hover:bg-gray-700"
+              >
                 <ArrowLeft className="w-5 h-5" />
               </button>
+
               <div className="w-10 h-10 bg-gradient-to-br from-blue-500 to-purple-600 rounded-full flex items-center justify-center text-white font-semibold">
-                {(selectedUser ? selectedUser.nomutilisateur : selectedGroupe.nomgroupe).charAt(0).toUpperCase()}
+                {(selectedUser ? selectedUser.nomutilisateur : selectedGroupe.nomgroupe)
+                  .charAt(0)
+                  .toUpperCase()}
               </div>
-              <div>
-                <h3 className="font-semibold text-gray-900 dark:text-white">{selectedUser ? selectedUser.nomutilisateur : selectedGroupe.nomgroupe}</h3>
-                <p className="text-sm text-green-500">{selectedUser ? "En ligne" : "Groupe"}</p>
+
+              <div className="flex-1">
+                <h3 className="font-semibold text-gray-900 dark:text-white">
+                  {selectedUser ? selectedUser.nomutilisateur : selectedGroupe.nomgroupe}
+                </h3>
+                <p className="text-sm text-green-500">
+                  {selectedUser ? "En ligne" : "Groupe"}
+                </p>
               </div>
+
+              {/* Bouton quitter */}
+              {!selectedUser && (
+                <button
+                  onClick={handleQuitte}
+                  className="flex items-center space-x-1 px-3 py-1.5 text-sm font-medium rounded-lg bg-red-500 text-white hover:bg-red-600 transition"
+                >
+                  <LogOut className="w-4 h-4" />
+                  <span>Quitter</span>
+                </button>
+              )}
             </div>
 
             {/* Messages */}
@@ -414,19 +463,48 @@ const DiscussionsManager = () => {
 
       {/* Modal création groupe */}
       {showCreateGroup && (
-        <div className="fixed inset-0 bg-black/50 flex items-center justify-center">
-          <div className="bg-white dark:bg-gray-800 p-6 rounded-xl w-96">
-            <h3 className="font-bold text-lg mb-4">Créer un groupe</h3>
-            <input type="text" placeholder="Nom du groupe" value={groupName} onChange={e => setGroupName(e.target.value)} className="w-full mb-4 p-2 border rounded" />
-            <div className="max-h-40 overflow-y-auto">
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
+          <div className="bg-white dark:bg-gray-800 p-6 rounded-2xl w-96 shadow-xl">
+            <h3 className="font-bold text-2xl text-gray-900 dark:text-white mb-5 text-center">
+              Créer un groupe
+            </h3>
+
+            {/* Input nom du groupe */}
+            <input
+              type="text"
+              placeholder="Nom du groupe"
+              value={groupName}
+              onChange={e => setGroupName(e.target.value)}
+              className="w-full mb-4 px-4 py-2 text-sm border border-gray-300 dark:border-gray-600 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:text-white" required
+            />
+
+            {/* Liste des membres */}
+            <div className="max-h-48 overflow-y-auto mb-4">
               {users.map(u => (
-                <label key={u.idutilisateur} className="flex items-center space-x-2">
-                  <input type="checkbox" checked={selectedGroupMembers.includes(u.idutilisateur)} onChange={() => toggleMember(u.idutilisateur)} />
-                  <span>{u.nomutilisateur}</span>
+                <label
+                  key={u.idutilisateur}
+                  className="flex items-center space-x-3 p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 cursor-pointer transition-colors"
+                >
+                  <input
+                    type="checkbox"
+                    checked={selectedGroupMembers.includes(u.idutilisateur)}
+                    onChange={() => toggleMember(u.idutilisateur)}
+                    className="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:border-gray-600"
+                  />
+                  <span className="text-gray-900 dark:text-white text-sm font-medium">
+                    {u.nomutilisateur}
+                  </span>
                 </label>
               ))}
             </div>
-            <button onClick={handleCreateGroup} className="mt-4 px-4 py-2 bg-blue-600 text-white rounded">Créer</button>
+
+            {/* Bouton créer */}
+            <button
+              onClick={handleCreateGroup}
+              className="w-full py-3 bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white font-semibold rounded-xl transition-all duration-200 shadow-lg hover:shadow-xl"
+            >
+              Créer le groupe
+            </button>
           </div>
         </div>
       )}

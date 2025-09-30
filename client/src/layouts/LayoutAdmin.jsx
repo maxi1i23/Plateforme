@@ -14,7 +14,7 @@ import {
   BarChart3,
   LogOut,
   Menu,
-  X
+  X, Bell, MessageCircle
 } from "lucide-react"
 
 export default function LayoutAdmin() {
@@ -22,6 +22,8 @@ export default function LayoutAdmin() {
   const location = useLocation()
   const [sidebarOpen, setSidebarOpen] = useState(true)
   const [showUserMenu, setShowUserMenu] = useState(false)
+  const [notificationCount, setNotificationCount] = useState(0);
+  const [messageCount, setMessageCount] = useState(0);
 
   const menuItems = [
     { to: "/admin", label: "Tableau de bord", icon: LayoutDashboard },
@@ -152,6 +154,48 @@ export default function LayoutAdmin() {
 
           {/* Profil */}
           <div className="flex items-center gap-3">
+
+{/* Notifications */}
+<div className="relative">
+              <Link
+                to="/admin/notifications"
+                aria-label="Notifications"
+                className="inline-flex p-3 rounded-full hover:bg-gradient-to-r hover:from-slate-100 hover:to-slate-200 transition-all duration-200 shadow-sm"
+                onClick={()=>setNotificationCount(0)}
+              >
+                <Bell size={20} className="text-slate-600" />
+              </Link>
+
+              {notificationCount > 0 && (
+                <span
+                  className="pointer-events-none absolute -top-1 -right-1 bg-gradient-to-r from-red-500 to-red-600 text-white text-xs font-bold px-1.5 py-0.5 rounded-full shadow-lg min-w-[18px] h-[18px] flex items-center justify-center"
+                  aria-hidden="true"
+                >
+                  {notificationCount > 99 ? "99+" : notificationCount}
+                </span>
+              )}
+            </div>
+            {/* Messages */}
+            <div className="relative">
+              <Link
+                to="/admin/discussions"
+                aria-label="Discussions"
+                className="inline-flex p-3 rounded-full hover:bg-gradient-to-r hover:from-slate-100 hover:to-slate-200 transition-all duration-200 shadow-sm  "
+                onClick={()=>setMessageCount(0)}
+              >
+                <MessageCircle size={20} className="text-slate-600" />
+              </Link>
+
+              {messageCount > 0 && (
+                <span
+                  className="pointer-events-none absolute -top-1 -right-1 bg-gradient-to-r from-red-500 to-red-600 text-white text-xs font-bold px-1.5 py-0.5 rounded-full shadow-lg min-w-[18px] h-[18px] flex items-center justify-center"
+                  aria-hidden="true"
+                >
+                  {messageCount > 99 ? "99+" : messageCount}
+                </span>
+              )}
+            </div>
+
             <div className="relative">
               <div className="w-8 h-8 bg-gradient-to-r from-amber-400 to-orange-500 rounded-full flex items-center justify-center text-white text-sm font-bold">
                 {user?.nomutilisateur?.charAt(0)?.toUpperCase() || "U"}
