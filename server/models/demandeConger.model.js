@@ -3,7 +3,16 @@ const pool = require('../db/db');
 module.exports = {
     getDemandeConger: async () => {
         
-        const result = await pool.query('SELECT * FROM demandeConger');
+        const result = await pool.query(`
+            SELECT 
+            c.*, 
+            u.nomUtilisateur AS nomAgentDemander,
+            m.nomUtilisateur AS nomManagerTraiter
+            FROM demandeConger c
+            JOIN utilisateur u ON c.idAgentDemander = u.idUtilisateur
+            LEFT JOIN utilisateur m ON c.idManagerTraiter = m.idUtilisateur;
+
+            `);
         return result.rows;
     },
 

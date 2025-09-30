@@ -341,14 +341,20 @@ const AutreDemandeAgent = () => {
                                             <td className="px-6 py-4">{getStatusBadge(demande.statutautredemande)}</td>
                                             <td className="px-6 py-4">
                                                 <div className="flex items-center">
-                                                    <div className="w-8 h-8 bg-gradient-to-br from-blue-400 to-indigo-500 rounded-full flex items-center justify-center text-white text-sm font-semibold mr-3">
+                                                    <div className="w-8 h-8 bg-gradient-to-br from-blue-400 to-indigo-500 rounded-full flex items-center justify-center text-white text-sm font-bold mr-3">
                                                         {demande.idagentautredemande.toString().slice(-2)}
                                                     </div>
-                                                    <span className="text-gray-600">Agent {demande.idagentautredemande}</span>
+                                                    <span className="">{demande.nomagentautredemande}</span>
                                                 </div>
                                             </td>
                                             <td className="px-6 py-4">
-                                                <span className="text-gray-600">Manager {demande.idmanagertraiterautredemande}</span>
+                                            <div className="flex items-center">
+                                            <div className="w-8 h-8 bg-gradient-to-br from-blue-400 to-indigo-500 rounded-full flex items-center justify-center text-white text-sm font-bold mr-3">
+                                                        {demande.idmanagertraiterautredemande.toString().slice(-2)}
+                                                    </div>
+                                                    <span className="">{demande.nommanagertraiterautredemande}</span>
+                                            </div>
+                                                
                                             </td>
                                             <td className="px-6 py-4">
                                                 {demande.statutautredemande === "En attente" ? (

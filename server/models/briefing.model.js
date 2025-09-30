@@ -2,7 +2,10 @@ const pool = require('../db/db')
 
 module.exports = {
     getAllBriefing: async () => {
-        const result = await pool.query('SELECT * FROM briefing')
+        const result = await pool.query(`
+            SELECT b.* , u.nomutilisateur AS nomManager
+            FROM briefing b
+            JOIN utilisateur u ON u.idUtilisateur = b.idManager`)
         return result.rows;
     },
     getOneById: async(idBriefing)=>{

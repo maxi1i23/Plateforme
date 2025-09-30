@@ -3,7 +3,10 @@ const pool = require('../db/db');
 
 module.exports = {
     getAll: async () => {
-        const result = await pool.query('SELECT * FROM formation');
+        const result = await pool.query(`
+            SELECT f.* , u.nomutilisateur AS nomManager
+            FROM formation f
+            JOIN utilisateur u ON u.idUtilisateur = f.idUtilisateurManager`);
         return result.rows;
     },
 

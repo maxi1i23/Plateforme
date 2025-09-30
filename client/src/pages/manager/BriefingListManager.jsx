@@ -319,7 +319,7 @@ const BriefingListManager = () => {
                       <div className="bg-gradient-to-r from-blue-400 to-purple-400 p-1.5 rounded-full">
                         <User className="w-3 h-3 text-white" />
                       </div>
-                      <span className="text-sm font-medium text-gray-600">Manager #{briefing.idmanager}</span>
+                      <span className="text-sm font-medium text-gray-600">{briefing.nommanager}</span>
                     </div>
 
                     {briefing.idmanager === user.idutilisateur && (

@@ -4,6 +4,7 @@ const DemandeConger = require('../models/demandeConger.model');
 exports.getAllDemandesCongers = async (req, res) => {
     try {
         const result = await DemandeConger.getDemandeConger();
+        console.log(result);
         if (result && result.length > 0) {
             return res.status(200).json(result);
         } else {

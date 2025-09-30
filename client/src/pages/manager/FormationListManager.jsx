@@ -295,7 +295,7 @@ const FormationListManager = () => {
                       <div className="p-1 bg-gradient-to-br from-green-500 to-emerald-600 rounded-full">
                         <User className="w-3 h-3 text-white" />
                       </div>
-                      <span className="font-medium ms-2 text-gray-700">Manager: {formation.idutilisateurmanager}</span>
+                      <span className="font-medium ms-2 text-gray-700"> {formation.nommanager}</span>
                     </div>
 
                     {formation.idutilisateurmanager === user.idutilisateur && (

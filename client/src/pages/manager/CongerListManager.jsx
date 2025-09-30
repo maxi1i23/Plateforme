@@ -321,7 +321,7 @@ const CongerListManager = () => {
                             {conger.idagentdemander.toString().slice(-2)}
                           </div>
                           <span className="text-gray-900 font-medium">
-                            Agent {conger.idagentdemander}
+                             {conger.nomagentdemander}
                           </span>
                         </div>
                       </td>

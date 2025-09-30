@@ -3,7 +3,16 @@ const pool = require('../db/db');
 module.exports = {
     // Récupérer toutes les demandes
     getAutreDemande: async () => {
-        const result = await pool.query('SELECT * FROM autreDemande');        
+        const result = await pool.query(`
+            SELECT 
+            a.*,
+            u.nomUtilisateur AS nomAgentAutreDemande,
+            m.nomUtilisateur AS nomManagerTraiterAutreDemande
+            FROM autreDemande a
+            JOIN utilisateur u ON a.idAgentAutreDemande = u.idUtilisateur
+            LEFT JOIN utilisateur m ON a.idManagerTraiterAutreDemande = m.idUtilisateur;
+            `
+        );        
         return result.rows;
     },
     
