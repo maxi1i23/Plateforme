@@ -2,22 +2,8 @@
 
 import { useContext, useEffect, useState } from "react"
 import api from "../../services/api"
-import {
-  Calendar,
-  User,
-  FileText,
-  MoreVertical,
-  Edit,
-  Trash,
-  X,
-  Plus,
-  Search,
-  BookOpen,
-  Award,
-  TrendingUp,
-} from "lucide-react"
+import { Calendar, User, FileText, Search, BookOpen } from "lucide-react"
 import { AuthContext } from "../../context/AuthContext"
-import Swal from "sweetalert2"
 
 const FormationListAgent = () => {
   const [formationList, setFormationList] = useState([])
@@ -91,18 +77,18 @@ const FormationListAgent = () => {
 
           <div className="flex flex-col sm:flex-row gap-4 w-full lg:w-auto">
 
-          <div className="relative max-w-md">
-            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
-            <input
-              type="text"
-              placeholder="Rechercher une formation..."
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-              className="pl-10 pr-4 py-3 bg-white/70 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 w-full sm:w-80"
-            />
+            <div className="relative max-w-md">
+              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
+              <input
+                type="text"
+                placeholder="Rechercher une formation..."
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                className="pl-10 pr-4 py-3 bg-white/70 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 w-full sm:w-80"
+              />
+            </div>
           </div>
-          </div>
-          
+
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-1 lg:grid-cols-1 gap-6 mb-8">

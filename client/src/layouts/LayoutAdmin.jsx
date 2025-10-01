@@ -1,27 +1,16 @@
-"use client"
-
 // src/layouts/LayoutAdmin.jsx
 import { Outlet, Link, useLocation } from "react-router-dom"
-import { useContext, useState } from "react"
+import { useContext, useState, useEffect } from "react"
 import { AuthContext } from "../context/AuthContext"
-import {
-  LayoutDashboard,
-  Users,
-  BookOpen,
-  Presentation,
-  CalendarDays,
-  FileText,
-  BarChart3,
-  LogOut,
-  Menu,
-  X, Bell, MessageCircle
-} from "lucide-react"
+import { useSocket } from "../context/SocketContext"
+import {LayoutDashboard, Users, BookOpen, Presentation, CalendarDays, FileText, BarChart3, LogOut, Menu,X, Bell, MessageCircle} from "lucide-react"
 
 export default function LayoutAdmin() {
   const { logout, user } = useContext(AuthContext)
   const location = useLocation()
   const [sidebarOpen, setSidebarOpen] = useState(true)
   const [showUserMenu, setShowUserMenu] = useState(false)
+  const { socket } = useSocket();
   const [notificationCount, setNotificationCount] = useState(0);
   const [messageCount, setMessageCount] = useState(0);
 
@@ -34,6 +23,29 @@ export default function LayoutAdmin() {
     { to: "/admin/autre", label: "Autres demandes", icon: FileText },
     { to: "/admin/activiter", label: "Activité & Performance", icon: BarChart3 },
   ]
+
+  useEffect(() => {
+    if (!socket) return;
+
+    console.log(" Socket connecté, on écoute NouvellePublication");
+
+    const handleNouvellePublication = (data) => {
+      console.log(" Nouvelle publication reçue:", data);
+      setNotificationCount(prev => prev + 1);
+    };
+
+    const handleMessage = (data) => {
+      console.log("💌 Nouveau message reçu:", data);
+      setMessageCount(prev => prev + 1);
+    }
+
+    socket.on("NouvellePublication", handleNouvellePublication);
+    socket.on("NouveauxMessage", handleMessage);
+
+    return () => {
+      socket.off("NouvellePublication", handleNouvellePublication); // cleanup
+    };
+  }, [socket]);
 
   const getCurrentPageTitle = () => {
     const currentItem = menuItems.find((item) => item.to === location.pathname)
@@ -79,10 +91,9 @@ export default function LayoutAdmin() {
                 to={to}
                 onClick={() => setSidebarOpen(false)} // 👈 ferme menu après clic
                 className={`flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-300 group relative overflow-hidden
-                  ${
-                    active
-                      ? "bg-gradient-to-r from-gray-600 to-gray-700 text-white shadow-lg transform scale-105"
-                      : "hover:bg-gray-100 hover:text-gray-800 hover:shadow-md hover:transform hover:scale-102"
+                  ${active
+                    ? "bg-gradient-to-r from-gray-600 to-gray-700 text-white shadow-lg transform scale-105"
+                    : "hover:bg-gray-100 hover:text-gray-800 hover:shadow-md hover:transform hover:scale-102"
                   }`}
               >
                 {active && (
@@ -154,14 +165,13 @@ export default function LayoutAdmin() {
 
           {/* Profil */}
           <div className="flex items-center gap-3">
-
-{/* Notifications */}
-<div className="relative">
+            {/* Notifications */}
+            <div className="relative">
               <Link
                 to="/admin/notifications"
                 aria-label="Notifications"
                 className="inline-flex p-3 rounded-full hover:bg-gradient-to-r hover:from-slate-100 hover:to-slate-200 transition-all duration-200 shadow-sm"
-                onClick={()=>setNotificationCount(0)}
+                onClick={() => setNotificationCount(0)}
               >
                 <Bell size={20} className="text-slate-600" />
               </Link>
@@ -181,7 +191,7 @@ export default function LayoutAdmin() {
                 to="/admin/discussions"
                 aria-label="Discussions"
                 className="inline-flex p-3 rounded-full hover:bg-gradient-to-r hover:from-slate-100 hover:to-slate-200 transition-all duration-200 shadow-sm  "
-                onClick={()=>setMessageCount(0)}
+                onClick={() => setMessageCount(0)}
               >
                 <MessageCircle size={20} className="text-slate-600" />
               </Link>

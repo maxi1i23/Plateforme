@@ -20,5 +20,6 @@ router.get("/utilisateur/:idUtilisateur", groupeController.listerGroupesUtilisat
 
 // Quitter la groupe
 router.delete("/quitter/:idGroupe", groupeController.quitterGroupe)
+router.delete("/supprimer/:idMembre/:idGroupe", groupeController.retirerMembre)
 
 module.exports = router;

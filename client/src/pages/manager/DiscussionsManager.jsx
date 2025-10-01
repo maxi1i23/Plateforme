@@ -8,6 +8,7 @@ import MessageInput from "./components/chat/MessageInput"
 import CreateGroupModal from "./components/chat/CreateGroupModal"
 import io from "socket.io-client"
 import Swal from 'sweetalert2'
+import ListeMembre from "./components/chat/ListeMembre"
 
 // Connexion au serveur Socket.IO
 const socket = io.connect("http://localhost:8000")
@@ -25,6 +26,7 @@ const DiscussionsManager = () => {
   const [showCreateGroup, setShowCreateGroup] = useState(false)
   const [groupName, setGroupName] = useState("")
   const [selectedGroupMembers, setSelectedGroupMembers] = useState([user?.idutilisateur])
+  const [showMembre, setShowMembre] = useState(false)
 
   // Toggle membres pour création de groupe
   const toggleMember = (id) => {
@@ -163,20 +165,23 @@ const DiscussionsManager = () => {
 
   // Envoi message
   const handleSendMessage = async (e) => {
-    e.preventDefault()
     if (!newMessage.trim() && selectedFiles.length === 0) return
 
     try {
       const formData = new FormData()
       formData.append("contenuMessage", newMessage || "")
       formData.append("idUtilisateurExpediteur", user.idutilisateur)
-      if (selectedUser) formData.append("idUtilisateurRecepteur", selectedUser.idutilisateur)
+      formData.append("nomUtilisateur", user.nomutilisateur)
+      if (selectedUser) {
+        formData.append("idUtilisateurRecepteur", selectedUser.idutilisateur)
+      }
       if (selectedGroupe) formData.append("idGroupe", selectedGroupe.idgroupe)
       selectedFiles.forEach(file => formData.append("fichiers", file))
 
       const res = await api.post("/message/add", formData, { headers: { "Content-Type": "multipart/form-data" } })
       const msg = res.data.data
       socket.emit("sendMessage", msg)
+      socket.emit("NouveauxMessage", msg)
 
       setNewMessage("")
       setSelectedFiles([])
@@ -187,9 +192,9 @@ const DiscussionsManager = () => {
 
   return (
     <div className="flex h-[85vh] w-full max-w-7xl mx-auto bg-white dark:bg-gray-900 rounded-2xl shadow-2xl overflow-hidden border border-gray-100 dark:border-gray-800">
-      
+
       {/* Sidebar */}
-      <Sidebar 
+      <Sidebar
         users={users}
         groupes={goupeDiscussion}
         searchTerm={searchTerm}
@@ -210,12 +215,17 @@ const DiscussionsManager = () => {
               selectedGroupe={selectedGroupe}
               onBack={() => { setSelectedUser(null); setSelectedGroupe(null) }}
               onQuit={handleQuitte}
+              getMessages={getMessages}
+              getMessagesGroupe={getMessagesGroupe}
+              setShowMembre={()=>setShowMembre(!showMembre)}
             />
-            <MessageList messages={messages} user={user} selectedGroupe={selectedGroupe} />
-            <MessageInput 
-              newMessage={newMessage} 
-              setNewMessage={setNewMessage} 
-              selectedFiles={selectedFiles} 
+            <MessageList messages={messages} user={user} selectedGroupe={selectedGroupe}
+            getGroupeMessage={getMessagesGroupe}
+             getMessage={() => getMessages(selectedUser.idutilisateur)} />
+            <MessageInput
+              newMessage={newMessage}
+              setNewMessage={setNewMessage}
+              selectedFiles={selectedFiles}
               handleFilesChange={handleFilesChange}
               handleSendMessage={handleSendMessage}
             />
@@ -230,14 +240,21 @@ const DiscussionsManager = () => {
 
       {showCreateGroup && (
         <CreateGroupModal
-          users={users}
+          isOpen={showCreateGroup}
+          userList={users}
           groupName={groupName}
           setGroupName={setGroupName}
-          selectedGroupMembers={selectedGroupMembers}
+          selectedMembers={selectedGroupMembers}
           toggleMember={toggleMember}
-          handleCreateGroup={handleCreateGroup}
+          handleSubmit={handleCreateGroup}
           onClose={() => setShowCreateGroup(false)}
         />
+      )}
+      {showMembre && (
+        <ListeMembre
+        isOpen={showMembre}
+        onClose={()=>setShowMembre(!showMembre)}
+        idGroupe={selectedGroupe.idgroupe} />
       )}
     </div>
   )

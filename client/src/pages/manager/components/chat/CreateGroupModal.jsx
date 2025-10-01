@@ -1,25 +1,9 @@
 import { X, Users } from "lucide-react"
-import { useState } from "react"
 
-const CreateGroupModal = ({ isOpen, onClose, onCreate, userList }) => {
-  const [groupName, setGroupName] = useState("")
-  const [selectedMembers, setSelectedMembers] = useState([])
+const CreateGroupModal = ({ isOpen, onClose, userList, handleSubmit, groupName, setGroupName, selectedMembers, toggleMember }) => {
+  
 
   if (!isOpen) return null
-
-  const toggleMember = (id) => {
-    setSelectedMembers((prev) =>
-      prev.includes(id) ? prev.filter((m) => m !== id) : [...prev, id]
-    )
-  }
-
-  const handleSubmit = () => {
-    if (!groupName.trim()) return
-    onCreate({ nomgroupe: groupName, membres: selectedMembers })
-    setGroupName("")
-    setSelectedMembers([])
-    onClose()
-  }
 
   return (
     <div className="fixed inset-0 z-50 bg-black/40 flex items-center justify-center p-4">

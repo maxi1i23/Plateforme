@@ -15,30 +15,44 @@ module.exports = {
     // Récupérer tous les messages entre deux utilisateurs
     getMessagesBetweenUsers: async (userId1, userId2) => {
         const query = `
-      SELECT m.*, COALESCE(json_agg(f.*) FILTER (WHERE f.idmessage IS NOT NULL), '[]') AS fichiers, u.nomutilisateur
-      FROM message m
-      LEFT JOIN fichiermessage f ON f.idmessage = m.idmessage
-      JOIN utilisateur u ON u.idutilisateur = m.idutilisateurexpediteur
-      WHERE (m.idutilisateurexpediteur = $1 AND m.idutilisateurrecepteur = $2)
-         OR (m.idutilisateurexpediteur = $2 AND m.idutilisateurrecepteur = $1)
-      GROUP BY m.idmessage, u.nomutilisateur
-      ORDER BY m.datemessage ASC
+        SELECT m.*, 
+        COALESCE(json_agg(f.*) FILTER (WHERE f.idmessage IS NOT NULL), '[]') AS fichiers,
+        u.nomutilisateur
+        FROM message m
+        LEFT JOIN fichiermessage f ON f.idmessage = m.idmessage
+        JOIN utilisateur u ON u.idutilisateur = m.idutilisateurexpediteur
+        LEFT JOIN messageSupprimer s 
+            ON s.idMessage = m.idMessage AND s.idUtilisateur = $1
+        WHERE (
+            (m.idutilisateurexpediteur = $1 AND m.idutilisateurrecepteur = $2)
+            OR (m.idutilisateurexpediteur = $2 AND m.idutilisateurrecepteur = $1)
+        )
+        AND s.idMessage IS NULL  -- <-- uniquement les messages non supprimés par $1
+        GROUP BY m.idmessage, u.nomutilisateur
+        ORDER BY m.datemessage ASC;
+
+
     `;
         const result = await pool.query(query, [userId1, userId2]);
         return result.rows;
     },
     getMessagesGroup: async (userId1, idGroupe) => {
         const query = `
-      SELECT m.*, COALESCE(json_agg(f.*) FILTER (WHERE f.idmessage IS NOT NULL), '[]') AS fichiers, u.nomutilisateur
-      FROM message m
-      LEFT JOIN fichiermessage f ON f.idmessage = m.idmessage
-      JOIN groupe g ON g.idgroupe = m.idgroupe
-      JOIN utilisateur u ON u.idutilisateur = m.idutilisateurexpediteur
-      WHERE m.idGroupe = $1
-      GROUP BY m.idmessage, u.nomutilisateur
-      ORDER BY m.datemessage ASC
+        SELECT m.*, 
+        COALESCE(json_agg(f.*) FILTER (WHERE f.idmessage IS NOT NULL), '[]') AS fichiers,
+        u.nomutilisateur
+        FROM message m
+        LEFT JOIN fichiermessage f ON f.idmessage = m.idmessage
+        LEFT JOIN messageSupprimer s 
+            ON s.idMessage = m.idMessage AND s.idUtilisateur = $1
+        JOIN utilisateur u ON u.idutilisateur = m.idutilisateurexpediteur
+        WHERE m.idGroupe = $2
+        AND s.idMessage IS NULL   -- <-- uniquement les messages non supprimés par l'utilisateur
+        GROUP BY m.idmessage, u.nomutilisateur
+        ORDER BY m.datemessage ASC;
+
     `;
-        const result = await pool.query(query, [ idGroupe]);
+        const result = await pool.query(query, [userId1, idGroupe]);
         return result.rows;
     },
     getMessageById: async (id) => {
@@ -93,5 +107,10 @@ module.exports = {
             idMessage
         ]);
         return deleteMessage.rowCount > 0;
+    },
+
+    suppressionMessage: async (idMessage, idUtilisateur) => {
+        const suppressionMessage = await pool.query(`INSERT INTO messageSupprimer(idMessage, idUtilisateur) VALUES ($1, $2) RETURNING *`, [idMessage, idUtilisateur])
+        return suppressionMessage.rows;
     }
 }

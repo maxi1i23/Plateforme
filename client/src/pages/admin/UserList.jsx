@@ -413,9 +413,8 @@ function UserModal({ user, onClose }) {
                 placeholder="Nom complet"
                 value={nomUtilisateur}
                 onChange={(e) => setNom(e.target.value)}
-                className={`pl-10 pr-4 py-3 w-full border rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 ${
-                  errors.nom ? "border-red-500" : "border-gray-200"
-                }`}
+                className={`pl-10 pr-4 py-3 w-full border rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 ${errors.nom ? "border-red-500" : "border-gray-200"
+                  }`}
               />
             </div>
             {errors.nom && <p className="text-red-500 text-sm mt-1">{errors.nom}</p>}
@@ -431,9 +430,8 @@ function UserModal({ user, onClose }) {
                 placeholder="Email"
                 value={emailUtilisateur}
                 onChange={(e) => setEmail(e.target.value)}
-                className={`pl-10 pr-4 py-3 w-full border rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 ${
-                  errors.email ? "border-red-500" : "border-gray-200"
-                }`}
+                className={`pl-10 pr-4 py-3 w-full border rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 ${errors.email ? "border-red-500" : "border-gray-200"
+                  }`}
               />
             </div>
             {errors.email && <p className="text-red-500 text-sm mt-1">{errors.email}</p>}
@@ -445,9 +443,8 @@ function UserModal({ user, onClose }) {
             <select
               value={roleUtilisateur}
               onChange={(e) => setRole(e.target.value)}
-              className={`px-4 py-3 w-full border rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 ${
-                errors.role ? "border-red-500" : "border-gray-200"
-              }`}
+              className={`px-4 py-3 w-full border rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 ${errors.role ? "border-red-500" : "border-gray-200"
+                }`}
             >
               <option value="">Sélectionner le rôle</option>
               <option value="Admin">Administrateur</option>
@@ -484,9 +481,8 @@ function UserModal({ user, onClose }) {
                     placeholder="Mot de passe"
                     value={motDePasseUtilisateur}
                     onChange={(e) => setPassword(e.target.value)}
-                    className={`px-4 pr-10 py-3 w-full border rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 ${
-                      errors.password ? "border-red-500" : "border-gray-200"
-                    }`}
+                    className={`px-4 pr-10 py-3 w-full border rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 ${errors.password ? "border-red-500" : "border-gray-200"
+                      }`}
                   />
                   {showPassword ? (
                     <EyeOff
@@ -511,9 +507,8 @@ function UserModal({ user, onClose }) {
                     placeholder="Confirmer mot de passe"
                     value={confirmPassword}
                     onChange={(e) => setConfirmPassword(e.target.value)}
-                    className={`px-4 pr-10 py-3 w-full border rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 ${
-                      errors.confirmPassword ? "border-red-500" : "border-gray-200"
-                    }`}
+                    className={`px-4 pr-10 py-3 w-full border rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 ${errors.confirmPassword ? "border-red-500" : "border-gray-200"
+                      }`}
                   />
                   {showPassword ? (
                     <EyeOff
@@ -542,11 +537,10 @@ function UserModal({ user, onClose }) {
             </button>
             <button
               type="submit"
-              className={`flex-1 text-white px-6 py-3 rounded-xl transition-all duration-200 shadow-lg font-medium ${
-                isEdit
+              className={`flex-1 text-white px-6 py-3 rounded-xl transition-all duration-200 shadow-lg font-medium ${isEdit
                   ? "bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700"
                   : "bg-gradient-to-r from-green-600 to-blue-600 hover:from-green-700 hover:to-blue-700"
-              }`}
+                }`}
             >
               {isEdit ? "Modifier" : "Créer"}
             </button>

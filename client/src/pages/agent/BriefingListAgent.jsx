@@ -16,7 +16,7 @@ const BriefingListAgent = () => {
   const [loading, setLoading] = useState(true)
   const { user } = useContext(AuthContext)
 
-    // 🔎 Sécurisation de la recherche
+  // 🔎 Sécurisation de la recherche
   useEffect(() => {
     const filtered = briefingList.filter((briefing) => {
       const nom = briefing.nombriefing || briefing.nomBriefing || ""
@@ -27,7 +27,7 @@ const BriefingListAgent = () => {
       )
     })
     setFilteredBriefings(filtered)
-  }, [briefingList, searchTerm]) 
+  }, [briefingList, searchTerm])
 
   // Récupérer la liste des briefings
   const getBriefing = async () => {
@@ -60,27 +60,27 @@ const BriefingListAgent = () => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-indigo-50 via-white to-purple-50 p-6">
       <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center mb-8 gap-4">
-        
-          <div>
-            <h2 className="text-4xl font-bold bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent mb-2">
-              Gestion des Briefings
-            </h2>
-            <p className="text-gray-600">Gérez vos briefings et communications d'équipe</p>
-          </div>
 
-          <div className="flex flex-col sm:flex-row gap-4 w-full lg:w-auto">
-            <div className="relative">
-              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
-              <input
-                type="text"
-                placeholder="Rechercher un briefing..."
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-                className="pl-10 pr-4 py-3 bg-white/70 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 w-full sm:w-80"
-              />
-            </div>
+        <div>
+          <h2 className="text-4xl font-bold bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent mb-2">
+            Gestion des Briefings
+          </h2>
+          <p className="text-gray-600">Gérez vos briefings et communications d'équipe</p>
+        </div>
+
+        <div className="flex flex-col sm:flex-row gap-4 w-full lg:w-auto">
+          <div className="relative">
+            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
+            <input
+              type="text"
+              placeholder="Rechercher un briefing..."
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              className="pl-10 pr-4 py-3 bg-white/70 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 w-full sm:w-80"
+            />
           </div>
-        
+        </div>
+
       </div>
 
       {loading ? (
@@ -127,7 +127,7 @@ const BriefingListAgent = () => {
           <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
             {filteredBriefings.map((briefing, index) => (
               <div
-               key={briefing.idbriefing}
+                key={briefing.idbriefing}
                 className="group relative bg-white/80 backdrop-blur-sm border border-white/20 rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-1 overflow-hidden"
                 style={{ animationDelay: `${index * 100}ms` }}
               >

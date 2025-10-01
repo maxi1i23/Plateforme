@@ -9,7 +9,7 @@ exports.setIO = (socketIO) => {
 // Création d'un message
 exports.createMessage = async (req, res) => {
   try {
-    const { contenuMessage, idUtilisateurExpediteur, idUtilisateurRecepteur, idGroupe } = req.body;
+    const { contenuMessage, idUtilisateurExpediteur, idUtilisateurRecepteur, idGroupe, nomUtilisateur } = req.body;
 
     // Créer le message en base
     const message = await Message.createMessage(
@@ -25,7 +25,7 @@ exports.createMessage = async (req, res) => {
       fichiers = await Message.FichierMessage.addFiles(message.idmessage, req.files);
     }
 
-    
+
     // Préparer l'objet normalisé pour le frontend
     const messageWithFiles = {
       idmessage: message.idmessage,
@@ -34,6 +34,7 @@ exports.createMessage = async (req, res) => {
       idutilisateurexpediteur: message.idutilisateurexpediteur,
       idutilisateurrecepteur: message.idutilisateurrecepteur,
       idgroupe: message.idgroupe,
+      nomutilisateur: nomUtilisateur,
       fichiers
     };
 
@@ -161,3 +162,44 @@ exports.deleteMessage = async (req, res) => {
     return res.status(500).json({ message: "Erreur serveur", error: err });
   }
 };
+
+// SOFT DELETE
+exports.suppressionMessage = async (req, res) => {
+  try {
+    const idUtilisateur = req.user.id;
+    const idMessage = req.params.idMessage;
+    const result = await Message.suppressionMessage(idMessage, idUtilisateur);
+    return res.status(200).json(result);
+  } catch (error) {
+    return res.status(500).json(error);
+  }
+}
+
+exports.suppressionAllMessage = async (req,res) => {
+  try {
+    const idUser = req.user.id;
+    const {idGroupe, idUtilisateur} = req.body;
+    let message;
+
+    if (idGroupe) {
+      message = await Message.getMessagesGroup(idUser, idGroupe)
+      await Promise.all(
+        message.map(msg => Message.suppressionMessage(msg.idmessage, idUser))
+      );
+      // Maintenant toutes les suppressions sont terminées
+      const messagesRestants = await Message.getMessagesGroup(idUser, idGroupe)
+      return res.status(200).json(messagesRestants);
+    } else {
+      message = await Message.getMessagesBetweenUsers(idUser, idUtilisateur )
+      await Promise.all(
+        message.map(msg => Message.suppressionMessage(msg.idmessage, idUser))
+      );
+      const messagesRestants = await Message.getMessagesBetweenUsers(idUser, idUtilisateur)
+      return res.status(200).json(messagesRestants);
+    }
+    
+
+  } catch (error) {
+    return res.status(500).json(error);
+  }
+}

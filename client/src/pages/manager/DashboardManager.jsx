@@ -161,21 +161,21 @@ const DashboardManager = () => {
             title="Formations créées"
             value={formationCreer}
             subtitle="Publié"
-            icon={<BookOpen/>}
+            icon={<BookOpen />}
             gradient="from-blue-500 to-indigo-600"
           />
           <EnhancedCard
             title="Congés en attente"
             value={congesPending}
             subtitle="À traiter"
-            icon={<CalendarDays/>}
+            icon={<CalendarDays />}
             gradient="from-amber-500 to-orange-600"
           />
           <EnhancedCard
             title="Autres demandes"
             value={autresDemandesPending}
             subtitle="En attente de validation"
-            icon={<ClipboardList/>}
+            icon={<ClipboardList />}
             gradient="from-emerald-500 to-teal-600"
           />
         </div>

@@ -6,7 +6,6 @@ const MessageInput = ({ newMessage, setNewMessage, selectedFiles, handleFilesCha
   const fileInputRef = useRef(null)
   const handleKeyPress = (e) => {
     if (e.key === "Enter" && !e.shiftKey) {
-      e.preventDefault()
       handleSendMessage()
     }
   }

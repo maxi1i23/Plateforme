@@ -72,11 +72,11 @@ export default function Login() {
                 className="pl-10 pr-4 py-3 w-full rounded-lg border border-gray-200 focus:outline-none focus:ring-1 focus:ring-gray-300 focus:border-gray-300 bg-white text-gray-700 placeholder-gray-400"
               />
               {
-                showPassword ? <EyeOff className="absolute top-1/2 right-3 -translate-y-1/2 text-gray-300 cursor-pointer" size={18} 
-                onClick={()=>setShowPassword(!showPassword)}/> 
-                : 
-                <Eye className="absolute top-1/2 right-3 -translate-y-1/2 text-gray-300 cursor-pointer" size={18}
-                onClick={()=>setShowPassword(!showPassword)}/>
+                showPassword ? <EyeOff className="absolute top-1/2 right-3 -translate-y-1/2 text-gray-300 cursor-pointer" size={18}
+                  onClick={() => setShowPassword(!showPassword)} />
+                  :
+                  <Eye className="absolute top-1/2 right-3 -translate-y-1/2 text-gray-300 cursor-pointer" size={18}
+                    onClick={() => setShowPassword(!showPassword)} />
               }
             </div>
 

@@ -6,6 +6,9 @@ exports.creerGroupe = async (req, res) => {
     try {
         const { nomGroupe, membres } = req.body; 
         // membres = [1,2,3] par exemple
+        if(nomGroupe === undefined || nomGroupe.trim() === ""){
+            return res.status(400).json({error:"Le nom du groupe est obligatoire."})
+        }
 
         const groupe = await Groupe.createGroupe(nomGroupe)
 
@@ -53,8 +56,16 @@ exports.listerMembres = async (req, res) => {
     try {
         const { idGroupe } = req.params;
 
-        const membres = await GroupeMembre.getGroupeMembres(idGroupe);
-
+        const result = await GroupeMembre.getGroupeMembres(idGroupe);
+        const membres =result.map(val=>(
+            {
+                idMembre: val.idmembre,
+                idUtilisateur : val.idutilisateur,
+                nomUtilisateur : val.nomutilisateur,
+                roleUtilisateur : val.roleutilisateur
+            }
+            
+        ))
         return res.json(membres);
     } catch (error) {
         console.error("Erreur liste membres:", error);
@@ -90,6 +101,19 @@ exports.quitterGroupe = async (req, res)=>{
         return res.status(200).json({message : "L'utilisateur a été supprimer du groupe"})
     } catch (error) {
         console.log(error.message)
+        return res.status(500).json(error)
+    }
+}
+
+exports.retirerMembre = async (req, res) =>{
+    try {
+        const idMembre = req.params.idMembre
+        const idGroupe = req.params.idGroupe
+
+        const result = await GroupeMembre.deleteGroupeMembre(idGroupe, idMembre)
+        if(result) return res.status(200).json({message : "L'utilisateur a été retirer du groupe !"})
+
+    } catch (error) {
         return res.status(500).json(error)
     }
 }

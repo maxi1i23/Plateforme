@@ -23,8 +23,8 @@ const CongerListAgent = () => {
             setLoading(true);
             const response = await api.get("/demandeConger/agent");
             const userData = await api.get("/user")
-            setListConger( response.data.filter((c) => c.idagentdemander === user.idutilisateur));
-            setManagerList(userData.data.filter(user=>user.roleutilisateur === "Manager"))
+            setListConger(response.data.filter((c) => c.idagentdemander === user.idutilisateur));
+            setManagerList(userData.data.filter(user => user.roleutilisateur === "Manager"))
         } catch (err) {
             console.error("Erreur récupération congés", err);
             Swal.fire("Erreur", "Impossible de récupérer les congés", "error");
@@ -37,22 +37,22 @@ const CongerListAgent = () => {
         getConger();
     }, []);
 
-// Statistiques
-const stats = {
-    total: listConger?.length || 0,
-    pending:
-      listConger.filter(
-        (c) => (c.statutconger || "").toLowerCase() === "en attente"
-      ).length || 0,
-    accepted:
-      listConger.filter(
-        (c) => (c.statutconger || "").toLowerCase() === "accepter"
-      ).length || 0,
-    rejected:
-      listConger.filter(
-        (c) => (c.statutconger || "").toLowerCase() === "refuser"
-      ).length || 0,
-  };
+    // Statistiques
+    const stats = {
+        total: listConger?.length || 0,
+        pending:
+            listConger.filter(
+                (c) => (c.statutconger || "").toLowerCase() === "en attente"
+            ).length || 0,
+        accepted:
+            listConger.filter(
+                (c) => (c.statutconger || "").toLowerCase() === "accepter"
+            ).length || 0,
+        rejected:
+            listConger.filter(
+                (c) => (c.statutconger || "").toLowerCase() === "refuser"
+            ).length || 0,
+    };
 
     const handleCreate = async (e) => {
         e.preventDefault();
@@ -60,18 +60,18 @@ const stats = {
             const response = await api.post('demandeConger/add',
                 {
                     typeConger: createDemandeConger.typeConger,
-                    dateDebutConger : createDemandeConger.dateDebutConger ,
-                    dateFinConger : createDemandeConger.dateFinConger,
+                    dateDebutConger: createDemandeConger.dateDebutConger,
+                    dateFinConger: createDemandeConger.dateFinConger,
                     idManagerTraiter: createDemandeConger.idManagerTraiter
                 }
             )
-            setListConger((prev)=>[response.data,  ...prev])
+            setListConger((prev) => [response.data, ...prev])
             setDemandeConger(false)
             getConger();
             const notification = await api.post('notification/add',
                 {
-                    contenu : "Nouvelle demande de congé", 
-                    raisonNotification: "Demande de conger", 
+                    contenu: "Nouvelle demande de congé",
+                    raisonNotification: "Demande de conger",
                     idUtilisateurDestinataire: createDemandeConger.idManagerTraiter
                 }
             )
@@ -82,7 +82,7 @@ const stats = {
                 title: "Demande de conger envoyée",
                 showConfirmButton: false,
                 timer: 1500,
-              })
+            })
         } catch (error) {
             console.error("Erreur création :", error)
             Swal.fire({
@@ -94,75 +94,75 @@ const stats = {
         }
     };
 
-     // Mettre à jour une demande
-  const handleUpdate = async (e) => {
-    e.preventDefault();
-    try {
-      const response = await api.put(
-        `demandeConger/update/${editingConger.idDemandeConger}`,
-        {
-            typeConger : editingConger.typeConger,
-            dateDebutConger: editingConger.dateDebutConger,
-            dateFinConger: editingConger.dateFinConger,
-            idManagerTraiter: editingConger.idManagerTraiter
-        }
-      );
-      setListConger((prev) =>
-        prev.map((c) =>
-          c.iddemandeconger === response.data.iddemandeconger
-            ? { ...c, ...response.data }
-            : c
-        )
-      );
-      getConger();
-      setEditingConger(null);
-      Swal.fire("Succès", "Demande mise à jour", "success");
-    } catch (error) {
-      console.error("Erreur update :", error);
-      Swal.fire("Erreur", "Impossible de mettre à jour", "error");
-    }
-  };
-
-
-     //  Supprimer une demande
-  const handleDelete = async (id) => {
-    Swal.fire({
-      title: "Supprimer ?",
-      text: "Cette action est irréversible",
-      icon: "warning",
-      showCancelButton: true,
-      confirmButtonColor: "#d33",
-      cancelButtonColor: "#3085d6",
-      confirmButtonText: "Oui, supprimer",
-      cancelButtonText: "Annuler",
-    }).then(async (result) => {
-      if (result.isConfirmed) {
+    // Mettre à jour une demande
+    const handleUpdate = async (e) => {
+        e.preventDefault();
         try {
-          await api.delete(`demandeConger/delete/${id}`);
-          setListConger((prev) =>
-            prev.filter((c) => c.iddemandeconger !== id)
-          );
-          Swal.fire("Supprimé !", "La demande a été supprimée.", "success");
+            const response = await api.put(
+                `demandeConger/update/${editingConger.idDemandeConger}`,
+                {
+                    typeConger: editingConger.typeConger,
+                    dateDebutConger: editingConger.dateDebutConger,
+                    dateFinConger: editingConger.dateFinConger,
+                    idManagerTraiter: editingConger.idManagerTraiter
+                }
+            );
+            setListConger((prev) =>
+                prev.map((c) =>
+                    c.iddemandeconger === response.data.iddemandeconger
+                        ? { ...c, ...response.data }
+                        : c
+                )
+            );
+            getConger();
+            setEditingConger(null);
+            Swal.fire("Succès", "Demande mise à jour", "success");
         } catch (error) {
-          console.error("Erreur suppression :", error);
-          Swal.fire("Erreur", "Impossible de supprimer", "error");
+            console.error("Erreur update :", error);
+            Swal.fire("Erreur", "Impossible de mettre à jour", "error");
         }
-      }
+    };
+
+
+    //  Supprimer une demande
+    const handleDelete = async (id) => {
+        Swal.fire({
+            title: "Supprimer ?",
+            text: "Cette action est irréversible",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#d33",
+            cancelButtonColor: "#3085d6",
+            confirmButtonText: "Oui, supprimer",
+            cancelButtonText: "Annuler",
+        }).then(async (result) => {
+            if (result.isConfirmed) {
+                try {
+                    await api.delete(`demandeConger/delete/${id}`);
+                    setListConger((prev) =>
+                        prev.filter((c) => c.iddemandeconger !== id)
+                    );
+                    Swal.fire("Supprimé !", "La demande a été supprimée.", "success");
+                } catch (error) {
+                    console.error("Erreur suppression :", error);
+                    Swal.fire("Erreur", "Impossible de supprimer", "error");
+                }
+            }
+        });
+    };
+
+
+    // ✅ Recherche + filtre
+    const filteredConger = listConger.filter((conger) => {
+        const matchesSearch =
+            (conger.typeconger || "")
+                .toLowerCase()
+                .includes(searchTerm.toLowerCase()) ||
+            conger.idagentdemander.toString().includes(searchTerm);
+        const matchesStatus =
+            statusFilter === "all" || conger.statutconger === statusFilter;
+        return matchesSearch && matchesStatus;
     });
-  };
-
-
-  // ✅ Recherche + filtre
-  const filteredConger = listConger.filter((conger) => {
-    const matchesSearch =
-      (conger.typeconger || "")
-        .toLowerCase()
-        .includes(searchTerm.toLowerCase()) ||
-      conger.idagentdemander.toString().includes(searchTerm);
-    const matchesStatus =
-      statusFilter === "all" || conger.statutconger === statusFilter;
-    return matchesSearch && matchesStatus;
-  });
 
     const StatusBadge = ({ status }) => {
         // Badge pour les statuts selon la valeur
@@ -236,8 +236,8 @@ const stats = {
                         <button
 
                             className="flex items-center justify-center gap-2 bg-gradient-to-r from-blue-600 to-purple-600 text-white px-6 py-3 rounded-xl hover:from-blue-700 hover:to-purple-700 transition-all duration-200 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 font-medium"
-                            onClick={()=>setDemandeConger({typeConger : "", dateDebutConger : "", dateFinConger : "", idManagerTraiter : 0})}
-                            >
+                            onClick={() => setDemandeConger({ typeConger: "", dateDebutConger: "", dateFinConger: "", idManagerTraiter: 0 })}
+                        >
                             <Plus size={20} />Faire une demande de conger
                         </button>
 
@@ -430,20 +430,20 @@ const stats = {
                                             <td className="px-6 py-4">
                                                 {conger.statutconger === "en attente" ? (
                                                     <div className="flex space-x-2">
-                                                        <button className="px-4 py-2 bg-gradient-to-r from-green-500 to-emerald-600 text-white rounded-lg hover:from-green-600 hover:to-emerald-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 transition-all duration-200 transform hover:scale-105 shadow-lg" onClick={()=>{
+                                                        <button className="px-4 py-2 bg-gradient-to-r from-green-500 to-emerald-600 text-white rounded-lg hover:from-green-600 hover:to-emerald-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 transition-all duration-200 transform hover:scale-105 shadow-lg" onClick={() => {
                                                             setEditingConger({
                                                                 ...conger,
-                                                                idDemandeConger : conger.iddemandeconger,
+                                                                idDemandeConger: conger.iddemandeconger,
                                                                 typeConger: conger.typeconger,
                                                                 dateDebutConger: conger.datedebutconger,
                                                                 dateFinConger: conger.datefinconger,
                                                                 idManagerTraiter: conger.idmanagertraiter
-                                                              });
-                                                              
+                                                            });
+
                                                         }}>
                                                             Modifier
                                                         </button>
-                                                        <button className="px-4 py-2 bg-gradient-to-r from-red-500 to-rose-600 text-white rounded-lg hover:from-red-600 hover:to-rose-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 transition-all duration-200 transform hover:scale-105 shadow-lg" onClick={()=>handleDelete(conger.iddemandeconger)}>
+                                                        <button className="px-4 py-2 bg-gradient-to-r from-red-500 to-rose-600 text-white rounded-lg hover:from-red-600 hover:to-rose-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 transition-all duration-200 transform hover:scale-105 shadow-lg" onClick={() => handleDelete(conger.iddemandeconger)}>
                                                             Supprimer
                                                         </button>
                                                     </div>
@@ -494,8 +494,8 @@ const stats = {
                         <div className="bg-white rounded-2xl w-full max-w-2xl shadow-2xl relative transform transition-all duration-300 scale-100">
                             <div className="bg-gradient-to-r from-green-600 to-blue-600 p-6 rounded-t-2xl">
                                 <button className="absolute top-4 right-4 p-2 rounded-full hover:bg-white/20 transition-colors duration-200"
-                                onClick={()=>{setEditingConger(false)}}>
-                                <X size={20} className="text-white"/>
+                                    onClick={() => { setEditingConger(false) }}>
+                                    <X size={20} className="text-white" />
                                 </button>
                                 <h3 className="text-2xl font-bold text-white">Modifier votre demande</h3>
                                 <p className="text-green-100 mt-1">Modifier votre demande pour envoyer au manager</p>
@@ -504,42 +504,42 @@ const stats = {
                             <form className="p-6 space-y-6" onSubmit={handleUpdate}>
                                 <div>
                                     <label className="block text-sm font-medium text-gray-700 mb-2">Type du conger</label>
-                                    <input type="text" 
+                                    <input type="text"
                                         value={editingConger.typeConger}
-                                        onChange={(e)=> setEditingConger({ ...editingConger, typeConger : e.target.value})}
-                                        className="w-full p-4 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all duration-200" 
+                                        onChange={(e) => setEditingConger({ ...editingConger, typeConger: e.target.value })}
+                                        className="w-full p-4 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all duration-200"
                                     />
                                 </div>
                                 <div>
                                     <label className="block text-sm font-medium text-gray-700 mb-2"> Date de début</label>
-                                    <input 
-                                        type="date" 
+                                    <input
+                                        type="date"
                                         className="w-full p-4 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all duration-200"
-                                        onChange={(e)=> setEditingConger({ ...editingConger, dateDebutConger : e.target.value})}
+                                        onChange={(e) => setEditingConger({ ...editingConger, dateDebutConger: e.target.value })}
                                         value={editingConger.dateDebutConger ? editingConger.dateDebutConger.split("T")[0] : ""}
                                     />
                                 </div>
                                 <div>
                                     <label className="block text-sm font-medium text-gray-700 mb-2"> Date de fin</label>
-                                    <input 
-                                        type="date" 
+                                    <input
+                                        type="date"
                                         className="w-full p-4 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all duration-200"
-                                        onChange={(e)=> setEditingConger({ ...editingConger, dateFinConger : e.target.value})}
+                                        onChange={(e) => setEditingConger({ ...editingConger, dateFinConger: e.target.value })}
                                         value={editingConger.dateFinConger ? editingConger.dateFinConger.split("T")[0] : ""}
                                     />
                                 </div>
                                 <div>
                                     <label className="block text-sm font-medium text-gray-700 mb-2">Manager</label>
                                     <select className="w-full p-4 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all duration-200"
-                                    onChange={(e)=> setEditingConger({ ...editingConger, idManagerTraiter : e.target.value})}
-                                    value={editingConger.idManagerTraiter} 
+                                        onChange={(e) => setEditingConger({ ...editingConger, idManagerTraiter: e.target.value })}
+                                        value={editingConger.idManagerTraiter}
                                     >
                                         <option value="">Séléctionner le manager</option>
                                         {
-                                            managerList.map((user)=>(
+                                            managerList.map((user) => (
                                                 <option value={user.idutilisateur}
-                                                
-                                                key={user.idutilisateur}>
+
+                                                    key={user.idutilisateur}>
                                                     {user.nomutilisateur}
                                                 </option>
                                             ))
@@ -547,8 +547,8 @@ const stats = {
                                     </select>
                                 </div>
                                 <div className="flex gap-4 pt-4">
-                                    <button type="button" className="flex-1 px-6 py-3 border border-gray-300 text-gray-700 rounded-xl hover:bg-gray-50 transition-colors duration-200 font-medium cursor-pointer" onClick={()=>setEditingConger(false)}>
-                                    Annuler
+                                    <button type="button" className="flex-1 px-6 py-3 border border-gray-300 text-gray-700 rounded-xl hover:bg-gray-50 transition-colors duration-200 font-medium cursor-pointer" onClick={() => setEditingConger(false)}>
+                                        Annuler
                                     </button>
                                     <button type="submit" className="flex-1 bg-gradient-to-r from-green-600 to-blue-600 text-white px-6 py-3 rounded-xl hover:from-green-700 hover:to-blue-700 transition-all duration-200 shadow-lg font-medium cursor-pointer">
                                         Modifier la demande
@@ -563,11 +563,11 @@ const stats = {
             {
                 createDemandeConger && (
                     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm p-4">
-                        <div 
+                        <div
                             className="bg-white rounded-2xl w-full max-w-2xl shadow-2xl relative transform transition-all duration-300 scale-100">
                             <div className="bg-gradient-to-r from-green-600 to-blue-600 p-6 rounded-t-2xl">
-                                <button className="absolute top-4 right-4 p-2 rounded-full hover:bg-white/20 transition-colors duration-200" onClick={()=>setDemandeConger(false)}>
-                                <X size={20} className="text-white"/>
+                                <button className="absolute top-4 right-4 p-2 rounded-full hover:bg-white/20 transition-colors duration-200" onClick={() => setDemandeConger(false)}>
+                                    <X size={20} className="text-white" />
                                 </button>
                                 <h3 className="text-2xl font-bold text-white">Faire votre demande</h3>
                                 <p className="text-green-100 mt-1">Faire votre demande pour envoyer au manager</p>
@@ -576,39 +576,39 @@ const stats = {
                             <form onSubmit={handleCreate} className="p-6 space-y-6">
                                 <div>
                                     <label className="block text-sm font-medium text-gray-700 mb-2">Type du conger</label>
-                                    <input type="text" 
+                                    <input type="text"
                                         value={createDemandeConger.typeConger}
-                                        onChange={(e)=> setDemandeConger({ ...createDemandeConger, typeConger : e.target.value})}
-                                        className="w-full p-4 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all duration-200" 
+                                        onChange={(e) => setDemandeConger({ ...createDemandeConger, typeConger: e.target.value })}
+                                        className="w-full p-4 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all duration-200"
                                     />
                                 </div>
                                 <div>
                                     <label className="block text-sm font-medium text-gray-700 mb-2"> Date de début</label>
-                                    <input 
-                                        type="date" 
+                                    <input
+                                        type="date"
                                         className="w-full p-4 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all duration-200"
-                                        onChange={(e)=> setDemandeConger({ ...createDemandeConger, dateDebutConger : e.target.value})}
+                                        onChange={(e) => setDemandeConger({ ...createDemandeConger, dateDebutConger: e.target.value })}
                                         value={createDemandeConger.dateDebutConger}
                                     />
                                 </div>
                                 <div>
                                     <label className="block text-sm font-medium text-gray-700 mb-2"> Date de fin</label>
-                                    <input 
-                                        type="date" 
+                                    <input
+                                        type="date"
                                         className="w-full p-4 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all duration-200"
-                                        onChange={(e)=> setDemandeConger({ ...createDemandeConger, dateFinConger : e.target.value})}
+                                        onChange={(e) => setDemandeConger({ ...createDemandeConger, dateFinConger: e.target.value })}
                                         value={createDemandeConger.dateFinConger}
                                     />
                                 </div>
                                 <div>
                                     <label className="block text-sm font-medium text-gray-700 mb-2">Manager</label>
                                     <select className="w-full p-4 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all duration-200"
-                                    onChange={(e)=> setDemandeConger({ ...createDemandeConger, idManagerTraiter : e.target.value})}
-                                    value={createDemandeConger.idManagerTraiter}
+                                        onChange={(e) => setDemandeConger({ ...createDemandeConger, idManagerTraiter: e.target.value })}
+                                        value={createDemandeConger.idManagerTraiter}
                                     >
                                         <option value={0}>Séléctionner le manager</option>
                                         {
-                                            managerList.map((user)=>(
+                                            managerList.map((user) => (
                                                 <option value={user.idutilisateur} key={user.idutilisateur}>{user.nomutilisateur}</option>
                                             ))
                                         }
@@ -616,8 +616,8 @@ const stats = {
                                 </div>
 
                                 <div className="flex gap-4 pt-4">
-                                    <button type="button" className="flex-1 px-6 py-3 border border-gray-300 text-gray-700 rounded-xl hover:bg-gray-50 transition-colors duration-200 font-medium cursor-pointer" onClick={()=>setDemandeConger(false)}>
-                                    Annuler
+                                    <button type="button" className="flex-1 px-6 py-3 border border-gray-300 text-gray-700 rounded-xl hover:bg-gray-50 transition-colors duration-200 font-medium cursor-pointer" onClick={() => setDemandeConger(false)}>
+                                        Annuler
                                     </button>
                                     <button type="submit" className="flex-1 bg-gradient-to-r from-green-600 to-blue-600 text-white px-6 py-3 rounded-xl hover:from-green-700 hover:to-blue-700 transition-all duration-200 shadow-lg font-medium cursor-pointer">
                                         Faire la demande
@@ -629,7 +629,7 @@ const stats = {
                 )
             }
 
-        <style>{`
+            <style>{`
         @keyframes blob {
           0% {
             transform: translate(0px, 0px) scale(1);

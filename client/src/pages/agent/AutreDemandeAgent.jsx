@@ -14,7 +14,7 @@ const AutreDemandeAgent = () => {
     const [createDemande, setCreateDemande] = useState(false)
     const [managerList, setManagerList] = useState([])
     const [editingDemande, setEditingDemande] = useState(null)
-    const { socket} = useSocket()
+    const { socket } = useSocket()
 
     const getDemande = async () => {
         try {
@@ -23,7 +23,7 @@ const AutreDemandeAgent = () => {
             const userData = await api.get("/user")
             // Filtrer seulement les demandes de ce manager
             setListDemande(response.data.filter((d) => d.idagentautredemande === user.idutilisateur))
-            setManagerList(userData.data.filter(user=>user.roleutilisateur === "Manager"))
+            setManagerList(userData.data.filter(user => user.roleutilisateur === "Manager"))
         } catch (err) {
             console.error("Erreur récupération demandes", err)
             Swal.fire("Erreur", "Impossible de récupérer les demandes", "error")
@@ -42,7 +42,7 @@ const AutreDemandeAgent = () => {
             Swal.fire("Erreur", "ID de demande invalide", "error");
             return;
         }
-    
+
         Swal.fire({
             title: "Supprimer ?",
             text: "Cette action est irréversible",
@@ -56,7 +56,7 @@ const AutreDemandeAgent = () => {
             if (result.isConfirmed) {
                 try {
                     await api.delete(`autreDemande/delete/${id}`);
-    
+
                     // Suppression dans l'état avec fallback pour différentes clés possibles
                     setListDemande((prev) =>
                         prev.filter((demande) =>
@@ -64,7 +64,7 @@ const AutreDemandeAgent = () => {
                             demande.idAutreDemande !== id
                         )
                     );
-    
+
                     Swal.fire("Supprimé !", "La demande a été supprimée.", "success");
                 } catch (error) {
                     console.error("Erreur suppression :", error);
@@ -73,20 +73,20 @@ const AutreDemandeAgent = () => {
             }
         });
     };
-    
 
-    const handleCreate = async (e)=>{
+
+    const handleCreate = async (e) => {
         e.preventDefault()
         try {
             const response = await api.post('autreDemande/add',
                 {
-                    nomAutreDemande : createDemande.nomAutreDemande,
-                    descriptionAutreDemande : createDemande.descriptionAutreDemande,
-                    dateDemande : createDemande.dateDemande,
-                    idManagerTraiterAutreDemande : createDemande.idManagerTraiterAutreDemande
+                    nomAutreDemande: createDemande.nomAutreDemande,
+                    descriptionAutreDemande: createDemande.descriptionAutreDemande,
+                    dateDemande: createDemande.dateDemande,
+                    idManagerTraiterAutreDemande: createDemande.idManagerTraiterAutreDemande
                 }
             )
-            setListDemande((prev)=>[response.data,  ...prev])
+            setListDemande((prev) => [response.data, ...prev])
             setCreateDemande(false)
             getDemande();
 
@@ -95,7 +95,7 @@ const AutreDemandeAgent = () => {
                 title: "Demande envoyée",
                 showConfirmButton: false,
                 timer: 1500,
-              })
+            })
         } catch (error) {
             console.error("Erreur création :", error)
             Swal.fire({
@@ -107,45 +107,45 @@ const AutreDemandeAgent = () => {
         }
     }
 
-    const handleUpdate = async(e) =>{
+    const handleUpdate = async (e) => {
         e.preventDefault()
         try {
             const response = await api.put(
-              `autreDemande/update/${editingDemande.idautredemande}`,
-              {
-                nomAutreDemande : editingDemande.nomautredemande,
-                descriptionAutreDemande : editingDemande.descriptionautredemande,
-                dateDemande : editingDemande.dateDemande,
-                idManagerTraiterAutreDemande : editingDemande.idmanagertraiterautredemande
-              }
+                `autreDemande/update/${editingDemande.idautredemande}`,
+                {
+                    nomAutreDemande: editingDemande.nomautredemande,
+                    descriptionAutreDemande: editingDemande.descriptionautredemande,
+                    dateDemande: editingDemande.dateDemande,
+                    idManagerTraiterAutreDemande: editingDemande.idmanagertraiterautredemande
+                }
             );
             setListDemande((prev) =>
-              prev.map((c) =>
-                c.idautredemande === response.data.idautredemande
-                  ? { ...c, ...response.data }
-                  : c
-              )
+                prev.map((c) =>
+                    c.idautredemande === response.data.idautredemande
+                        ? { ...c, ...response.data }
+                        : c
+                )
             );
             getDemande();
             setEditingDemande(null);
             Swal.fire("Succès", "Demande mise à jour", "success");
-          } catch (error) {
+        } catch (error) {
             console.error("Erreur update :", error);
             Swal.fire("Erreur", "Impossible de mettre à jour", "error");
-          }
+        }
     }
 
     const filteredDemandes = listDemande.filter((demande) => {
         const nom = demande.nomautredemande || "";
         const description = demande.descriptionautredemande || "";
         const statut = demande.statutautredemande || "";
-    
+
         const matchesSearch =
             nom.toLowerCase().includes(searchTerm.toLowerCase()) ||
             description.toLowerCase().includes(searchTerm.toLowerCase());
-    
+
         const matchesStatus = statusFilter === "all" || statut.toLowerCase() === statusFilter.toLowerCase();
-    
+
         return matchesSearch && matchesStatus;
     });
 
@@ -205,28 +205,28 @@ const AutreDemandeAgent = () => {
                     <div className="flex flex-col sm:flex-row gap-4 w-full lg:w-auto">
 
                         <div className="relative">
-                        <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
-                                <input
-                                    type="text"
-                                    placeholder="Rechercher par nom ou description..."
-                                    value={searchTerm}
-                                    onChange={(e) => setSearchTerm(e.target.value)}
-                                    className="pl-10 pr-4 py-3 bg-white/70 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 w-full sm:w-80"
-                                />
+                            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
+                            <input
+                                type="text"
+                                placeholder="Rechercher par nom ou description..."
+                                value={searchTerm}
+                                onChange={(e) => setSearchTerm(e.target.value)}
+                                className="pl-10 pr-4 py-3 bg-white/70 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 w-full sm:w-80"
+                            />
 
                         </div>
 
-                            <button
-                                className="flex items-center justify-center gap-2 bg-gradient-to-r from-blue-600 to-purple-600 text-white px-6 py-3 rounded-xl hover:from-blue-700 hover:to-purple-700 transition-all duration-200 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 font-medium"
-                                onClick={() => setCreateDemande({nomAutreDemande: "", descriptionAutreDemande: "", dateDemande: "", idManagerTraiterAutreDemande: 0})}
-                                >
-                                <Plus size={20} />Faire une demande
-                            </button>
+                        <button
+                            className="flex items-center justify-center gap-2 bg-gradient-to-r from-blue-600 to-purple-600 text-white px-6 py-3 rounded-xl hover:from-blue-700 hover:to-purple-700 transition-all duration-200 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 font-medium"
+                            onClick={() => setCreateDemande({ nomAutreDemande: "", descriptionAutreDemande: "", dateDemande: "", idManagerTraiterAutreDemande: 0 })}
+                        >
+                            <Plus size={20} />Faire une demande
+                        </button>
 
                     </div>
 
                 </div>
-                
+
 
                 <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
                     <div className="bg-white/70 backdrop-blur-sm rounded-2xl p-6 border border-white/20 shadow-xl hover:shadow-2xl transition-all duration-300 hover:scale-105">
@@ -298,7 +298,7 @@ const AutreDemandeAgent = () => {
 
                 <div className="bg-white/70 backdrop-blur-sm rounded-2xl p-6 border border-white/20 shadow-xl mb-8">
                     <div className="flex flex-col md:flex-row gap-4">
-                        
+
                         <div className="md:w-48">
                             <select
                                 value={statusFilter}
@@ -341,29 +341,29 @@ const AutreDemandeAgent = () => {
                                                 <div className="text-gray-600">{new Date(demande.datedemande).toLocaleDateString("fr-FR")}</div>
                                             </td>
                                             <td className="px-6 py-4">{getStatusBadge(demande.statutautredemande)}</td>
-                                            
+
                                             <td className="px-6 py-4">
                                                 <div className="flex items-center">
-                                                <div className="w-8 h-8 bg-gradient-to-br from-blue-400 to-indigo-500 rounded-full flex items-center justify-center text-white text-sm font-semibold mr-3">
+                                                    <div className="w-8 h-8 bg-gradient-to-br from-blue-400 to-indigo-500 rounded-full flex items-center justify-center text-white text-sm font-semibold mr-3">
                                                         {demande.idmanagertraiterautredemande.toString().slice(-2)}
                                                     </div>
                                                     <span className="text-gray-600 font-semibold">{demande.nommanagertraiterautredemande}</span>
                                                 </div>
-                                                
+
                                             </td>
                                             <td className="px-6 py-4">
                                                 {demande.statutautredemande === "En attente" ? (
                                                     <div className="flex space-x-2">
                                                         <button
                                                             className="px-4 py-2 bg-gradient-to-r from-green-500 to-emerald-600 text-white rounded-lg hover:from-green-600 hover:to-emerald-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 transition-all duration-200 transform hover:scale-105 shadow-lg"
-                                                            onClick={()=>{
+                                                            onClick={() => {
                                                                 setEditingDemande(
                                                                     {
                                                                         ...demande,
-                                                                        nomAutreDemande : demande.nomautredemande,
-                                                                        descriptionAutreDemande : demande.descriptionautredemande,
-                                                                        dateDemande : demande.datedemande,
-                                                                        idManagerTraiterAutreDemande : demande.idmanagertraiterautredemande
+                                                                        nomAutreDemande: demande.nomautredemande,
+                                                                        descriptionAutreDemande: demande.descriptionautredemande,
+                                                                        dateDemande: demande.datedemande,
+                                                                        idManagerTraiterAutreDemande: demande.idmanagertraiterautredemande
                                                                     }
                                                                 )
                                                             }}
@@ -372,7 +372,7 @@ const AutreDemandeAgent = () => {
                                                         </button>
                                                         <button
                                                             className="px-4 py-2 bg-gradient-to-r from-red-500 to-rose-600 text-white rounded-lg hover:from-red-600 hover:to-rose-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 transition-all duration-200 transform hover:scale-105 shadow-lg"
-                                                            onClick={()=>handleDelete(demande.idautredemande)}
+                                                            onClick={() => handleDelete(demande.idautredemande)}
                                                         >
                                                             Supprimer
                                                         </button>
@@ -415,11 +415,11 @@ const AutreDemandeAgent = () => {
             {
                 createDemande && (
                     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm p-4">
-                        <div 
+                        <div
                             className="bg-white rounded-2xl w-full max-w-2xl shadow-2xl relative transform transition-all duration-300 scale-100">
                             <div className="bg-gradient-to-r from-green-600 to-blue-600 p-6 rounded-t-2xl">
-                                <button className="absolute top-4 right-4 p-2 rounded-full hover:bg-white/20 transition-colors duration-200" onClick={()=>setCreateDemande(false)}>
-                                <X size={20} className="text-white"/>
+                                <button className="absolute top-4 right-4 p-2 rounded-full hover:bg-white/20 transition-colors duration-200" onClick={() => setCreateDemande(false)}>
+                                    <X size={20} className="text-white" />
                                 </button>
                                 <h3 className="text-2xl font-bold text-white">Faire votre demande</h3>
                                 <p className="text-green-100 mt-1">Faire votre demande pour envoyer au manager</p>
@@ -428,41 +428,41 @@ const AutreDemandeAgent = () => {
                             <form className="p-6 space-y-6" onSubmit={handleCreate}>
                                 <div>
                                     <label className="block text-sm font-medium text-gray-700 mb-2">Type du demande</label>
-                                    <input type="text" 
+                                    <input type="text"
                                         value={createDemande.nomAutreDemande}
-                                        onChange={(event)=>setCreateDemande({...createDemande,nomAutreDemande:event.target.value})}
-                                        className="w-full p-4 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all duration-200" 
+                                        onChange={(event) => setCreateDemande({ ...createDemande, nomAutreDemande: event.target.value })}
+                                        className="w-full p-4 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all duration-200"
                                     />
                                 </div>
                                 <div>
                                     <label className="block text-sm font-medium text-gray-700 mb-2"> Déscriptions</label>
-                                    <input 
+                                    <input
                                         type="text"
                                         value={createDemande.descriptionAutreDemande}
-                                        onChange={(event)=>setCreateDemande({...createDemande,descriptionAutreDemande:event.target.value})}
+                                        onChange={(event) => setCreateDemande({ ...createDemande, descriptionAutreDemande: event.target.value })}
                                         className="w-full p-4 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all duration-200"
-                                        
+
                                     />
                                 </div>
                                 <div>
                                     <label className="block text-sm font-medium text-gray-700 mb-2"> Date</label>
-                                    <input 
+                                    <input
                                         type="date"
                                         value={createDemande.dateDemande}
-                                        onChange={(event)=>setCreateDemande({...createDemande,dateDemande:event.target.value})}
+                                        onChange={(event) => setCreateDemande({ ...createDemande, dateDemande: event.target.value })}
                                         className="w-full p-4 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all duration-200"
-                                        
+
                                     />
                                 </div>
                                 <div>
                                     <label className="block text-sm font-medium text-gray-700 mb-2">Manager</label>
                                     <select className="w-full p-4 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all duration-200"
-                                    value={createDemande.idManagerTraiteraAutreDemande}
-                                    onChange={(event)=>setCreateDemande({...createDemande,idManagerTraiterAutreDemande:Number(event.target.value)})}
+                                        value={createDemande.idManagerTraiteraAutreDemande}
+                                        onChange={(event) => setCreateDemande({ ...createDemande, idManagerTraiterAutreDemande: Number(event.target.value) })}
                                     >
                                         <option value={0}>Séléctionner le manager</option>
                                         {
-                                            managerList.map((user)=>(
+                                            managerList.map((user) => (
                                                 <option value={user.idutilisateur} key={user.idutilisateur}>{user.nomutilisateur}</option>
                                             ))
                                         }
@@ -470,8 +470,8 @@ const AutreDemandeAgent = () => {
                                 </div>
 
                                 <div className="flex gap-4 pt-4">
-                                    <button type="button" className="flex-1 px-6 py-3 border border-gray-300 text-gray-700 rounded-xl hover:bg-gray-50 transition-colors duration-200 font-medium cursor-pointer" onClick={()=>setCreateDemande(false)}>
-                                    Annuler
+                                    <button type="button" className="flex-1 px-6 py-3 border border-gray-300 text-gray-700 rounded-xl hover:bg-gray-50 transition-colors duration-200 font-medium cursor-pointer" onClick={() => setCreateDemande(false)}>
+                                        Annuler
                                     </button>
                                     <button type="submit" className="flex-1 bg-gradient-to-r from-green-600 to-blue-600 text-white px-6 py-3 rounded-xl hover:from-green-700 hover:to-blue-700 transition-all duration-200 shadow-lg font-medium cursor-pointer">
                                         Faire la demande
@@ -488,8 +488,8 @@ const AutreDemandeAgent = () => {
                         <div className="bg-white rounded-2xl w-full max-w-2xl shadow-2xl relative transform transition-all duration-300 scale-100">
                             <div className="bg-gradient-to-r from-green-600 to-blue-600 p-6 rounded-t-2xl">
                                 <button className="absolute top-4 right-4 p-2 rounded-full hover:bg-white/20 transition-colors duration-200"
-                                onClick={()=>{setEditingDemande(null)}}>
-                                <X size={20} className="text-white"/>
+                                    onClick={() => { setEditingDemande(null) }}>
+                                    <X size={20} className="text-white" />
                                 </button>
                                 <h3 className="text-2xl font-bold text-white">Modifier votre demande</h3>
                                 <p className="text-green-100 mt-1">Modifier votre demande pour envoyer au manager</p>
@@ -498,45 +498,45 @@ const AutreDemandeAgent = () => {
                             <form className="p-6 space-y-6" onSubmit={handleUpdate}>
                                 <div>
                                     <label className="block text-sm font-medium text-gray-700 mb-2">Type du demande</label>
-                                    <input type="text" 
+                                    <input type="text"
                                         value={editingDemande.nomAutreDemande}
-                                        onChange={(event)=>setEditingDemande({...editingDemande,nomAutreDemande:event.target.value})}
-                                        className="w-full p-4 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all duration-200" 
+                                        onChange={(event) => setEditingDemande({ ...editingDemande, nomAutreDemande: event.target.value })}
+                                        className="w-full p-4 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all duration-200"
                                     />
                                 </div>
                                 <div>
                                     <label className="block text-sm font-medium text-gray-700 mb-2"> Descriptions </label>
-                                    <input 
-                                        type="text" 
+                                    <input
+                                        type="text"
                                         value={editingDemande.descriptionAutreDemande}
-                                        onChange={(event)=>setEditingDemande({...editingDemande,descriptionAutreDemande:event.target.value})}
+                                        onChange={(event) => setEditingDemande({ ...editingDemande, descriptionAutreDemande: event.target.value })}
                                         className="w-full p-4 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all duration-200"
-                                        
+
                                     />
                                 </div>
                                 <div>
                                     <label className="block text-sm font-medium text-gray-700 mb-2"> Date</label>
-                                    <input 
+                                    <input
                                         type="date"
                                         value={editingDemande.dateDemande ? editingDemande.dateDemande.split("T")[0] : ""}
-                                        onChange={(event)=>setEditingDemande({...editingDemande,dateDemande:event.target.value})}
+                                        onChange={(event) => setEditingDemande({ ...editingDemande, dateDemande: event.target.value })}
                                         className="w-full p-4 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all duration-200"
-                                        
+
                                     />
                                 </div>
-                                
+
                                 <div>
                                     <label className="block text-sm font-medium text-gray-700 mb-2">Manager</label>
                                     <select className="w-full p-4 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all duration-200"
-                                    value={editingDemande.idManagerTraiterAutreDemande}
-                                    onChange={(event)=>setEditingDemande({...editingDemande,idManagerTraiterAutreDemande:Number(event.target.value)})}
+                                        value={editingDemande.idManagerTraiterAutreDemande}
+                                        onChange={(event) => setEditingDemande({ ...editingDemande, idManagerTraiterAutreDemande: Number(event.target.value) })}
                                     >
                                         <option value="">Séléctionner le manager</option>
                                         {
-                                            managerList.map((user)=>(
+                                            managerList.map((user) => (
                                                 <option value={user.idutilisateur}
-                                                
-                                                key={user.idutilisateur}>
+
+                                                    key={user.idutilisateur}>
                                                     {user.nomutilisateur}
                                                 </option>
                                             ))
@@ -544,8 +544,8 @@ const AutreDemandeAgent = () => {
                                     </select>
                                 </div>
                                 <div className="flex gap-4 pt-4">
-                                    <button type="button" className="flex-1 px-6 py-3 border border-gray-300 text-gray-700 rounded-xl hover:bg-gray-50 transition-colors duration-200 font-medium cursor-pointer" onClick={()=>setEditingDemande(null)}>
-                                    Annuler
+                                    <button type="button" className="flex-1 px-6 py-3 border border-gray-300 text-gray-700 rounded-xl hover:bg-gray-50 transition-colors duration-200 font-medium cursor-pointer" onClick={() => setEditingDemande(null)}>
+                                        Annuler
                                     </button>
                                     <button type="submit" className="flex-1 bg-gradient-to-r from-green-600 to-blue-600 text-white px-6 py-3 rounded-xl hover:from-green-700 hover:to-blue-700 transition-all duration-200 shadow-lg font-medium cursor-pointer">
                                         Modifier la demande

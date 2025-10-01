@@ -109,9 +109,9 @@ const FormationListManager = () => {
       setCreatingFormation(false)
       getFormation()
 
-      const notification = await api.post('/notification/add',{
-        raisonNotification:'Nouvelle formation créée',
-        contenu:`La formation ${creatingFormation.nomformation} a été créée par le manager ${ user.idutilisateur}.`
+      const notification = await api.post('/notification/add', {
+        raisonNotification: 'Nouvelle formation créée',
+        contenu: `La formation ${creatingFormation.nomformation} a été créée par le manager ${user.idutilisateur}.`
       })
 
       // Creation de la notification via socket
@@ -173,27 +173,27 @@ const FormationListManager = () => {
 
           <div className="flex flex-col sm:flex-row gap-4 w-full lg:w-auto">
 
-          <div className="relative max-w-md">
-            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
-            <input
-              type="text"
-              placeholder="Rechercher une formation..."
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-              className="pl-10 pr-4 py-3 bg-white/70 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 w-full sm:w-80"
-            />
+            <div className="relative max-w-md">
+              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
+              <input
+                type="text"
+                placeholder="Rechercher une formation..."
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                className="pl-10 pr-4 py-3 bg-white/70 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 w-full sm:w-80"
+              />
+            </div>
+
+
+
+            <button
+              onClick={() => setCreatingFormation({ nomformation: "", descriptionformation: "" })}
+              className="flex items-center gap-2 bg-gradient-to-r from-indigo-600 to-purple-600 text-white px-6 py-3 rounded-xl hover:from-indigo-700 hover:to-purple-700 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-1">
+              <Plus size={20} /> Créer une formation
+            </button>
+
           </div>
 
-
-
-          <button
-            onClick={() => setCreatingFormation({ nomformation: "", descriptionformation: "" })}
-            className="flex items-center gap-2 bg-gradient-to-r from-indigo-600 to-purple-600 text-white px-6 py-3 rounded-xl hover:from-indigo-700 hover:to-purple-700 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-1">
-            <Plus size={20} /> Créer une formation
-          </button>
-
-          </div>
-          
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-6 mb-8">
@@ -223,7 +223,7 @@ const FormationListManager = () => {
         </div>
 
         <div className="mb-8">
-          
+
         </div>
 
         {isLoading ? (

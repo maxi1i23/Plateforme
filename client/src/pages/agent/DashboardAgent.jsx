@@ -11,7 +11,7 @@ import {
   BarElement,
   Title,
   Tooltip,
-  Legend,Filler
+  Legend, Filler
 } from "chart.js"
 import { Calendar, Activity, Phone, TrendingUp, Clock, Target } from "lucide-react"
 import api from "../../services/api"

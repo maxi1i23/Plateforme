@@ -120,3 +120,10 @@ ALTER TABLE message
 -- Règle métier :
 --  - Si idUtilisateurRecepteur est non NULL => message privé
 --  - Si idGroupe est non NULL => message de groupe
+
+CREATE TABLE messageSupprimer (
+    idMessageSupprimer SERIAL PRIMARY KEY,
+    idMessage INTEGER REFERENCES message(idMessage) ON DELETE CASCADE ON UPDATE CASCADE,
+    idUtilisateur INTEGER REFERENCES utilisateur(idUtilisateur) ON DELETE CASCADE ON UPDATE CASCADE,
+    dateSuppression TIMESTAMP DEFAULT now()
+);

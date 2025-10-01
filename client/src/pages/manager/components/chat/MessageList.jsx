@@ -1,7 +1,7 @@
 import { useEffect, useRef } from "react"
 import MessageBubble from "./MessageBubble"
 
-const MessageList = ({ messages, user, selectedGroupe }) => {
+const MessageList = ({ messages, user, selectedGroupe, getMessage, getGroupeMessage }) => {
   const messagesEndRef = useRef(null)
 
   useEffect(() => {
@@ -18,10 +18,13 @@ const MessageList = ({ messages, user, selectedGroupe }) => {
         </div>
       ) : (
         messages.map((msg, i) => (
-          <MessageBubble 
-            key={i} 
-            message={msg} 
-            isOwn={msg.idutilisateurexpediteur  === user.idutilisateur} 
+          <MessageBubble
+            key={i}
+            message={msg}
+            isOwn={msg.idutilisateurexpediteur === user.idutilisateur
+            }
+            getMessage={getMessage}
+            getGroupeMessage={getGroupeMessage}
           />
         ))
       )}

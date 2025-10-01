@@ -252,33 +252,33 @@ const BriefingListManager = () => {
                 <div className="absolute inset-0 bg-gradient-to-br from-blue-500/5 to-purple-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
 
                 <div className="relative p-6">
-                  
-                    <div className="absolute top-4 right-4 menu-briefing">
-                      <button
-                        onClick={() => setOpenMenuId(openMenuId === briefing.idbriefing ? null : briefing.idbriefing)}
-                        className="p-2 rounded-full hover:bg-gray-100/80 transition-colors duration-200 backdrop-blur-sm"
-                      >
-                        <MoreVertical className="w-5 h-5 text-gray-600" />
-                      </button>
 
-                      {openMenuId === briefing.idbriefing && (
-                        <div className="absolute right-0 mt-2 w-48 bg-white/95 backdrop-blur-sm border border-gray-100 rounded-xl shadow-xl z-10 overflow-hidden">
-                          <button
-                            onClick={() => handleEdit(briefing)}
-                            className="flex items-center w-full px-4 py-3 text-sm text-gray-700 hover:bg-blue-50 hover:text-blue-600 transition-colors duration-200"
-                          >
-                            <Edit className="w-4 h-4 mr-3" /> Modifier
-                          </button>
-                          <button
-                            onClick={() => handleDelete(briefing.idbriefing)}
-                            className="flex items-center w-full px-4 py-3 text-sm text-red-600 hover:bg-red-50 transition-colors duration-200"
-                          >
-                            <Trash className="w-4 h-4 mr-3" /> Supprimer
-                          </button>
-                        </div>
-                      )}
-                    </div>
-                  
+                  <div className="absolute top-4 right-4 menu-briefing">
+                    <button
+                      onClick={() => setOpenMenuId(openMenuId === briefing.idbriefing ? null : briefing.idbriefing)}
+                      className="p-2 rounded-full hover:bg-gray-100/80 transition-colors duration-200 backdrop-blur-sm"
+                    >
+                      <MoreVertical className="w-5 h-5 text-gray-600" />
+                    </button>
+
+                    {openMenuId === briefing.idbriefing && (
+                      <div className="absolute right-0 mt-2 w-48 bg-white/95 backdrop-blur-sm border border-gray-100 rounded-xl shadow-xl z-10 overflow-hidden">
+                        <button
+                          onClick={() => handleEdit(briefing)}
+                          className="flex items-center w-full px-4 py-3 text-sm text-gray-700 hover:bg-blue-50 hover:text-blue-600 transition-colors duration-200"
+                        >
+                          <Edit className="w-4 h-4 mr-3" /> Modifier
+                        </button>
+                        <button
+                          onClick={() => handleDelete(briefing.idbriefing)}
+                          className="flex items-center w-full px-4 py-3 text-sm text-red-600 hover:bg-red-50 transition-colors duration-200"
+                        >
+                          <Trash className="w-4 h-4 mr-3" /> Supprimer
+                        </button>
+                      </div>
+                    )}
+                  </div>
+
 
                   <div className="flex items-start gap-3 mb-4">
                     <div className="bg-gradient-to-r from-blue-500 to-purple-500 p-2 rounded-lg">

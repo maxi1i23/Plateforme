@@ -1,17 +1,7 @@
 import { Outlet, Link, useLocation } from "react-router-dom"
 import { useContext, useState, useEffect } from "react"
 import { AuthContext } from "../context/AuthContext"
-import {
-  BookOpen,
-  Presentation,
-  CalendarDays,
-  FileText,
-  BarChart3,
-  MessageCircle,
-  LogOut,
-  Menu,
-  X, Bell
-} from "lucide-react"
+import { BookOpen, Presentation, CalendarDays, FileText, BarChart3, MessageCircle, LogOut, Menu, X, Bell } from "lucide-react"
 import { useSocket } from "../context/SocketContext"
 
 export default function LayoutAgent() {
@@ -28,7 +18,6 @@ export default function LayoutAgent() {
     { to: "/agent/demandes", label: "Autres demandes", icon: FileText },
     { to: "/agent/briefing", label: "Briefings", icon: Presentation },
     { to: "/agent/formations", label: "Formations", icon: BookOpen },
-    { to: "/agent/discussions", label: "Discussion", icon: MessageCircle },
     { to: "/agent/activiter", label: "Activité & Performance", icon: BarChart3 }
   ]
 
@@ -181,7 +170,7 @@ export default function LayoutAgent() {
                 to="/agent/notifications"
                 aria-label="Notifications"
                 className="inline-flex p-3 rounded-full hover:bg-gradient-to-r hover:from-slate-100 hover:to-slate-200 transition-all duration-200 shadow-sm"
-                onClick={()=>setNotificationCount(0)}
+                onClick={() => setNotificationCount(0)}
               >
                 <Bell size={20} className="text-slate-600" />
               </Link>
@@ -201,7 +190,7 @@ export default function LayoutAgent() {
                 to="/agent/discussions"
                 aria-label="Discussions"
                 className="inline-flex p-3 rounded-full hover:bg-gradient-to-r hover:from-slate-100 hover:to-slate-200 transition-all duration-200 shadow-sm"
-                onClick={()=>setMessageCount(0)}
+                onClick={() => setMessageCount(0)}
               >
                 <MessageCircle size={20} className="text-slate-600" />
               </Link>

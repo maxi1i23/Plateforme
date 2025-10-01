@@ -16,7 +16,7 @@ const BriefingListManager = () => {
   const [creatingBriefing, setCreatingBriefing] = useState(false)
   const [loading, setLoading] = useState(true)
   const { user } = useContext(AuthContext)
-  const {socket} = useSocket()
+  const { socket } = useSocket()
 
   // 🔎 Sécurisation de la recherche
   useEffect(() => {
@@ -126,9 +126,9 @@ const BriefingListManager = () => {
       setCreatingBriefing(false)
       getBriefing()
 
-      const notification = await api.post('/notification/add',{
-        raisonNotification:'Nouvelle briefing créée',
-        contenu:`La briefing ${creatingBriefing.nombriefing} a été créée par le manager ${ user.idutilisateur}.`
+      const notification = await api.post('/notification/add', {
+        raisonNotification: 'Nouvelle briefing créée',
+        contenu: `La briefing ${creatingBriefing.nombriefing} a été créée par le manager ${user.idutilisateur}.`
       })
 
       // Creation de la notification via socket
