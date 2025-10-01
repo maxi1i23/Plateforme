@@ -22,7 +22,15 @@ module.exports = {
     },
 
     getDemandeCongerbyUser: async (idUser) => {
-        const result = await pool.query(`SELECT * FROM demandeConger WHERE idAgentDemander=$1`, [idUser]);
+        const result = await pool.query(` 
+            SELECT 
+            c.*, 
+            u.nomUtilisateur AS nomAgentDemander,
+            m.nomUtilisateur AS nomManagerTraiter
+            FROM demandeConger c
+            JOIN utilisateur u ON c.idAgentDemander = u.idUtilisateur
+            LEFT JOIN utilisateur m ON c.idManagerTraiter = m.idUtilisateur
+            WHERE c.idAgentDemander=$1`, [idUser]);
         return result.rows;
     },
 

@@ -423,7 +423,7 @@ const stats = {
                                                         {conger.idmanagertraiter?.toString().slice(-2) || ""}
                                                     </div>
                                                     <span className="text-gray-900 font-medium">
-                                                        Agent {conger.idmanagertraiter}
+                                                        {conger.nommanagertraiter}
                                                     </span>
                                                 </div>
                                             </td>

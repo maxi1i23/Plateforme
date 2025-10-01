@@ -323,7 +323,6 @@ const AutreDemandeAgent = () => {
                                     <th className="px-6 py-4 text-left text-sm font-semibold text-gray-700">Description</th>
                                     <th className="px-6 py-4 text-left text-sm font-semibold text-gray-700">Date demande</th>
                                     <th className="px-6 py-4 text-left text-sm font-semibold text-gray-700">Statut</th>
-                                    <th className="px-6 py-4 text-left text-sm font-semibold text-gray-700">Agent</th>
                                     <th className="px-6 py-4 text-left text-sm font-semibold text-gray-700">Manager</th>
                                     <th className="px-6 py-4 text-left text-sm font-semibold text-gray-700">Action</th>
                                 </tr>
@@ -342,16 +341,15 @@ const AutreDemandeAgent = () => {
                                                 <div className="text-gray-600">{new Date(demande.datedemande).toLocaleDateString("fr-FR")}</div>
                                             </td>
                                             <td className="px-6 py-4">{getStatusBadge(demande.statutautredemande)}</td>
+                                            
                                             <td className="px-6 py-4">
                                                 <div className="flex items-center">
-                                                    <div className="w-8 h-8 bg-gradient-to-br from-blue-400 to-indigo-500 rounded-full flex items-center justify-center text-white text-sm font-semibold mr-3">
-                                                        {demande.idagentautredemande.toString().slice(-2)}
+                                                <div className="w-8 h-8 bg-gradient-to-br from-blue-400 to-indigo-500 rounded-full flex items-center justify-center text-white text-sm font-semibold mr-3">
+                                                        {demande.idmanagertraiterautredemande.toString().slice(-2)}
                                                     </div>
-                                                    <span className="text-gray-600">Agent {demande.idagentautredemande}</span>
+                                                    <span className="text-gray-600 font-semibold">{demande.nommanagertraiterautredemande}</span>
                                                 </div>
-                                            </td>
-                                            <td className="px-6 py-4">
-                                                <span className="text-gray-600">Manager {demande.idmanagertraiterautredemande}</span>
+                                                
                                             </td>
                                             <td className="px-6 py-4">
                                                 {demande.statutautredemande === "En attente" ? (
