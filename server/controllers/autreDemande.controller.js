@@ -30,7 +30,6 @@ exports.createAutreDemande = async (req, res) => {
 exports.getAutreDemandeById = async(req,res)=>{
     try{
         const id = req.params.id;
-        console.log(id)
         const autreDemande= await AutreDemande.getAutreDemandeById(id);
         if(autreDemande){
             return res.status(201).json(autreDemande);

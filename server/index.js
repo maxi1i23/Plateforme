@@ -99,25 +99,21 @@ io.on("connection", (socket) => {
 
   // ---------- NOTIFICATIONS ----------
   socket.on('emettreNotification', (notificationData) => {
-    console.log(notificationData);
     io.emit('NouvelleNotification', notificationData)
   })
 
   // ---------- DEMANDES ----------
   socket.on('Demande', (data) => {
-    console.log(data);
     io.to(data.idutilisateurdestinataire.toString()).emit('NouvelleDemande', data);
   })
 
   // ---------- PUBLICATIONS ----------
   socket.on('Publication', (data) => {
-    console.log(data);
     io.emit('NouvellePublication', data);
   })
 
   // ---------- MESSAGE PRIVÉ ----------
   socket.on('SendNouveauMessage', (data) => {
-    console.log(data);
     io.to(data.idUtilisateurRecepteur?.toString() || data.idgroupe.toString()).emit('NouveauxMessage', data);
     io.to(data.idUtilisateurExpediteur.toString()).emit("NouveauxMessage", data);
   })
@@ -125,7 +121,6 @@ io.on("connection", (socket) => {
   // ---------- MESSAGE DE GROUPE ----------
   socket.on("sendGroupMessage", (msg) => {
     // msg doit contenir { idGroupe, idUtilisateurExpediteur, contenumessage, fichiers? }
-    console.log("Message de groupe :", msg);
     io.to(`groupe_${msg.idGroupe}`).emit("receiveGroupMessage", msg);
   });
 
@@ -135,8 +130,6 @@ io.on("connection", (socket) => {
     const idUtilisateurRecepteur = msg.idUtilisateurRecepteur || msg.idutilisateurrecepteur
     const idUtilisateurExpediteur = msg.idUtilisateurExpediteur || msg.idutilisateurexpediteur
     const idGroupe = msg.idGroupe || msg.idgroupe;
-
-    console.log(msg);
 
     io.to(idUtilisateurRecepteur?.toString() || msg.idgroupe.toString()).emit("receiveMessage", msg)
     io.to(idUtilisateurExpediteur.toString()).emit("receiveMessage", msg)

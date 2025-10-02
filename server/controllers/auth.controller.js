@@ -22,13 +22,11 @@ exports.register = async (req, res) => {
       return res.status(201).json({message : 'Utilisateur crée avec succés'})
       
    } catch (error) {
-      console.log(error)
       return res.status(500).json({error : 'Erreur du serveur'})
    }
 }
 
 exports.login = async (req, res) => {
-   console.log(req.body);
    try {
      const { emailUtilisateur, motDePasseUtilisateur } = req.body;
  
@@ -73,7 +71,6 @@ exports.login = async (req, res) => {
        user: safeUser, //  on renvoie l'utilisateur
      });
    } catch (error) {
-     console.log(error);
      return res.status(500).json({ message: error.message });
    }
  };

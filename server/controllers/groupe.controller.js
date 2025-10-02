@@ -23,7 +23,6 @@ exports.creerGroupe = async (req, res) => {
 
         return res.status(201).json(groupe);
     } catch (error) {
-        console.error("Erreur création groupe:", error);
         return res.status(500).json({ error: "Erreur interne serveur" });
     }
 };
@@ -31,10 +30,9 @@ exports.creerGroupe = async (req, res) => {
 exports.getGroupeList = async (req, res) => {
     try {
         const groupe = await Groupe.getGroupe();
-        console.log(groupe.rows);
         return res.status(200).json(groupe.rows);
     }catch(error){
-        console.log('erreur', error)
+        return res.status(500).json(error);
     }
  }
 
@@ -47,7 +45,6 @@ exports.ajouterMembre = async (req, res) => {
 
         return res.json({ message: "Membre ajouté avec succès" });
     } catch (error) {
-        console.error("Erreur ajout membre:", error);
         return res.status(500).json({ error: "Erreur interne serveur" });
     }
 };
@@ -68,7 +65,6 @@ exports.listerMembres = async (req, res) => {
         ))
         return res.json(membres);
     } catch (error) {
-        console.error("Erreur liste membres:", error);
         return res.status(500).json({ error: "Erreur interne serveur" });
     }
 };
@@ -87,7 +83,6 @@ exports.listerGroupesUtilisateur = async (req, res) => {
 
         return res.json(groupes.rows);
     } catch (error) {
-        console.error("Erreur liste groupes utilisateur:", error);
         return res.status(500).json({ error: "Erreur interne serveur" });
     }
 };
@@ -100,7 +95,6 @@ exports.quitterGroupe = async (req, res)=>{
         await GroupeMembre.deleteGroupeMembre(idGroupe, idUtilisateur)
         return res.status(200).json({message : "L'utilisateur a été supprimer du groupe"})
     } catch (error) {
-        console.log(error.message)
         return res.status(500).json(error)
     }
 }

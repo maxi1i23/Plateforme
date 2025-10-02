@@ -11,7 +11,6 @@ exports.getAllBriefings = async (req, res) => {
             return res.status(404).send('Aucun briefing trouvé');
         }
     } catch(err){
-        console.log(err);
         return res.status(500).send('Une erreur est survenue');
     }
 }
@@ -27,7 +26,6 @@ exports.getOneBriefing = async (req, res) => {
         }
         
     } catch(err){
-        console.log(err);
         return res.status(500).send('Une erreur est survenue');
     }
 }
@@ -41,7 +39,6 @@ exports.createBriefing = async (req, res) => {
             return res.status(409).send('Erreur lors de la création');
         }
     } catch(err){
-        console.log(err)
         return res.status(500).send('Error while creating the briefing');
     }
 }
@@ -58,7 +55,6 @@ exports.updateBriefing = async(req,res)=>{
         }
 
     }catch(err){
-        console.log(err);
         return res.status(500).send("Une erreur est survenue");
     }
 }
@@ -73,7 +69,6 @@ exports.deleteBriefing = async(req,res)=>{
             return res.status(409).send("Erreur lors de la suppression");
         }
     }catch(err){
-        console.log(err);
         return res.status(500).send("Une erreur est survenue");
     }
 }

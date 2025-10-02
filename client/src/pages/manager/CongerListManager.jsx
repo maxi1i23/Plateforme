@@ -22,7 +22,7 @@ const CongerListManager = () => {
   const getConger = async () => {
     try {
       setLoading(true);
-      const response = await api.get("/demandeConger");
+      const response = await api.get("/demandeConger/");
       setListConger(
         response.data.filter((c) => c.idmanagertraiter === user.idutilisateur)
       );

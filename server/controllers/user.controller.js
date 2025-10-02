@@ -6,7 +6,6 @@ exports.getAllUsers = async (req, res) => {
         const users = await User.getAll();
         return res.status(200).json(users);
     } catch (err) {
-        console.log(err)
         return res.status(500).send("Erreur serveur");
     }
 }
@@ -44,7 +43,6 @@ exports.updateUser = async (req, res) => {
         }
 
     } catch (error) {
-        console.error(error);
         return res.status(500).json({ message: "Erreur serveur lors de la modification" });
     }
 };

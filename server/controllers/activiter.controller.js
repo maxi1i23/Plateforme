@@ -10,7 +10,6 @@ exports.createActiviter = async (req, res) => {
 
     return res.status(201).json({ message: "Activité créée avec succès", activite });
   } catch (error) {
-    console.error(error);
     return res.status(500).send(error);
   }
 };
@@ -22,7 +21,6 @@ exports.getActiviterByAgent = async (req, res) => {
     const activites = await Activiter.getActiviterByAgent();
     return res.status(200).json(activites);
   } catch (error) {
-    console.error(error);
     return res.status(500).send(error);
   }
 };
@@ -34,7 +32,6 @@ exports.getPerformanceByAgent = async (req, res) => {
     const performances = await Activiter.getPerformanceByAgent();
     return res.status(200).json(performances);
   } catch (error) {
-    console.error(error);
     return res.status(500).send(error);
   }
 };
@@ -53,7 +50,6 @@ exports.updateActiviter = async (req, res) => {
 
     return res.status(200).json({ message: "Activité mise à jour avec succès", activite: updatedActivite });
   } catch (error) {
-    console.error(error);
     return res.status(500).send(error);
   }
 };
@@ -70,7 +66,6 @@ exports.deleteActiviter = async (req, res) => {
 
     return res.status(200).json({ message: "Activité supprimée avec succès" });
   } catch (error) {
-    console.error(error);
     return res.status(500).send(error);
   }
 };

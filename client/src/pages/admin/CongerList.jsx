@@ -19,9 +19,8 @@ const CongerListAgent = () => {
     const getConger = async () => {
         try {
             setLoading(true);
-            const response = await api.get("/demandeConger");
+            const response = await api.get("/demandeConger/");
             const userData = await api.get("/user")
-            console.log(response.data);
             setListConger(response.data);
             setManagerList(userData.data.filter(user => user.roleutilisateur === "Manager"))
         } catch (err) {
@@ -78,7 +77,7 @@ const CongerListAgent = () => {
             console.error("Erreur création :", error)
             Swal.fire({
                 icon: "error",
-                title: "Erreur lors de l'envoi",
+                title: "Veuillez bien verifier les dates puis réessayer !",
                 showConfirmButton: false,
                 timer: 1500,
             })

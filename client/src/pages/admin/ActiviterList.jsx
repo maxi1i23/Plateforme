@@ -18,7 +18,6 @@ const ActiviterList = () => {
       setLoading(true)
       const response = await api.get("/activiter")
       setActiviterList(response.data)
-      console.log("Activités:", response.data)
     } catch (error) {
       console.error(error)
       Swal.fire("Erreur", "Impossible de récupérer les activités", "error")
@@ -32,7 +31,6 @@ const ActiviterList = () => {
     try {
       const response = await api.get("/activiter/performance")
       setPerformanceList(response.data)
-      console.log("Performances:", response.data)
     } catch (error) {
       console.error(error)
       Swal.fire("Erreur", "Impossible de récupérer les performances", "error")

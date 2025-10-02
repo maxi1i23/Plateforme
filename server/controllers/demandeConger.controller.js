@@ -4,11 +4,10 @@ const DemandeConger = require('../models/demandeConger.model');
 exports.getAllDemandesCongers = async (req, res) => {
     try {
         const result = await DemandeConger.getDemandeConger();
-        console.log(result);
         if (result && result.length > 0) {
             return res.status(200).json(result);
         } else {
-            return res.status(404).send('Aucune demande de congé trouvée !');
+            return res.status(200).json(result);
         }
     } catch (error) {
         return res.status(500).send(error);
@@ -19,7 +18,6 @@ exports.getAllDemandesCongers = async (req, res) => {
 exports.getDemandeCongerById = async (req, res) => {
     try {
         const id = req.user.id;
-        console.log(id)
         const result = await DemandeConger.getDemandeCongerbyUser(id);
         if (result) {
             return res.status(200).json(result);
@@ -64,7 +62,6 @@ exports.updateDemandeConger = async (req, res) => {
             return res.status(404).send("Demande de congé introuvable");
         }
     } catch (error) {
-        console.log(error.message)
         return res.status(500).send(error);
     }
 };

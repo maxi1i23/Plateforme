@@ -7,7 +7,6 @@ exports.getAllFormations = async(req,res)=>{
         const formations = await Formation.getAll();
         return res.status(200).json(formations);
     }catch(err){
-        console.log(err);
         return res.status(500).send("Une erreur est survenue");
     }
 }
@@ -18,7 +17,6 @@ exports.getFormation = async(req,res)=>{
         const formations = await Formation.findById(id);
         return res.status(200).json(formations);
     }catch(err){
-        console.log(err);
         return res.status(500).send("Une erreur est survenue");
     }
 }
@@ -63,7 +61,6 @@ exports.updateFormation = async (req, res) => {
           return res.status(409).send({message:"Erreur lors de la modification"})
       }
     }catch(err){
-        console.log(err);
         return res.status(500).send("Une erreur est survenue");
     }
 };

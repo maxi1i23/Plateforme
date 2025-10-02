@@ -38,15 +38,12 @@ exports.createMessage = async (req, res) => {
       fichiers
     };
 
-    console.log(message);
-
     // L'emissions se fais dans index js
     return res.status(201).json({
       message: "Message envoyé avec succès",
       data: messageWithFiles
     });
   } catch (error) {
-    console.error(error);
     return res.status(500).json({ message: "Erreur serveur", error });
   }
 };
@@ -72,7 +69,6 @@ exports.getMessageByID = async (req, res) => {
 
     res.status(200).json(normalized);
   } catch (err) {
-    console.error(err);
     res.status(500).json({ message: "Erreur serveur", error: err });
   }
 };
@@ -96,7 +92,6 @@ exports.getMessageGroupe = async (req, res) => {
 
     res.status(200).json(normalized);
   } catch (err) {
-    console.error(err);
     res.status(500).json({ message: "Erreur serveur", error: err });
   }
 };
@@ -121,7 +116,6 @@ exports.getAllMessages = async (req, res) => {
 
     return res.status(200).json(result);
   } catch (err) {
-    console.error(err);
     return res.status(500).json({ message: "Erreur serveur", error: err });
   }
 };
@@ -140,7 +134,6 @@ exports.updateMessage = async (req, res) => {
 
     return res.status(200).json({ message: "Le message a bien été modifié" });
   } catch (err) {
-    console.error(err);
     return res.status(500).json({ message: "Erreur serveur", error: err });
   }
 };
@@ -158,7 +151,6 @@ exports.deleteMessage = async (req, res) => {
 
     return res.status(200).json({ message: "Le message a bien été supprimé" });
   } catch (err) {
-    console.error(err);
     return res.status(500).json({ message: "Erreur serveur", error: err });
   }
 };
