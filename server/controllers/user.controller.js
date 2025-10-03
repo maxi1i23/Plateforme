@@ -12,6 +12,8 @@ exports.getAllUsers = async (req, res) => {
 exports.updateUser = async (req, res) => {
     const id = req.params.id;
     const { nomUtilisateur, emailUtilisateur, motDePasseUtilisateur, roleUtilisateur } = req.body;
+    let email;
+    let role;
 
     try {
         let hashedPassword;
@@ -26,14 +28,16 @@ exports.updateUser = async (req, res) => {
                 return res.status(404).json({ message: "Utilisateur non trouvé" });
             }
             hashedPassword = existingUser.motdepasseutilisateur;
+            email = emailUtilisateur || existingUser.emailutilisateur;
+            role = roleUtilisateur || existingUser.roleutilisateur;
         }
 
         const result = await User.updateUser(
             id,
             nomUtilisateur,
-            emailUtilisateur,
+            email,
             hashedPassword,
-            roleUtilisateur
+            role
         );
 
         if (result) {

@@ -1,10 +1,11 @@
 // src/layouts/LayoutAdmin.jsx
 import { Outlet, Link, useLocation } from "react-router-dom"
-import { useContext, useState, useEffect } from "react"
+import { useContext, useState, useEffect, use } from "react"
 import { AuthContext } from "../context/AuthContext"
 import { useSocket } from "../context/SocketContext"
 import api from "../services/api"
 import { LayoutDashboard, Users, BookOpen, Presentation, CalendarDays, FileText, BarChart3, LogOut, Menu, X, Bell, MessageCircle } from "lucide-react"
+import Profile from "../components/profile"
 
 export default function LayoutAdmin() {
   const { logout, user } = useContext(AuthContext)
@@ -14,6 +15,7 @@ export default function LayoutAdmin() {
   const { socket } = useSocket();
   const [notificationCount, setNotificationCount] = useState(0);
   const [messageCount, setMessageCount] = useState(0);
+  const [showProfile, setShowProfile] = useState(false)
 
   const menuItems = [
     { to: "/admin", label: "Tableau de bord", icon: LayoutDashboard },
@@ -258,7 +260,7 @@ export default function LayoutAdmin() {
                     <p className="text-sm font-medium text-gray-700">{user?.nomutilisateur}</p>
                     <p className="text-xs text-gray-500">{user?.roleUtilisateur || "Administrateur"}</p>
                   </div>
-                  <button className="w-full text-left px-4 py-2 text-sm text-gray-600 hover:bg-gray-50 transition-colors">
+                  <button className="w-full text-left px-4 py-2 text-sm text-gray-600 hover:bg-gray-50 transition-colors" onClick={() => setShowProfile(!showProfile)}>
                     Profil
                   </button>
                   <button className="w-full text-left px-4 py-2 text-sm text-gray-600 hover:bg-gray-50 transition-colors">
@@ -277,6 +279,7 @@ export default function LayoutAdmin() {
 
           </div>
         </header>
+        {showProfile && <Profile user={user} onClose={()=>{setShowProfile(false)}} logout={logout} />}
 
         {/* Contenu */}
         <main className="flex-1 p-6">

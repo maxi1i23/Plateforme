@@ -7,7 +7,7 @@ router.use(auth)
 
 
 router.get('/', userController.getAllUsers)
-router.put('/update/:id',authorizeRole('Admin'), userController.updateUser )
+router.put('/update/:id', userController.updateUser )
 router.delete('/delete/:id',authorizeRole('Admin'), userController.deleteUser )
 
 module.exports = router;
