@@ -11,9 +11,13 @@ router.get('/:id', messageController.getMessageByID)
 router.get('/groupe/:idGroupe', messageController.getMessageGroupe)
 router.post('/add',upload.array("fichiers", 5), messageController.createMessage)
 router.delete('/delete/:id',authorizeRole('Admin'), messageController.deleteMessage)
-router.put('/update/:id', authorizeRole('Admin'), messageController.updateMessage)
+router.put('/update', messageController.updateMessage)
 
 router.delete('/supprimer/:idMessage', messageController.suppressionMessage) // SOFT DELETE
 router.post('/supprimer/tout', messageController.suppressionAllMessage)
+router.get('/last/message', messageController.lastMessageUser)
+router.get('/last/message/groupe', messageController.lastMessageGroupe)
+router.get('/unread/count', messageController.getUnreadCount);
+
 
 module.exports = router;

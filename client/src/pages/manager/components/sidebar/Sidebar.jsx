@@ -1,16 +1,16 @@
 import { PlusCircle, Search, Circle } from "lucide-react"
 
-const Sidebar = ({ users, groupes, searchTerm, setSearchTerm, setSelectedUser, setSelectedGroupe, selectedUser, selectedGroupe, 
-onCreateGroup 
+const Sidebar = ({ users, groupes, searchTerm, setSearchTerm, setSelectedUser, setSelectedGroupe, selectedUser, selectedGroupe,
+  onCreateGroup, user, lastMessageUser, lastMessageGroupe
 }) => {
-  const filteredUsers = users.filter(u =>u.nomutilisateur.toLowerCase().includes(searchTerm.toLowerCase()))
+  const filteredUsers = users.filter(u => u.nomutilisateur.toLowerCase().includes(searchTerm.toLowerCase()))
 
   return (
     <div className={`${selectedUser || selectedGroupe ? "hidden md:flex" : "flex"}
       md:w-1/3 lg:w-80 bg-gradient-to-b from-slate-50 to-slate-100 
       dark:from-gray-800 dark:to-gray-900 border-r border-gray-200 
       dark:border-gray-700 flex-col`}>
-      
+
       {/* Header */}
       <div className="p-6 border-b border-gray-200 dark:border-gray-700">
         <div className="flex justify-between items-center mb-5">
@@ -45,7 +45,7 @@ onCreateGroup
               hover:bg-white/50 dark:hover:bg-gray-700/50 
               border-b border-gray-100 dark:border-gray-800 
               ${selectedGroupe?.idgroupe === g.idgroupe
-                ? "bg-blue-50 dark:bg-blue-900/20 border-l-4 border-l-blue-500" 
+                ? "bg-blue-50 dark:bg-blue-900/20 border-l-4 border-l-blue-500"
                 : ""}`}>
             <div className="flex items-center space-x-3">
               <div className="w-12 h-12 bg-gradient-to-br from-purple-500 to-pink-600 rounded-full flex items-center justify-center text-white font-semibold text-lg">
@@ -53,7 +53,13 @@ onCreateGroup
               </div>
               <div className="flex-1 min-w-0">
                 <p className="font-semibold text-gray-900 dark:text-white truncate">{g.nomgroupe}</p>
-                <p className="text-sm text-gray-500 dark:text-gray-400 truncate">Groupe de discussion</p>
+                <p className="text-sm text-gray-500 dark:text-gray-400 truncate">
+                  {lastMessageGroupe[g.idgroupe] ? (
+                    lastMessageGroupe[g.idgroupe].idutilisateurexpediteur === user.idutilisateur
+                      ? <>Vous : {lastMessageGroupe[g.idgroupe].contenumessage}</>
+                      : <strong>{lastMessageGroupe[g.idgroupe].contenumessage}</strong>
+                  ) : 'Groupe de discussion'}
+                </p>
               </div>
             </div>
           </div>
@@ -70,7 +76,7 @@ onCreateGroup
               hover:bg-white/50 dark:hover:bg-gray-700/50 
               border-b border-gray-100 dark:border-gray-800 
               ${selectedUser?.idutilisateur === u.idutilisateur
-                ? "bg-blue-50 dark:bg-blue-900/20 border-l-4 border-l-blue-500" 
+                ? "bg-blue-50 dark:bg-blue-900/20 border-l-4 border-l-blue-500"
                 : ""}`}>
             <div className="flex items-center space-x-3">
               <div className="relative">
@@ -81,7 +87,16 @@ onCreateGroup
               </div>
               <div className="flex-1 min-w-0">
                 <p className="font-semibold text-gray-900 dark:text-white truncate">{u.nomutilisateur}</p>
-                <p className="text-sm text-gray-500 dark:text-gray-400 truncate">{u.roleutilisateur}</p>
+                <p className="text-sm text-gray-500 dark:text-gray-400 truncate">
+                  {lastMessageUser[u.idutilisateur] ? (
+                    <>
+                      {lastMessageUser[u.idutilisateur].idutilisateurexpediteur === user.idutilisateur
+                        ? <>Vous : {lastMessageUser[u.idutilisateur].contenumessage}</>
+                        : <strong>{lastMessageUser[u.idutilisateur].contenumessage}</strong>
+                      }
+                    </>
+                  ) : u.roleutilisateur}
+                </p>
               </div>
             </div>
           </div>

@@ -123,17 +123,17 @@ exports.getAllMessages = async (req, res) => {
 // Modifier un message
 exports.updateMessage = async (req, res) => {
   try {
-    const id = req.params.id;
-    const { contenuMessage } = req.body;
+    const id = req.user.id;
 
-    const result = await Message.updateMessage(id, contenuMessage);
+    const result = await Message.updateMessage(id);
 
     if (!result) {
-      return res.status(404).json({ message: "Aucune modification n'a été effectuée" });
+      return res.status(200).json({ message: "Aucune modification n'a été effectuée" });
     }
 
     return res.status(200).json({ message: "Le message a bien été modifié" });
   } catch (err) {
+    console.log(err);
     return res.status(500).json({ message: "Erreur serveur", error: err });
   }
 };
@@ -195,3 +195,36 @@ exports.suppressionAllMessage = async (req,res) => {
     return res.status(500).json(error);
   }
 }
+
+exports.lastMessageUser = async (req, res)=>{
+  try {
+    const id = req.user.id;
+    const result = await Message.lastMessageUser(id)
+    return res.status(200).json(result)
+  } catch (error) {
+    return res.status(500).json(error)
+  }
+}
+
+exports.lastMessageGroupe = async (req, res)=>{
+  try {
+    const id = req.user.id;
+    const result = await Message.lastMessageGroupe(id)
+    return res.status(200).json(result)
+  } catch (error) {
+    return res.status(500).json(error)
+  }
+}
+
+
+// MessageController.js
+exports.getUnreadCount = async (req, res) => {
+  try {
+      const id = req.user.id;
+      const count = await Message.getUnreadCount(id);
+      return res.status(200).json({ count });
+  } catch (err) {
+      console.error(err);
+      return res.status(500).json({ error: "Erreur serveur" });
+  }
+};

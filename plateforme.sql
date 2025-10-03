@@ -13,7 +13,7 @@ CREATE TABLE message (
     idMessage SERIAL PRIMARY KEY,
     contenuMessage TEXT,
     dateMessage TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    etat BOOLEAN DEFAULT FALSE,
+    etat BOOLEAN DEFAULT FALSE, -- Pour savoir si le message a été lu par l'utilisateur
     idUtilisateurExpediteur INTEGER REFERENCES utilisateur(idUtilisateur) ON DELETE CASCADE ON UPDATE CASCADE,
     idUtilisateurRecepteur INTEGER REFERENCES utilisateur(idUtilisateur) ON DELETE CASCADE ON UPDATE CASCADE
 );

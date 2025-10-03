@@ -3,7 +3,8 @@ import { Outlet, Link, useLocation } from "react-router-dom"
 import { useContext, useState, useEffect } from "react"
 import { AuthContext } from "../context/AuthContext"
 import { useSocket } from "../context/SocketContext"
-import {LayoutDashboard, Users, BookOpen, Presentation, CalendarDays, FileText, BarChart3, LogOut, Menu,X, Bell, MessageCircle} from "lucide-react"
+import api from "../services/api"
+import { LayoutDashboard, Users, BookOpen, Presentation, CalendarDays, FileText, BarChart3, LogOut, Menu, X, Bell, MessageCircle } from "lucide-react"
 
 export default function LayoutAdmin() {
   const { logout, user } = useContext(AuthContext)
@@ -46,6 +47,28 @@ export default function LayoutAdmin() {
       socket.off("NouvellePublication", handleNouvellePublication); // cleanup
     };
   }, [socket]);
+
+  useEffect(() => {
+    const fetchUnreadCount = async () => {
+      try {
+        const res = await api.get('/message/unread/count');
+        setMessageCount(res.data.count);
+      } catch (err) {
+        console.log(err);
+      }
+    };
+    fetchUnreadCount();
+  }, []);
+
+  const updateMessageCount = async () => {
+    try {
+      await api.put(`/message/update`)
+      setMessageCount(0)
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
 
   const getCurrentPageTitle = () => {
     const currentItem = menuItems.find((item) => item.to === location.pathname)
@@ -176,14 +199,20 @@ export default function LayoutAdmin() {
                 <Bell size={20} className="text-slate-600" />
               </Link>
 
-              {notificationCount > 0 && (
+              {notificationCount > 0 ?
                 <span
                   className="pointer-events-none absolute -top-1 -right-1 bg-gradient-to-r from-red-500 to-red-600 text-white text-xs font-bold px-1.5 py-0.5 rounded-full shadow-lg min-w-[18px] h-[18px] flex items-center justify-center"
                   aria-hidden="true"
                 >
                   {notificationCount > 99 ? "99+" : notificationCount}
                 </span>
-              )}
+                :
+                <span
+                  className="pointer-events-none absolute -top-1 -right-1 bg-gradient-to-r from-red-500 to-red-600 text-white text-xs font-bold px-1.5 py-0.5 rounded-full shadow-lg min-w-[15px] h-[15px] flex items-center justify-center"
+                  aria-hidden="true">
+                  {""}
+                </span>
+              }
             </div>
             {/* Messages */}
             <div className="relative">
@@ -191,7 +220,7 @@ export default function LayoutAdmin() {
                 to="/admin/discussions"
                 aria-label="Discussions"
                 className="inline-flex p-3 rounded-full hover:bg-gradient-to-r hover:from-slate-100 hover:to-slate-200 transition-all duration-200 shadow-sm  "
-                onClick={() => setMessageCount(0)}
+                onClick={updateMessageCount}
               >
                 <MessageCircle size={20} className="text-slate-600" />
               </Link>
@@ -206,18 +235,46 @@ export default function LayoutAdmin() {
               )}
             </div>
 
-            <div className="relative">
-              <div className="w-8 h-8 bg-gradient-to-r from-amber-400 to-orange-500 rounded-full flex items-center justify-center text-white text-sm font-bold">
+            <div className="relative flex items-center gap-3 cursor-pointer">
+              {/* Avatar */}
+              <div className="w-11 h-11 bg-gradient-to-r from-gray-600 to-gray-800 rounded-full flex items-center justify-center text-white text-sm font-bold cursor-pointer" 
+                onClick={() => setShowUserMenu(prev => !prev)}>
                 {user?.nomutilisateur?.charAt(0)?.toUpperCase() || "U"}
               </div>
-            </div>
-            <div className="hidden md:block text-left">
-              <p className="text-sm font-medium text-slate-700">{user?.nomutilisateur || "Utilisateur"}</p>
-              <div className="flex items-center gap-1">
-                <span className="w-2 h-2 bg-green-500 rounded-full"></span>
-                <span className="text-xs text-slate-500">En ligne</span>
+
+              {/* Nom et statut */}
+              <div className="hidden md:flex flex-col" onClick={() => setShowUserMenu(prev => !prev)}>
+                <p className="text-sm font-medium text-slate-700">{user?.nomutilisateur || "Utilisateur"}</p>
+                <div className="flex items-center gap-1">
+                  <span className="w-2 h-2 bg-green-500 rounded-full"></span>
+                  <span className="text-xs text-slate-500">En ligne</span>
+                </div>
               </div>
+
+              {/* Menu utilisateur */}
+              {showUserMenu && (
+                <div className="absolute right-0 top-full mt-2 w-48 bg-white rounded-lg shadow-lg border border-gray-200 py-2 z-50">
+                  <div className="px-4 py-2 border-b border-gray-100">
+                    <p className="text-sm font-medium text-gray-700">{user?.nomutilisateur}</p>
+                    <p className="text-xs text-gray-500">{user?.roleUtilisateur || "Administrateur"}</p>
+                  </div>
+                  <button className="w-full text-left px-4 py-2 text-sm text-gray-600 hover:bg-gray-50 transition-colors">
+                    Profil
+                  </button>
+                  <button className="w-full text-left px-4 py-2 text-sm text-gray-600 hover:bg-gray-50 transition-colors">
+                    Paramètres
+                  </button>
+                  <hr className="my-1 border-gray-200" />
+                  <button
+                    onClick={logout}
+                    className="w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-red-50 transition-colors"
+                  >
+                    Déconnexion
+                  </button>
+                </div>
+              )}
             </div>
+
           </div>
         </header>
 

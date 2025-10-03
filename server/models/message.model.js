@@ -94,10 +94,10 @@ module.exports = {
         return newMessage.rows[0];
     },
 
-    updateMessage: async (idMessage, contenuMessage) => {
+    updateMessage: async (idUtilisateurRecepteur) => {
         const updateMessage = await pool.query(
-            'UPDATE message SET contenuMessage=$1 WHERE idMessage=$2 RETURNING *',
-            [contenuMessage, idMessage]
+            'UPDATE message SET etat=TRUE WHERE idUtilisateurRecepteur=$1 RETURNING *',
+            [idUtilisateurRecepteur]
         );
         return updateMessage.rows[0];
     },
@@ -112,5 +112,74 @@ module.exports = {
     suppressionMessage: async (idMessage, idUtilisateur) => {
         const suppressionMessage = await pool.query(`INSERT INTO messageSupprimer(idMessage, idUtilisateur) VALUES ($1, $2) RETURNING *`, [idMessage, idUtilisateur])
         return suppressionMessage.rows;
+    },
+
+    lastMessageUser: async (idUtilisateurExpediteur) => {
+        const lastMessage = await pool.query(`
+            SELECT m.*
+            FROM message m
+            WHERE m.idmessage IN (
+                SELECT DISTINCT ON (
+                    CASE
+                        WHEN idutilisateurexpediteur = $1 THEN idutilisateurrecepteur
+                        ELSE idutilisateurexpediteur
+                    END
+                ) m2.idmessage
+                FROM message m2
+                LEFT JOIN messagesupprimer ms
+                    ON m2.idmessage = ms.idmessage AND ms.idutilisateur = $1
+                WHERE (m2.idutilisateurexpediteur = $1 OR m2.idutilisateurrecepteur = $1)
+                AND ms.idmessage IS NULL
+                ORDER BY 
+                    CASE
+                        WHEN idutilisateurexpediteur = $1 THEN idutilisateurrecepteur
+                        ELSE idutilisateurexpediteur
+                    END,
+                    m2.datemessage DESC
+            )
+            ORDER BY datemessage DESC;
+
+            `, [idUtilisateurExpediteur])
+        return lastMessage.rows
+    },
+
+    lastMessageGroupe: async (idUtilisateurExpediteur) => {
+        const lastMessage = await pool.query(`
+            SELECT *
+            FROM (
+            SELECT m.*,
+           ROW_NUMBER() OVER (
+               PARTITION BY m.idgroupe 
+               ORDER BY m.datemessage DESC
+           ) AS rn
+            FROM message m
+            JOIN groupeMembre gm 
+            ON m.idgroupe = gm.idGroupe
+            LEFT JOIN messagesupprimer ms
+            ON m.idmessage = ms.idmessage AND ms.idutilisateur = $1
+            WHERE gm.idUtilisateur = $1
+            AND ms.idmessage IS NULL
+            AND m.idgroupe IS NOT NULL
+            ) sub
+            WHERE rn = 1
+            ORDER BY datemessage DESC;
+            `, [idUtilisateurExpediteur])
+        return lastMessage.rows
+    },
+    getUnreadCount: async (idUtilisateur) => {
+        const result = await pool.query(`
+            SELECT COUNT(*) AS unread_count
+            FROM message m
+            LEFT JOIN messageSupprimer ms
+              ON m.idMessage = ms.idMessage AND ms.idUtilisateur = $1
+            WHERE (m.idUtilisateurRecepteur = $1 OR m.idGroupe IN (
+                      SELECT idGroupe
+                      FROM groupeMembre
+                      WHERE idUtilisateur = $1
+                  ))
+              AND ms.idMessage IS NULL
+              AND m.etat = FALSE;
+        `, [idUtilisateur]);
+        return result.rows[0].unread_count;
     }
 }

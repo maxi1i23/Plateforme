@@ -27,6 +27,8 @@ const DiscussionsManager = () => {
   const [groupName, setGroupName] = useState("")
   const [selectedGroupMembers, setSelectedGroupMembers] = useState([user?.idutilisateur])
   const [showMembre, setShowMembre] = useState(false)
+  const [lastMessageUser, setLastMessageUser] = useState({})
+  const [lastMessageGroupe, setLastMessageGroupe] = useState({})
 
   // Toggle membres pour création de groupe
   const toggleMember = (id) => {
@@ -52,7 +54,6 @@ const DiscussionsManager = () => {
 
   // Quitter un groupe 
   const handleQuitte = async () => {
-    console.log(selectedGroupe)
     try {
       await api.delete("/groupe/quitter/" + selectedGroupe.idgroupe)
       Swal.fire({
@@ -71,6 +72,32 @@ const DiscussionsManager = () => {
         text: "Veuillez réessayer! une erreur est survenue",
         timer: 1500
       })
+    }
+  }
+
+  const getLastMessageUser = async () => {
+    try {
+      const response = await api.get('/message/last/message')
+      let data = {};
+      response.data.forEach(msg => {
+        data[msg.idutilisateurrecepteur === user.idutilisateur ? msg.idutilisateurexpediteur : msg.idutilisateurrecepteur] = msg;
+      });
+      setLastMessageUser(data);
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+  const getLastMessageGroupe = async () => {
+    try {
+      const response = await api.get('/message/last/message/groupe')
+      let data = {};
+      response.data.forEach(msg => {
+        data[msg.idgroupe] = msg
+      });
+      setLastMessageGroupe(data);
+    } catch (error) {
+      console.log(error)
     }
   }
 
@@ -106,6 +133,7 @@ const DiscussionsManager = () => {
     if (!otherUserId) return
     try {
       const res = await api.get(`/message/${otherUserId}`)
+      getLastMessageUser()
       setMessages(res.data)
     } catch (err) {
       console.error(err)
@@ -117,6 +145,7 @@ const DiscussionsManager = () => {
     if (!idGroupe) return
     try {
       const res = await api.get(`/message/groupe/${idGroupe}`)
+      getLastMessageGroupe()
       setMessages(res.data)
     } catch (err) {
       console.error(err)
@@ -132,16 +161,33 @@ const DiscussionsManager = () => {
   // Écoute messages entrants
   useEffect(() => {
     const handleReceiveMessage = (msg) => {
+      console.log(msg)
       if (
         (selectedUser && (msg.idutilisateurexpediteur === selectedUser.idutilisateur
           || msg.idutilisateurrecepteur === selectedUser.idutilisateur))
-      ) { setMessages(prev => prev.find(m => m.idmessage === msg.idmessage) ? prev : [...prev, msg]) }
+      ) {
+        setMessages(prev => prev.find(m => m.idmessage === msg.idmessage) ? prev : [...prev, msg])
+      }
 
       if ((selectedGroupe && msg.idgroupe === selectedGroupe.idgroupe)) {
         setMessages(prev =>
           prev.find(m => Number(m.idmessage) === Number(msg.idmessage)) ? prev : [...prev, msg]
         )
         console.log('ok')
+      }
+
+      const otherUserId = msg.idutilisateurexpediteur === user.idutilisateur ? msg.idutilisateurrecepteur : msg.idutilisateurexpediteur;
+
+      setLastMessageUser(prev => ({
+        ...prev,
+        [otherUserId]: msg
+      }));
+
+      if (msg.idgroupe) {
+        setLastMessageGroupe(prev => ({
+          ...prev,
+          [msg.idgroupe]: msg
+        }));
       }
     }
     socket.on("receiveMessage", handleReceiveMessage)
@@ -161,6 +207,8 @@ const DiscussionsManager = () => {
   useEffect(() => {
     getUsers()
     getGroupe()
+    getLastMessageGroupe()
+    getLastMessageUser()
   }, [])
 
   // Envoi message
@@ -195,6 +243,7 @@ const DiscussionsManager = () => {
 
       {/* Sidebar */}
       <Sidebar
+        user={user}
         users={users}
         groupes={goupeDiscussion}
         searchTerm={searchTerm}
@@ -204,6 +253,8 @@ const DiscussionsManager = () => {
         selectedUser={selectedUser}
         selectedGroupe={selectedGroupe}
         onCreateGroup={() => setShowCreateGroup(true)}
+        lastMessageGroupe={lastMessageGroupe}
+        lastMessageUser={lastMessageUser}
       />
 
       {/* Chat */}
@@ -217,11 +268,11 @@ const DiscussionsManager = () => {
               onQuit={handleQuitte}
               getMessages={getMessages}
               getMessagesGroupe={getMessagesGroupe}
-              setShowMembre={()=>setShowMembre(!showMembre)}
+              setShowMembre={() => setShowMembre(!showMembre)}
             />
             <MessageList messages={messages} user={user} selectedGroupe={selectedGroupe}
-            getGroupeMessage={getMessagesGroupe}
-             getMessage={() => getMessages(selectedUser.idutilisateur)} />
+              getGroupeMessage={getMessagesGroupe}
+              getMessage={() => getMessages(selectedUser.idutilisateur)} />
             <MessageInput
               newMessage={newMessage}
               setNewMessage={setNewMessage}
@@ -252,9 +303,9 @@ const DiscussionsManager = () => {
       )}
       {showMembre && (
         <ListeMembre
-        isOpen={showMembre}
-        onClose={()=>setShowMembre(!showMembre)}
-        idGroupe={selectedGroupe.idgroupe} />
+          isOpen={showMembre}
+          onClose={() => setShowMembre(!showMembre)}
+          idGroupe={selectedGroupe.idgroupe} />
       )}
     </div>
   )
