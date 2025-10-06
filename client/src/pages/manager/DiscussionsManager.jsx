@@ -29,6 +29,7 @@ const DiscussionsManager = () => {
   const [showMembre, setShowMembre] = useState(false)
   const [lastMessageUser, setLastMessageUser] = useState({})
   const [lastMessageGroupe, setLastMessageGroupe] = useState({})
+  const [onLineUser, setOnLineUser] = useState({})
 
   // Toggle membres pour création de groupe
   const toggleMember = (id) => {
@@ -158,8 +159,16 @@ const DiscussionsManager = () => {
     socket.emit("joinRoom", user.idutilisateur.toString())
   }, [user])
 
+  const getOnleLineUser = (userId)=>{
+    return onLineUser.includes(String(userId)) ? true : false;
+  }
+
   // Écoute messages entrants
   useEffect(() => {
+    const handleCheckOnLineUser = (user) =>{
+      setOnLineUser(user)
+    }
+
     const handleReceiveMessage = (msg) => {
       console.log(msg)
       if (
@@ -190,8 +199,12 @@ const DiscussionsManager = () => {
         }));
       }
     }
+    socket.on('OnLineUser', handleCheckOnLineUser)
     socket.on("receiveMessage", handleReceiveMessage)
-    return () => socket.off("receiveMessage", handleReceiveMessage)
+    return () => {
+      socket.off("receiveMessage", handleReceiveMessage)
+      socket.off('OnLineUser', handleCheckOnLineUser)
+    }
   }, [selectedUser, selectedGroupe])
 
   // Charger messages quand on change de conversation
@@ -255,6 +268,7 @@ const DiscussionsManager = () => {
         onCreateGroup={() => setShowCreateGroup(true)}
         lastMessageGroupe={lastMessageGroupe}
         lastMessageUser={lastMessageUser}
+        getOnleLineUser={getOnleLineUser}
       />
 
       {/* Chat */}

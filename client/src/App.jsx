@@ -36,63 +36,67 @@ import CongerListAgent from './pages/agent/CongerListAgent';
 import AutreDemandeAgent from './pages/agent/AutreDemandeAgent';
 import ActiviterListAgent from './pages/agent/ActiviterListAgent';
 import DashboardAgent from './pages/agent/DashboardAgent';
+import NotFound from './pages/NotFound';
+import NotAuthorized from './pages/NotAuthorized';
 
 
 
-function App(){
+function App() {
   return (
     <AuthProvider>
       <SocketProvider>
-      <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<Login />} />
+        <BrowserRouter>
+          <Routes>
+            <Route path="/" element={<Login />} />
 
-          {/* Admin */}
-          <Route element={<PrivateRoute allowedRoles={['Admin']} />}>
-            <Route path="/admin" element={<LayoutAdmin />}>
-              <Route index element={<Dashboard/>} />
-              <Route path="users" element={<UserList />} />
-              <Route path="formation" element={<FormationList />} />
-              <Route path="briefing" element={<BriefingList />} />
-              <Route path="conger" element={<CongerList />}/>
-              <Route path="autre" element={<AutreDemande/>}/>
-              <Route path="activiter" element={<ActiviterList/>}/>
-              <Route path="discussions" element={<DiscussionsManager/>}/>
-              <Route path="notifications" element={<Notification/>}/>
+            {/* Admin */}
+            <Route element={<PrivateRoute allowedRoles={['Admin']} />}>
+              <Route path="/admin" element={<LayoutAdmin />}>
+                <Route index element={<Dashboard />} />
+                <Route path="users" element={<UserList />} />
+                <Route path="formation" element={<FormationList />} />
+                <Route path="briefing" element={<BriefingList />} />
+                <Route path="conger" element={<CongerList />} />
+                <Route path="autre" element={<AutreDemande />} />
+                <Route path="activiter" element={<ActiviterList />} />
+                <Route path="discussions" element={<DiscussionsManager />} />
+                <Route path="notifications" element={<Notification />} />
+              </Route>
             </Route>
-          </Route>
 
-          {/* Manager */}
-          <Route element={<PrivateRoute allowedRoles={['Manager']} />}>
-            <Route path="/manager" element={<LayoutManager />}>
-              <Route index element={<DashboardManager/>} />
-              <Route path="conger" element={<CongerListManager />}/>
-              <Route path="demandes" element={<AutreDemandeListManager />}/>
-              <Route path="briefing" element={<BriefingListManager />}/>
-              <Route path="discussions" element={<DiscussionsManager/>}/>
-              <Route path="activiter" element={<ActiviterListManager/>}/>
-              <Route path="formations" element={<FormationListManager/>}/>
-              <Route path="notifications" element={<Notification/>}/>
+            {/* Manager */}
+            <Route element={<PrivateRoute allowedRoles={['Manager']} />}>
+              <Route path="/manager" element={<LayoutManager />}>
+                <Route index element={<DashboardManager />} />
+                <Route path="conger" element={<CongerListManager />} />
+                <Route path="demandes" element={<AutreDemandeListManager />} />
+                <Route path="briefing" element={<BriefingListManager />} />
+                <Route path="discussions" element={<DiscussionsManager />} />
+                <Route path="activiter" element={<ActiviterListManager />} />
+                <Route path="formations" element={<FormationListManager />} />
+                <Route path="notifications" element={<Notification />} />
+              </Route>
             </Route>
-          </Route>
 
-          {/* Agent */}
-          <Route element={<PrivateRoute allowedRoles={['Agent']} />}>
-            <Route path="/agent" element={<LayoutAgent />}>
-              <Route index element={<DashboardAgent/>} />
-              <Route path="conger" element={<CongerListAgent />}/>
-              <Route path="demandes" element={<AutreDemandeAgent />}/>
-              <Route path="briefing" element={<BriefingListAgent />}/>
-              <Route path="discussions" element={<DiscussionsManager/>}/>
-              <Route path="activiter" element={<ActiviterListAgent/>}/>
-              <Route path="formations" element={<FormationListAgent/>}/>
-              <Route path="notifications" element={<Notification/>}/>
+            {/* Agent */}
+            <Route element={<PrivateRoute allowedRoles={['Agent']} />}>
+              <Route path="/agent" element={<LayoutAgent />}>
+                <Route index element={<DashboardAgent />} />
+                <Route path="conger" element={<CongerListAgent />} />
+                <Route path="demandes" element={<AutreDemandeAgent />} />
+                <Route path="briefing" element={<BriefingListAgent />} />
+                <Route path="discussions" element={<DiscussionsManager />} />
+                <Route path="activiter" element={<ActiviterListAgent />} />
+                <Route path="formations" element={<FormationListAgent />} />
+                <Route path="notifications" element={<Notification />} />
+              </Route>
             </Route>
-          </Route>
 
-          <Route path="/unauthorized" element={<div>403 - Accès refusé</div>} />
-        </Routes>
-      </BrowserRouter>
+            <Route path="/unauthorized" element={<NotAuthorized/>} />
+            {/* Route 404 - à placer en dernier */}
+            <Route path="*" element={<NotFound/>} />
+          </Routes>
+        </BrowserRouter>
       </SocketProvider>
     </AuthProvider>
   );

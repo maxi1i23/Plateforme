@@ -71,20 +71,30 @@ const io = new Server(server, {
 // ---------------------
 // Gestion des utilisateurs en ligne
 // ---------------------
-const onlineUsers = new Map() // key: userId, value: Set(socketId)
+// en haut du fichier (global)
+let onlineUsers = new Map();    // key: userId (string) -> Set(socketId)
+let socketToUser = new Map();   // key: socketId -> userId (string)
 
 io.on("connection", (socket) => {
   console.log("Nouvelle connexion Socket.IO:", socket.id)
 
   // ---------- UTILISATEUR ----------
-  socket.on("joinRoom", (userId) => {
-    if (!onlineUsers.has(userId)) {
-      onlineUsers.set(userId, new Set())
+  socket.on("joinRoom", (userIdRaw) => {
+    const userId = String(userIdRaw);
+    
+    // Eviter les doublons de socket
+    if (!onlineUsers.has(userId)) onlineUsers.set(userId, new Set());
+    const userSockets = onlineUsers.get(userId);
+    if (!userSockets.has(socket.id)) {
+      userSockets.add(socket.id);
     }
-    onlineUsers.get(userId).add(socket.id)
-    socket.join(userId)
-    console.log(`Utilisateur ${userId} connecté avec socket ${socket.id}`)
-  })
+  
+    socketToUser.set(socket.id, userId);
+    socket.join(userId);
+  
+    console.log(`Utilisateur ${userId} connecté (${socket.id}). Sockets:`, Array.from(userSockets));
+    io.emit("OnLineUser", Array.from(onlineUsers.keys()));
+  });
 
   // -------Rejoindre une groupe -------
   socket.on("joinGroup", (idGroupe) => {
@@ -140,17 +150,21 @@ io.on("connection", (socket) => {
 
   // ---------- DÉCONNEXION ----------
   socket.on("disconnect", () => {
-    console.log("Socket déconnecté:", socket.id)
-    for (let [userId, sockets] of onlineUsers.entries()) {
-      if (sockets.has(socket.id)) {
-        sockets.delete(socket.id)
-        if (sockets.size === 0) {
-          onlineUsers.delete(userId)
-        }
-        break
+    const userId = socketToUser.get(socket.id);
+    if (userId && onlineUsers.has(userId)) {
+      const sockets = onlineUsers.get(userId);
+      sockets.delete(socket.id);
+      if (sockets.size === 0) {
+        onlineUsers.delete(userId);
+        console.log(`Utilisateur ${userId} est maintenant OFFLINE`);
+      } else {
+        console.log(`Utilisateur ${userId} reste en ligne, sockets restants:`, Array.from(sockets));
       }
+      socketToUser.delete(socket.id);
+      io.emit("OnLineUser", Array.from(onlineUsers.keys()));
     }
-  })
+  });
+  
 })
 
 // ---------------------

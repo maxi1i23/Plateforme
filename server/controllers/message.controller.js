@@ -126,6 +126,7 @@ exports.updateMessage = async (req, res) => {
     const id = req.user.id;
 
     const result = await Message.updateMessage(id);
+    console.log(result);
 
     if (!result) {
       return res.status(200).json({ message: "Aucune modification n'a été effectuée" });

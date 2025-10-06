@@ -96,7 +96,7 @@ module.exports = {
 
     updateMessage: async (idUtilisateurRecepteur) => {
         const updateMessage = await pool.query(
-            'UPDATE message SET etat=TRUE WHERE idUtilisateurRecepteur=$1 RETURNING *',
+            'UPDATE message SET etat=TRUE WHERE idUtilisateurRecepteur=$1',
             [idUtilisateurRecepteur]
         );
         return updateMessage.rows[0];

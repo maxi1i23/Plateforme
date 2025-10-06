@@ -5,3 +5,8 @@
 button{
     cursor: pointer;
 }
+
+:root {
+    --animate-duration: 60s;
+    --animate-delay: 20s;
+  }

@@ -7,6 +7,7 @@ import { AuthContext } from "../context/AuthContext"
 import { jwtDecode } from "jwt-decode"
 import vite from "../assets/favicon.png"
 import { Mail, Lock, EyeOff, Eye } from "lucide-react"
+import 'animate.css';
 
 export default function Login() {
   const navigate = useNavigate()
@@ -42,7 +43,7 @@ export default function Login() {
         </div>
 
         {/* Main Content */}
-        <div className="z-10 space-y-6">
+        <div className="z-10 space-y-6 animate__animated animate__backInDown">
           <h1 className="text-5xl font-bold text-gray-900 leading-tight">
           Communiquer, Collaborer
             <br />
