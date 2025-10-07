@@ -408,7 +408,7 @@ const BriefingListManager = () => {
       {creatingBriefing && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm p-4">
           <div className="bg-white rounded-2xl w-full max-w-2xl shadow-2xl relative transform transition-all duration-300 scale-100">
-            <div className="bg-gradient-to-r from-green-600 to-blue-600 p-6 rounded-t-2xl">
+            <div className="bg-gradient-to-r from-blue-600 to-purple-600 p-6 rounded-t-2xl">
               <button
                 className="absolute top-4 right-4 p-2 rounded-full hover:bg-white/20 transition-colors duration-200"
                 onClick={() => setCreatingBriefing(false)}
@@ -426,7 +426,7 @@ const BriefingListManager = () => {
                   type="text"
                   value={creatingBriefing.nombriefing}
                   onChange={(e) => setCreatingBriefing({ ...creatingBriefing, nombriefing: e.target.value })}
-                  className="w-full p-4 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all duration-200"
+                  className="w-full p-4 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all duration-200"
                   placeholder="Entrez le nom du briefing"
                   required
                 />
@@ -437,7 +437,7 @@ const BriefingListManager = () => {
                 <textarea
                   value={creatingBriefing.contenubriefing}
                   onChange={(e) => setCreatingBriefing({ ...creatingBriefing, contenubriefing: e.target.value })}
-                  className="w-full p-4 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all duration-200 resize-none"
+                  className="w-full p-4 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all duration-200 resize-none"
                   placeholder="Décrivez le contenu de votre briefing"
                   rows={6}
                   required
@@ -454,7 +454,7 @@ const BriefingListManager = () => {
                 </button>
                 <button
                   type="submit"
-                  className="flex-1 bg-gradient-to-r from-green-600 to-blue-600 text-white px-6 py-3 rounded-xl hover:from-green-700 hover:to-blue-700 transition-all duration-200 shadow-lg font-medium"
+                  className="flex-1 bg-gradient-to-r from-blue-600 to-purple-600 text-white px-6 py-3 rounded-xl hover:from-green-700 hover:to-blue-700 transition-all duration-200 shadow-lg font-medium"
                 >
                   Créer le briefing
                 </button>

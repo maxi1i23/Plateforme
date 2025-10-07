@@ -492,7 +492,7 @@ const CongerListAgent = () => {
                 editingConger && (
                     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm p-4">
                         <div className="bg-white rounded-2xl w-full max-w-2xl shadow-2xl relative transform transition-all duration-300 scale-100">
-                            <div className="bg-gradient-to-r from-green-600 to-blue-600 p-6 rounded-t-2xl">
+                            <div className="bg-gradient-to-r from-blue-600 to-purple-600 p-6 rounded-t-2xl">
                                 <button className="absolute top-4 right-4 p-2 rounded-full hover:bg-white/20 transition-colors duration-200"
                                     onClick={() => { setEditingConger(false) }}>
                                     <X size={20} className="text-white" />
@@ -507,14 +507,15 @@ const CongerListAgent = () => {
                                     <input type="text"
                                         value={editingConger.typeConger}
                                         onChange={(e) => setEditingConger({ ...editingConger, typeConger: e.target.value })}
-                                        className="w-full p-4 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all duration-200"
+                                        className="w-full p-4 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all duration-200"
+                                        required
                                     />
                                 </div>
                                 <div>
                                     <label className="block text-sm font-medium text-gray-700 mb-2"> Date de début</label>
                                     <input
                                         type="date"
-                                        className="w-full p-4 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all duration-200"
+                                        className="w-full p-4 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all duration-200"
                                         onChange={(e) => setEditingConger({ ...editingConger, dateDebutConger: e.target.value })}
                                         value={editingConger.dateDebutConger ? editingConger.dateDebutConger.split("T")[0] : ""}
                                     />
@@ -523,14 +524,14 @@ const CongerListAgent = () => {
                                     <label className="block text-sm font-medium text-gray-700 mb-2"> Date de fin</label>
                                     <input
                                         type="date"
-                                        className="w-full p-4 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all duration-200"
+                                        className="w-full p-4 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all duration-200"
                                         onChange={(e) => setEditingConger({ ...editingConger, dateFinConger: e.target.value })}
                                         value={editingConger.dateFinConger ? editingConger.dateFinConger.split("T")[0] : ""}
                                     />
                                 </div>
                                 <div>
                                     <label className="block text-sm font-medium text-gray-700 mb-2">Manager</label>
-                                    <select className="w-full p-4 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all duration-200"
+                                    <select className="w-full p-4 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all duration-200"
                                         onChange={(e) => setEditingConger({ ...editingConger, idManagerTraiter: e.target.value })}
                                         value={editingConger.idManagerTraiter}
                                     >
@@ -550,7 +551,7 @@ const CongerListAgent = () => {
                                     <button type="button" className="flex-1 px-6 py-3 border border-gray-300 text-gray-700 rounded-xl hover:bg-gray-50 transition-colors duration-200 font-medium cursor-pointer" onClick={() => setEditingConger(false)}>
                                         Annuler
                                     </button>
-                                    <button type="submit" className="flex-1 bg-gradient-to-r from-green-600 to-blue-600 text-white px-6 py-3 rounded-xl hover:from-green-700 hover:to-blue-700 transition-all duration-200 shadow-lg font-medium cursor-pointer">
+                                    <button type="submit" className="flex-1 bg-gradient-to-r from-blue-600 to-purple-600 text-white px-6 py-3 rounded-xl hover:from-blue-700 hover:to-purple-700 transition-all duration-200 shadow-lg font-medium cursor-pointer">
                                         Modifier la demande
                                     </button>
                                 </div>
@@ -565,7 +566,7 @@ const CongerListAgent = () => {
                     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm p-4">
                         <div
                             className="bg-white rounded-2xl w-full max-w-2xl shadow-2xl relative transform transition-all duration-300 scale-100">
-                            <div className="bg-gradient-to-r from-green-600 to-blue-600 p-6 rounded-t-2xl">
+                            <div className="bg-gradient-to-r from-blue-600 to-purple-600 p-6 rounded-t-2xl">
                                 <button className="absolute top-4 right-4 p-2 rounded-full hover:bg-white/20 transition-colors duration-200" onClick={() => setDemandeConger(false)}>
                                     <X size={20} className="text-white" />
                                 </button>
@@ -579,32 +580,36 @@ const CongerListAgent = () => {
                                     <input type="text"
                                         value={createDemandeConger.typeConger}
                                         onChange={(e) => setDemandeConger({ ...createDemandeConger, typeConger: e.target.value })}
-                                        className="w-full p-4 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all duration-200"
+                                        className="w-full p-4 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all duration-200"
+                                        required
                                     />
                                 </div>
                                 <div>
                                     <label className="block text-sm font-medium text-gray-700 mb-2"> Date de début</label>
                                     <input
                                         type="date"
-                                        className="w-full p-4 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all duration-200"
+                                        className="w-full p-4 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all duration-200"
                                         onChange={(e) => setDemandeConger({ ...createDemandeConger, dateDebutConger: e.target.value })}
                                         value={createDemandeConger.dateDebutConger}
+                                        required
                                     />
                                 </div>
                                 <div>
                                     <label className="block text-sm font-medium text-gray-700 mb-2"> Date de fin</label>
                                     <input
                                         type="date"
-                                        className="w-full p-4 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all duration-200"
+                                        className="w-full p-4 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all duration-200"
                                         onChange={(e) => setDemandeConger({ ...createDemandeConger, dateFinConger: e.target.value })}
                                         value={createDemandeConger.dateFinConger}
+                                        required
                                     />
                                 </div>
                                 <div>
                                     <label className="block text-sm font-medium text-gray-700 mb-2">Manager</label>
-                                    <select className="w-full p-4 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all duration-200"
+                                    <select className="w-full p-4 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all duration-200"
                                         onChange={(e) => setDemandeConger({ ...createDemandeConger, idManagerTraiter: e.target.value })}
                                         value={createDemandeConger.idManagerTraiter}
+                                        required
                                     >
                                         <option value={0}>Séléctionner le manager</option>
                                         {
@@ -619,7 +624,7 @@ const CongerListAgent = () => {
                                     <button type="button" className="flex-1 px-6 py-3 border border-gray-300 text-gray-700 rounded-xl hover:bg-gray-50 transition-colors duration-200 font-medium cursor-pointer" onClick={() => setDemandeConger(false)}>
                                         Annuler
                                     </button>
-                                    <button type="submit" className="flex-1 bg-gradient-to-r from-green-600 to-blue-600 text-white px-6 py-3 rounded-xl hover:from-green-700 hover:to-blue-700 transition-all duration-200 shadow-lg font-medium cursor-pointer">
+                                    <button type="submit" className="flex-1 bg-gradient-to-r from-blue-600 to-purple-600 text-white px-6 py-3 rounded-xl hover:from-blue-700 hover:to-purple-700 transition-all duration-200 shadow-lg font-medium cursor-pointer">
                                         Faire la demande
                                     </button>
                                 </div>

@@ -4,7 +4,7 @@ import { useState, useEffect, useContext } from "react"
 import api from "../../services/api"
 import { AuthContext } from "../../context/AuthContext"
 import Swal from "sweetalert2"
-import { Plus, X, Phone, Clock, Coffee, TrendingUp, Calendar, BarChart3 } from "lucide-react"
+import { Plus, X, Phone, Clock, Coffee, TrendingUp, Calendar, BarChart3, Edit, Trash2 } from "lucide-react"
 
 const ActiviterListAgent = () => {
   const { user } = useContext(AuthContext)
@@ -278,15 +278,15 @@ const ActiviterListAgent = () => {
                               })
                               setShowForm(true)
                             }}
-                            className="px-4 py-2 bg-gradient-to-r from-yellow-500 to-orange-600 text-white rounded-lg hover:from-yellow-600 hover:to-orange-700 transition-all duration-200 transform hover:scale-105 shadow-lg"
+                            className="px-3 py-1.5 bg-gradient-to-r from-green-400 to-green-600 text-white rounded-lg hover:from-green-600 hover:to-green-700 transition-all duration-200 transform hover:scale-105 shadow-lg"
                           >
-                            Modifier
+                            <Edit className="w-4 h-4"/>
                           </button>
                           <button
                             onClick={() => handleDelete(a.idactiviter)}
-                            className="px-4 py-2 bg-gradient-to-r from-red-500 to-rose-600 text-white rounded-lg hover:from-red-600 hover:to-rose-700 transition-all duration-200 transform hover:scale-105 shadow-lg"
+                            className="px-3 py-1.5 bg-gradient-to-r from-red-500 to-rose-600 text-white rounded-lg hover:from-red-600 hover:to-rose-700 transition-all duration-200 transform hover:scale-105 shadow-lg"
                           >
-                            Supprimer
+                            <Trash2 className="w-4 h-4"/>
                           </button>
                         </div>
                       </td>

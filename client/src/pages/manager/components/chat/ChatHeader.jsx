@@ -3,7 +3,7 @@ import { ArrowLeft, LogOut, MoreVertical, Trash2, Users } from "lucide-react"
 import api from '../../../../services/api'
 import Swal from "sweetalert2"
 
-const ChatHeader = ({ selectedUser, selectedGroupe, onBack, onQuit, getMessages, getMessagesGroupe, setShowMembre }) => {
+const ChatHeader = ({ selectedUser, selectedGroupe, onBack, onQuit, getMessages, getMessagesGroupe, setShowMembre, getOnleLineUser }) => {
   const [menuOpen, setMenuOpen] = useState(false)
   const menuRef = useRef(null)
 
@@ -79,7 +79,7 @@ const ChatHeader = ({ selectedUser, selectedGroupe, onBack, onQuit, getMessages,
           {selectedUser ? selectedUser.nomutilisateur : selectedGroupe.nomgroupe}
         </h3>
         <p className="text-sm text-green-500">
-          {selectedUser ? "En ligne" : "Groupe"}
+          {selectedUser ? <span>{ getOnleLineUser(selectedUser.idutilisateur) ? "En ligne" : "Déconnecté"}</span> : "Groupe"}
         </p>
       </div>
 

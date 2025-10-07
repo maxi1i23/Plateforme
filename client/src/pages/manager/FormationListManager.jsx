@@ -308,111 +308,131 @@ const FormationListManager = () => {
                 </div>
               </div>
             ))}
-          </div>
-        )}
 
-        {editingFormation && (
-          <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm p-4">
-            <div className="bg-white/90 backdrop-blur-sm p-8 rounded-2xl w-full max-w-md shadow-2xl border border-white/20 relative">
-              <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-indigo-500 to-purple-600 rounded-t-2xl"></div>
-              <button
-                className="absolute top-4 right-4 p-2 rounded-full hover:bg-gray-100/50 transition-colors"
-                onClick={() => setEditingFormation(null)}
-              >
-                <X size={20} className="text-gray-600" />
-              </button>
-              <div className="flex items-center gap-3 mb-6">
-                <div className="p-3 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-xl">
-                  <Edit className="w-6 h-6 text-white" />
+            {filteredFormations.length === 0 && !isLoading && (
+              <div className="text-center py-20 w-full">
+                <div className="bg-white/80 1backdrop-blur-sm rounded-2xl p-12 shadow-lg border border-white/20 max-w-md mx-auto">
+                  <FileText className="w-16 h-16 text-gray-400 mx-auto mb-4" />
+                  <h3 className="text-xl font-semibold text-gray-900 mb-2">
+                    {searchTerm ? "Aucune formation trouvée" : "Aucune formation disponible"}
+                  </h3>
+                  <p className="text-gray-600 mb-6">
+                    {searchTerm ? "Essayez avec d'autres mots-clés" : "Commencez par créer votre premier formation"}
+                  </p>
+                  {!searchTerm && (
+                    <button
+                      onClick={() => setCreatingFormation({ nomformation: "", descriptionformation: "" })}
+                      className="bg-gradient-to-r from-blue-600 to-purple-600 text-white px-6 py-3 rounded-xl hover:from-blue-700 hover:to-purple-700 transition-all duration-200 shadow-lg"
+                    >
+                      Créer un Formation
+                    </button>
+                  )}
                 </div>
-                <h3 className="text-2xl font-bold text-gray-800">Modifier la formation</h3>
               </div>
-              <form onSubmit={handleUpdate} className="space-y-4">
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">Nom de la formation</label>
-                  <input
-                    type="text"
-                    value={editingFormation.nomformation}
-                    onChange={(e) => setEditingFormation({ ...editingFormation, nomformation: e.target.value })}
-                    className="w-full p-3 bg-white/70 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all"
-                    placeholder="Nom de la formation"
-                    required
-                  />
-                </div>
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">Description</label>
-                  <textarea
-                    value={editingFormation.descriptionformation}
-                    onChange={(e) => setEditingFormation({ ...editingFormation, descriptionformation: e.target.value })}
-                    className="w-full p-3 bg-white/70 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all resize-none"
-                    placeholder="Description de la formation"
-                    rows={4}
-                    required
-                  />
-                </div>
-                <button
-                  type="submit"
-                  className="w-full bg-gradient-to-r from-indigo-600 to-purple-600 text-white px-6 py-3 rounded-xl hover:from-indigo-700 hover:to-purple-700 transition-all duration-300 font-medium shadow-lg hover:shadow-xl transform hover:-translate-y-0.5"
-                >
-                  Enregistrer les modifications
-                </button>
-              </form>
-            </div>
-          </div>
-        )}
-
-        {creatingFormation && (
-          <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm p-4">
-            <div className="bg-white/90 backdrop-blur-sm p-8 rounded-2xl w-full max-w-md shadow-2xl border border-white/20 relative">
-              <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-green-500 to-emerald-600 rounded-t-2xl"></div>
-              <button
-                className="absolute top-4 right-4 p-2 rounded-full hover:bg-gray-100/50 transition-colors"
-                onClick={() => setCreatingFormation(false)}
-              >
-                <X size={20} className="text-gray-600" />
-              </button>
-              <div className="flex items-center gap-3 mb-6">
-                <div className="p-3 bg-gradient-to-br from-green-500 to-emerald-600 rounded-xl">
-                  <Plus className="w-6 h-6 text-white" />
-                </div>
-                <h3 className="text-2xl font-bold text-gray-800">Créer une formation</h3>
-              </div>
-              <form onSubmit={handleCreate} className="space-y-4">
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">Nom de la formation</label>
-                  <input
-                    type="text"
-                    value={creatingFormation.nomformation}
-                    onChange={(e) => setCreatingFormation({ ...creatingFormation, nomformation: e.target.value })}
-                    className="w-full p-3 bg-white/70 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all"
-                    placeholder="Nom de la formation"
-                    required
-                  />
-                </div>
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">Description</label>
-                  <textarea
-                    value={creatingFormation.descriptionformation}
-                    onChange={(e) =>
-                      setCreatingFormation({ ...creatingFormation, descriptionformation: e.target.value })
-                    }
-                    className="w-full p-3 bg-white/70 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all resize-none"
-                    placeholder="Description de la formation"
-                    rows={4}
-                    required
-                  />
-                </div>
-                <button
-                  type="submit"
-                  className="w-full bg-gradient-to-r from-green-600 to-emerald-600 text-white px-6 py-3 rounded-xl hover:from-green-700 hover:to-emerald-700 transition-all duration-300 font-medium shadow-lg hover:shadow-xl transform hover:-translate-y-0.5"
-                >
-                  Créer la formation
-                </button>
-              </form>
-            </div>
+            )}
           </div>
         )}
       </div>
+      {editingFormation && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm p-4">
+          <div className="bg-white/90 backdrop-blur-sm p-8 rounded-2xl w-full max-w-md shadow-2xl border border-white/20 relative overflow-hidden">
+            <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-indigo-500 to-purple-600 rounded-t-2xl"></div>
+            <button
+              className="absolute top-4 right-4 p-2 rounded-full hover:bg-gray-100/50 transition-colors"
+              onClick={() => setEditingFormation(null)}
+            >
+              <X size={20} className="text-gray-600" />
+            </button>
+            <div className="flex items-center gap-3 mb-6">
+              <div className="p-3 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-xl">
+                <Edit className="w-6 h-6 text-white" />
+              </div>
+              <h3 className="text-2xl font-bold text-gray-800">Modifier la formation</h3>
+            </div>
+            <form onSubmit={handleUpdate} className="space-y-4">
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">Nom de la formation</label>
+                <input
+                  type="text"
+                  value={editingFormation.nomformation}
+                  onChange={(e) => setEditingFormation({ ...editingFormation, nomformation: e.target.value })}
+                  className="w-full p-3 bg-white/70 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all"
+                  placeholder="Nom de la formation"
+                  required
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">Description</label>
+                <textarea
+                  value={editingFormation.descriptionformation}
+                  onChange={(e) => setEditingFormation({ ...editingFormation, descriptionformation: e.target.value })}
+                  className="w-full p-3 bg-white/70 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all resize-none"
+                  placeholder="Description de la formation"
+                  rows={4}
+                  required
+                />
+              </div>
+              <button
+                type="submit"
+                className="w-full bg-gradient-to-r from-indigo-600 to-purple-600 text-white px-6 py-3 rounded-xl hover:from-indigo-700 hover:to-purple-700 transition-all duration-300 font-medium shadow-lg hover:shadow-xl transform hover:-translate-y-0.5"
+              >
+                Enregistrer les modifications
+              </button>
+            </form>
+          </div>
+        </div>
+      )}
+      {creatingFormation && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm p-4">
+          <div className="bg-white/90 backdrop-blur-sm p-8 rounded-2xl w-full max-w-md shadow-2xl border border-white/20 relative overflow-hidden">
+            <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-blue-500 to-purple-600 rounded-t-2xl"></div>
+            <button
+              className="absolute top-4 right-4 p-2 rounded-full hover:bg-gray-100/50 transition-colors"
+              onClick={() => setCreatingFormation(false)}
+            >
+              <X size={20} className="text-gray-600" />
+            </button>
+            <div className="flex items-center gap-3 mb-6">
+              <div className="p-3 bg-gradient-to-br from-blue-500 to-purple-600 rounded-xl">
+                <Plus className="w-6 h-6 text-white" />
+              </div>
+              <h3 className="text-2xl font-bold text-gray-800">Créer une formation</h3>
+            </div>
+            <form onSubmit={handleCreate} className="space-y-4">
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">Nom de la formation</label>
+                <input
+                  type="text"
+                  value={creatingFormation.nomformation}
+                  onChange={(e) => setCreatingFormation({ ...creatingFormation, nomformation: e.target.value })}
+                  className="w-full p-3 bg-white/70 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all"
+                  placeholder="Nom de la formation"
+                  required
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">Description</label>
+                <textarea
+                  value={creatingFormation.descriptionformation}
+                  onChange={(e) =>
+                    setCreatingFormation({ ...creatingFormation, descriptionformation: e.target.value })
+                  }
+                  className="w-full p-3 bg-white/70 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all resize-none"
+                  placeholder="Description de la formation"
+                  rows={4}
+                  required
+                />
+              </div>
+              <button
+                type="submit"
+                className="w-full bg-gradient-to-r from-blue-600 to-purple-600 text-white px-6 py-3 rounded-xl hover:from-blue-700 hover:to-purple-700 transition-all duration-300 font-medium shadow-lg hover:shadow-xl transform hover:-translate-y-0.5"
+              >
+                Créer la formation
+              </button>
+            </form>
+          </div>
+        </div>
+      )}
     </div>
   )
 }

@@ -29,7 +29,7 @@ const DiscussionsManager = () => {
   const [showMembre, setShowMembre] = useState(false)
   const [lastMessageUser, setLastMessageUser] = useState({})
   const [lastMessageGroupe, setLastMessageGroupe] = useState({})
-  const [onLineUser, setOnLineUser] = useState({})
+  const [onLineUser, setOnLineUser] = useState([])
 
   // Toggle membres pour création de groupe
   const toggleMember = (id) => {
@@ -283,6 +283,7 @@ const DiscussionsManager = () => {
               getMessages={getMessages}
               getMessagesGroupe={getMessagesGroupe}
               setShowMembre={() => setShowMembre(!showMembre)}
+              getOnleLineUser={getOnleLineUser}
             />
             <MessageList messages={messages} user={user} selectedGroupe={selectedGroupe}
               getGroupeMessage={getMessagesGroupe}

@@ -156,6 +156,20 @@ const FormationListAgent = () => {
             ))}
           </div>
         )}
+
+        {filteredFormations.length === 0 && !isLoading && (
+          <div className="text-center py-20 w-full">
+            <div className="bg-white/80 backdrop-blur-sm rounded-2xl p-12 shadow-lg border border-white/20 max-w-md mx-auto">
+              <FileText className="w-16 h-16 text-gray-400 mx-auto mb-4" />
+              <h3 className="text-xl font-semibold text-gray-900 mb-2">
+                {searchTerm ? "Aucune formation trouvée" : "Aucune formation disponible"}
+              </h3>
+              <p className="text-gray-600 mb-6">
+                {searchTerm ? "Essayez avec d'autres mots-clés" : "Aucune formation disponiblen"}
+              </p>
+            </div>
+          </div>
+        )}
       </div>
     </div>
   )

@@ -184,16 +184,9 @@ const BriefingListAgent = () => {
                   {searchTerm ? "Aucun briefing trouvé" : "Aucun briefing disponible"}
                 </h3>
                 <p className="text-gray-600 mb-6">
-                  {searchTerm ? "Essayez avec d'autres mots-clés" : "Commencez par créer votre premier briefing"}
+                  {searchTerm ? "Essayez avec d'autres mots-clés" : "Aucun briefing disponible"}
                 </p>
-                {!searchTerm && (
-                  <button
-                    onClick={() => setCreatingBriefing({ nombriefing: "", contenubriefing: "" })}
-                    className="bg-gradient-to-r from-blue-600 to-purple-600 text-white px-6 py-3 rounded-xl hover:from-blue-700 hover:to-purple-700 transition-all duration-200 shadow-lg"
-                  >
-                    Créer un briefing
-                  </button>
-                )}
+                
               </div>
             </div>
           )}
