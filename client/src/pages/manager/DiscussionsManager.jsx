@@ -6,12 +6,12 @@ import ChatHeader from "./components/chat/ChatHeader"
 import MessageList from "./components/chat/MessageList"
 import MessageInput from "./components/chat/MessageInput"
 import CreateGroupModal from "./components/chat/CreateGroupModal"
-import io from "socket.io-client"
 import Swal from 'sweetalert2'
 import ListeMembre from "./components/chat/ListeMembre"
+import {useSocket} from "../../context/SocketContext"
 
 // Connexion au serveur Socket.IO
-const socket = io.connect("http://localhost:8000")
+//const socket = io.connect("http://localhost:8000")
 
 const DiscussionsManager = () => {
   const { user } = useContext(AuthContext)
@@ -30,6 +30,7 @@ const DiscussionsManager = () => {
   const [lastMessageUser, setLastMessageUser] = useState({})
   const [lastMessageGroupe, setLastMessageGroupe] = useState({})
   const [onLineUser, setOnLineUser] = useState([])
+  const {socket} = useSocket()
 
   // Toggle membres pour création de groupe
   const toggleMember = (id) => {
@@ -156,7 +157,9 @@ const DiscussionsManager = () => {
   // Rejoindre room Socket.IO
   useEffect(() => {
     if (!user) return
-    socket.emit("joinRoom", user.idutilisateur.toString())
+    if(!socket) return;
+    //socket.emit("joinRoom", user.idutilisateur.toString())
+    socket.emit('GetOnLineUser', user.idutilisateur.toString())
   }, [user])
 
   const getOnleLineUser = (userId)=>{
@@ -165,7 +168,10 @@ const DiscussionsManager = () => {
 
   // Écoute messages entrants
   useEffect(() => {
+    if(!socket) return;
+
     const handleCheckOnLineUser = (user) =>{
+      console.log(user)
       setOnLineUser(user)
     }
 

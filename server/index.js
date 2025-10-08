@@ -96,6 +96,13 @@ io.on("connection", (socket) => {
     io.emit("OnLineUser", Array.from(onlineUsers.keys()));
   });
 
+  socket.on("GetOnLineUser", (userIdRaw) => {
+    const userId = String(userIdRaw);
+    io.emit("OnLineUser", Array.from(onlineUsers.keys()));
+  });
+
+  
+
   // -------Rejoindre une groupe -------
   socket.on("joinGroup", (idGroupe) => {
     socket.join(idGroupe.toString());
