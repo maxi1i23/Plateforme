@@ -41,7 +41,7 @@ export default function LayoutManager() {
 
     const handleMessage = (data) => {
       console.log("💌 Nouveau message reçu:", data);
-      setMessageCount(prev => prev + 1);
+      setMessageCount(prev => parseInt(prev) + 1);
     }
 
     socket.on("NouvelleDemande", handleNouvelleDemande);

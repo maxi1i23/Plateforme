@@ -130,9 +130,10 @@ io.on("connection", (socket) => {
   })
 
   // ---------- MESSAGE PRIVÉ ----------
-  socket.on('SendNouveauMessage', (data) => {
-    io.to(data.idUtilisateurRecepteur?.toString() || data.idgroupe.toString()).emit('NouveauxMessage', data);
-    io.to(data.idUtilisateurExpediteur.toString()).emit("NouveauxMessage", data);
+  socket.on('NouveauxMessage', (data) => {
+    console.log(data)
+    io.to(data.idutilisateurrecepteur?.toString() || data.idgroupe?.toString()).emit('NouveauxMessage', data);
+    io.to(data.idutilisateurexpediteur?.toString()).emit("NouveauxMessage", data);
   })
 
   // ---------- MESSAGE DE GROUPE ----------

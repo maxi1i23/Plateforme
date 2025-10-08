@@ -32,12 +32,14 @@ export default function LayoutAgent() {
 
     const handleNouvellePublication = (data) => {
       console.log(" Nouvelle publication reçue:", data);
-      setNotificationCount(prev => prev + 1);
+      setNotificationCount(prev => parseInt(prev) + 1);
     };
 
     const handleMessage = (data) => {
-      console.log("💌 Nouveau message reçu:", data);
-      setMessageCount(prev => prev + 1);
+      setMessageCount((prev)=>{
+        const up = (parseInt(prev) + 1);
+        return up;
+      });
     }
 
     socket.on("NouvellePublication", handleNouvellePublication);
@@ -45,6 +47,7 @@ export default function LayoutAgent() {
 
     return () => {
       socket.off("NouvellePublication", handleNouvellePublication); // cleanup
+      socket.off("NouveauxMessage", handleMessage); // cleanup
     };
   }, [socket]);
 

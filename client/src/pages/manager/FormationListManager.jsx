@@ -309,8 +309,11 @@ const FormationListManager = () => {
               </div>
             ))}
 
-            {filteredFormations.length === 0 && !isLoading && (
-              <div className="text-center py-20 w-full">
+            
+          </div>
+        )}
+        {filteredFormations.length === 0 && !isLoading && (
+              <div className="text-center py-20 w-full ">
                 <div className="bg-white/80 1backdrop-blur-sm rounded-2xl p-12 shadow-lg border border-white/20 max-w-md mx-auto">
                   <FileText className="w-16 h-16 text-gray-400 mx-auto mb-4" />
                   <h3 className="text-xl font-semibold text-gray-900 mb-2">
@@ -330,8 +333,6 @@ const FormationListManager = () => {
                 </div>
               </div>
             )}
-          </div>
-        )}
       </div>
       {editingFormation && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm p-4">

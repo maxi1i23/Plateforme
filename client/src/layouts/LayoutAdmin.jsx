@@ -39,7 +39,7 @@ export default function LayoutAdmin() {
 
     const handleMessage = (data) => {
       console.log("💌 Nouveau message reçu:", data);
-      setMessageCount(prev => prev + 1);
+      setMessageCount(prev => parseInt(prev) + 1);
     }
 
     socket.on("NouvellePublication", handleNouvellePublication);
@@ -47,6 +47,7 @@ export default function LayoutAdmin() {
 
     return () => {
       socket.off("NouvellePublication", handleNouvellePublication); // cleanup
+      socket.off("NouveauxMessage", handleMessage); // cleanup
     };
   }, [socket]);
 
