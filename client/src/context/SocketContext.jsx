@@ -16,7 +16,8 @@ export const SocketProvider = ({ children }) => {
   useEffect(() => {
     if (!user) return;
 
-    const socketIo = io("http://localhost:8000");
+    const host = "http://localhost:8000"
+    const socketIo = io(host);
 
     // Rejoindre la room personnelle
     socketIo.emit("joinRoom", user.idutilisateur.toString());

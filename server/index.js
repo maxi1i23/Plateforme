@@ -131,7 +131,6 @@ io.on("connection", (socket) => {
 
   // ---------- MESSAGE PRIVÉ ----------
   socket.on('NouveauxMessage', (data) => {
-    console.log(data)
     io.to(data.idutilisateurrecepteur?.toString() || data.idgroupe?.toString()).emit('NouveauxMessage', data);
     io.to(data.idutilisateurexpediteur?.toString()).emit("NouveauxMessage", data);
   })

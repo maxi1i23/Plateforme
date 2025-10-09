@@ -110,8 +110,8 @@ const FormationListManager = () => {
       getFormation()
 
       const notification = await api.post('/notification/add', {
-        raisonNotification: 'Nouvelle formation créée',
-        contenu: `La formation ${creatingFormation.nomformation} a été créée par le manager ${user.idutilisateur}.`
+        raisonNotification: 'Nouvelle formation',
+        contenu: `La formation ${creatingFormation.nomformation} a été créée par le manager ${user.nomutilisateur}.`
       })
 
       // Creation de la notification via socket

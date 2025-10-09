@@ -39,8 +39,8 @@ const DashboardAgent = () => {
       const activitesRes = await api.get("/activiter")
       const performancesRes = await api.get("/activiter/performance")
 
-      const activites = activitesRes.data
-      const performances = performancesRes.data
+      const activites = activitesRes.data.filter((value)=>(value.idagent == user.idutilisateur))
+      const performances = performancesRes.data.filter((value)=>(value.idagent == user.idutilisateur))
 
       const totalCalls = activites.reduce((acc, a) => acc + a.nbappelle, 0)
       const avgSuccessRate =

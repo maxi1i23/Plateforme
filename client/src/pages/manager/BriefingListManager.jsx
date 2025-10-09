@@ -127,8 +127,8 @@ const BriefingListManager = () => {
       getBriefing()
 
       const notification = await api.post('/notification/add', {
-        raisonNotification: 'Nouvelle briefing créée',
-        contenu: `La briefing ${creatingBriefing.nombriefing} a été créée par le manager ${user.idutilisateur}.`
+        raisonNotification: 'Nouvelle briefing',
+        contenu: `La briefing ${creatingBriefing.nombriefing} a été créée par le manager ${user.nomutilisateur}.`
       })
 
       // Creation de la notification via socket

@@ -89,6 +89,14 @@ const AutreDemandeAgent = () => {
             setListDemande((prev) => [response.data, ...prev])
             setCreateDemande(false)
             getDemande();
+            const notification = await api.post('notification/add',
+                {
+                    contenu: `${user.nomutilisateur} vous a fait une demande}`,
+                    raisonNotification: "Nouvelle demande",
+                    idUtilisateurDestinataire: createDemande.idManagerTraiterAutreDemande
+                }
+            )
+            socket.emit('Demande', notification.data)
 
             Swal.fire({
                 icon: "success",

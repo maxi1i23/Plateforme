@@ -18,7 +18,14 @@ const Notification = () => {
         try {
             setLoading(true)
             const response = await api.get("/notification")
-            setNotification(response.data)
+            const result = response.data.filter(
+                (item) => item.idutilisateurdestinataire === null || item.idutilisateurdestinataire == user.idutilisateur
+            );
+            if (user.role == "Admin") {
+                setNotification(response.data)
+            } else {
+                setNotification(result)
+            }
         } catch (err) {
             console.log(err)
         } finally {
@@ -231,8 +238,8 @@ const Notification = () => {
                                         key={index + 1}
                                         onClick={() => paginate(index + 1)}
                                         className={`px-4 py-2 rounded-xl font-medium transition-all duration-200 ${currentPage === index + 1
-                                                ? "bg-gradient-to-r from-blue-600 to-purple-600 text-white shadow-lg"
-                                                : "bg-white/80 backdrop-blur-sm border border-white/20 text-gray-700 hover:shadow-lg hover:scale-105"
+                                            ? "bg-gradient-to-r from-blue-600 to-purple-600 text-white shadow-lg"
+                                            : "bg-white/80 backdrop-blur-sm border border-white/20 text-gray-700 hover:shadow-lg hover:scale-105"
                                             }`}
                                     >
                                         {index + 1}
