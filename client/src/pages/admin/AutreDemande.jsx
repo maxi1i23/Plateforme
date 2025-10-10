@@ -2,7 +2,8 @@ import React, { useState, useEffect, useContext } from "react"
 import api from "../../services/api"
 import { AuthContext } from "../../context/AuthContext"
 import Swal from "sweetalert2"
-import { Search, Plus, X } from "lucide-react";
+import { Search, Trash2, X } from "lucide-react";
+import { useSocket } from "../../context/SocketContext";
 
 const AutreDemandeAgent = () => {
     const [listDemande, setListDemande] = useState([])
@@ -13,6 +14,7 @@ const AutreDemandeAgent = () => {
     const [createDemande, setCreateDemande] = useState(false)
     const [managerList, setManagerList] = useState([])
     const [editingDemande, setEditingDemande] = useState(null)
+    const { socket } = useSocket()
 
     const getDemande = async () => {
         try {
@@ -21,7 +23,7 @@ const AutreDemandeAgent = () => {
             const userData = await api.get("/user")
             // Filtrer seulement les demandes de ce manager
             setListDemande(response.data)
-            setManagerList(userData.data.filter(user => user.roleutilisateur === "Manager"))
+            setManagerList(userData.data)
         } catch (err) {
             console.error("Erreur récupération demandes", err)
             Swal.fire("Erreur", "Impossible de récupérer les demandes", "error")
@@ -87,6 +89,15 @@ const AutreDemandeAgent = () => {
             setListDemande((prev) => [response.data, ...prev])
             setCreateDemande(false)
             getDemande();
+            const notification = await api.post('notification/add',
+                {
+                    contenu: `${user.nomutilisateur} vous a fait une demande}`,
+                    raisonNotification: "Nouvelle demande",
+                    idUtilisateurDestinataire: createDemande.idManagerTraiterAutreDemande
+                }
+            )
+            socket.emit('Demande', notification.data)
+
             Swal.fire({
                 icon: "success",
                 title: "Demande envoyée",
@@ -164,7 +175,7 @@ const AutreDemandeAgent = () => {
             <span
                 className={`px-3 py-1 rounded-full text-xs font-semibold ${statusConfig[status] || "bg-gray-200 text-gray-800"}`}
             >
-                {status}
+                {status == "En attente" ? "Attente" : status}
             </span>
         )
     }
@@ -212,14 +223,6 @@ const AutreDemandeAgent = () => {
                             />
 
                         </div>
-
-                        <button
-                            className="flex items-center justify-center gap-2 bg-gradient-to-r from-blue-600 to-purple-600 text-white px-6 py-3 rounded-xl hover:from-blue-700 hover:to-purple-700 transition-all duration-200 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 font-medium"
-                            onClick={() => setCreateDemande({ nomAutreDemande: "", descriptionAutreDemande: "", dateDemande: "", idManagerTraiterAutreDemande: 0 })}
-                        >
-                            <Plus size={20} />Faire une demande
-                        </button>
-
                     </div>
 
                 </div>
@@ -294,21 +297,17 @@ const AutreDemandeAgent = () => {
                 </div>
 
                 <div className="bg-white/70 backdrop-blur-sm rounded-2xl p-6 border border-white/20 shadow-xl mb-8">
-                    <div className="flex flex-col md:flex-row gap-4">
 
-                        <div className="md:w-48">
-                            <select
-                                value={statusFilter}
-                                onChange={(e) => setStatusFilter(e.target.value)}
-                                className="w-full px-4 py-3 bg-white/50 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all duration-200"
-                            >
-                                <option value="all">Tous les statuts</option>
-                                <option value="En attente">En attente</option>
-                                <option value="Accepter">Acceptées</option>
-                                <option value="Refuser">Refusées</option>
-                            </select>
-                        </div>
-                    </div>
+                    <select
+                        value={statusFilter}
+                        onChange={(e) => setStatusFilter(e.target.value)}
+                        className="w-full px-4 py-3 bg-white/50 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all duration-200">
+                        <option value="all">Tous les statuts</option>
+                        <option value="En attente">En attente</option>
+                        <option value="Accepter">Acceptées</option>
+                        <option value="Refuser">Refusées</option>
+                    </select>
+
                 </div>
 
                 <div className="bg-white/70 backdrop-blur-sm rounded-2xl border border-white/20 shadow-xl overflow-hidden">
@@ -320,7 +319,6 @@ const AutreDemandeAgent = () => {
                                     <th className="px-6 py-4 text-left text-sm font-semibold text-gray-700">Description</th>
                                     <th className="px-6 py-4 text-left text-sm font-semibold text-gray-700">Date demande</th>
                                     <th className="px-6 py-4 text-left text-sm font-semibold text-gray-700">Statut</th>
-                                    <th className="px-6 py-4 text-left text-sm font-semibold text-gray-700">Agent</th>
                                     <th className="px-6 py-4 text-left text-sm font-semibold text-gray-700">Manager</th>
                                     <th className="px-6 py-4 text-left text-sm font-semibold text-gray-700">Action</th>
                                 </tr>
@@ -339,52 +337,25 @@ const AutreDemandeAgent = () => {
                                                 <div className="text-gray-600">{new Date(demande.datedemande).toLocaleDateString("fr-FR")}</div>
                                             </td>
                                             <td className="px-6 py-4">{getStatusBadge(demande.statutautredemande)}</td>
+
                                             <td className="px-6 py-4">
                                                 <div className="flex items-center">
-                                                    <div className="w-8 h-8 bg-gradient-to-br from-blue-400 to-indigo-500 rounded-full flex items-center justify-center text-white text-sm font-bold mr-3">
-                                                        {demande.idagentautredemande.toString().slice(-2)}
-                                                    </div>
-                                                    <span className="">{demande.nomagentautredemande}</span>
-                                                </div>
-                                            </td>
-                                            <td className="px-6 py-4">
-                                                <div className="flex items-center">
-                                                    <div className="w-8 h-8 bg-gradient-to-br from-blue-400 to-indigo-500 rounded-full flex items-center justify-center text-white text-sm font-bold mr-3">
+                                                    <div className="w-8 h-8 bg-gradient-to-br from-blue-400 to-indigo-500 rounded-full flex items-center justify-center text-white text-sm font-semibold mr-3">
                                                         {demande.idmanagertraiterautredemande.toString().slice(-2)}
                                                     </div>
-                                                    <span className="">{demande.nommanagertraiterautredemande}</span>
+                                                    <span className="text-gray-600 font-semibold">{demande.nommanagertraiterautredemande}</span>
                                                 </div>
 
                                             </td>
                                             <td className="px-6 py-4">
-                                                {demande.statutautredemande === "En attente" ? (
-                                                    <div className="flex space-x-2">
-                                                        <button
-                                                            className="px-4 py-2 bg-gradient-to-r from-green-500 to-emerald-600 text-white rounded-lg hover:from-green-600 hover:to-emerald-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 transition-all duration-200 transform hover:scale-105 shadow-lg"
-                                                            onClick={() => {
-                                                                setEditingDemande(
-                                                                    {
-                                                                        ...demande,
-                                                                        nomAutreDemande: demande.nomautredemande,
-                                                                        descriptionAutreDemande: demande.descriptionautredemande,
-                                                                        dateDemande: demande.datedemande,
-                                                                        idManagerTraiterAutreDemande: demande.idmanagertraiterautredemande
-                                                                    }
-                                                                )
-                                                            }}
-                                                        >
-                                                            Modifier
-                                                        </button>
-                                                        <button
-                                                            className="px-4 py-2 bg-gradient-to-r from-red-500 to-rose-600 text-white rounded-lg hover:from-red-600 hover:to-rose-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 transition-all duration-200 transform hover:scale-105 shadow-lg"
-                                                            onClick={() => handleDelete(demande.idautredemande)}
-                                                        >
-                                                            Supprimer
-                                                        </button>
-                                                    </div>
-                                                ) : (
-                                                    <span className="text-gray-500 italic">Déjà traitée</span>
-                                                )}
+                                                <div className="flex space-x-2">
+                                                    <button
+                                                        className="px-4 py-2 bg-gradient-to-r from-red-500 to-rose-600 text-white rounded-lg hover:from-red-600 hover:to-rose-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 transition-all duration-200 transform hover:scale-105 shadow-lg flex items-center justify-center gap-1"
+                                                        onClick={() => handleDelete(demande.idautredemande)}
+                                                    >
+                                                        <Trash2 className="w-4 h-4" /> Supprimer
+                                                    </button>
+                                                </div>
                                             </td>
                                         </tr>
                                     ))
@@ -464,8 +435,7 @@ const AutreDemandeAgent = () => {
                                 </div>
                                 <div>
                                     <label className="block text-sm font-medium text-gray-700 mb-2">Manager</label>
-                                    <select className="w-full p-4 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all duration-200"
-                                    required
+                                    <select className="w-full p-4 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all duration-200" required
                                         value={createDemande.idManagerTraiteraAutreDemande}
                                         onChange={(event) => setCreateDemande({ ...createDemande, idManagerTraiterAutreDemande: Number(event.target.value) })}
                                     >
@@ -522,7 +492,6 @@ const AutreDemandeAgent = () => {
                                         onChange={(event) => setEditingDemande({ ...editingDemande, descriptionAutreDemande: event.target.value })}
                                         className="w-full p-4 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all duration-200"
                                         required
-
                                     />
                                 </div>
                                 <div>
@@ -533,7 +502,6 @@ const AutreDemandeAgent = () => {
                                         onChange={(event) => setEditingDemande({ ...editingDemande, dateDemande: event.target.value })}
                                         className="w-full p-4 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all duration-200"
                                         required
-
                                     />
                                 </div>
 
@@ -541,8 +509,8 @@ const AutreDemandeAgent = () => {
                                     <label className="block text-sm font-medium text-gray-700 mb-2">Manager</label>
                                     <select className="w-full p-4 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all duration-200"
                                         value={editingDemande.idManagerTraiterAutreDemande}
-                                        required
                                         onChange={(event) => setEditingDemande({ ...editingDemande, idManagerTraiterAutreDemande: Number(event.target.value) })}
+                                        required
                                     >
                                         <option value="">Séléctionner le manager</option>
                                         {

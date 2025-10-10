@@ -2,6 +2,7 @@ import React, { useState, useEffect, useContext } from "react"
 import api from "../../services/api"
 import { AuthContext } from "../../context/AuthContext"
 import Swal from "sweetalert2"
+import {Check} from 'lucide-react'
 
 const AutreDemandeListManager = () => {
   const [listDemande, setListDemande] = useState([])
@@ -70,9 +71,9 @@ const AutreDemandeListManager = () => {
 
     return (
       <span
-        className={`px-3 py-1 rounded-full text-xs font-semibold ${statusConfig[status] || "bg-gray-200 text-gray-800"}`}
+        className={`px-3 py-1  rounded-full text-xs font-semibold ${statusConfig[status] || "bg-gray-200 text-gray-800"}`}
       >
-        {status}
+        {status == "En attente" ? "Attente" : status}
       </span>
     )
   }

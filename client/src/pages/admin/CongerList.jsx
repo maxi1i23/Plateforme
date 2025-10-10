@@ -4,7 +4,7 @@ import { useState, useEffect, useContext } from "react";
 import api from "../../services/api";
 import { AuthContext } from "../../context/AuthContext";
 import Swal from "sweetalert2";
-import { Search, Plus, X } from "lucide-react";
+import { Search, Plus, X, Trash2 } from "lucide-react";
 
 const CongerListAgent = () => {
     const [listConger, setListConger] = useState([]);
@@ -175,7 +175,7 @@ const CongerListAgent = () => {
                     status
                 )}`}
             >
-                {status}
+                {status=="en attente" ? "En attente" : status}
             </span>
         );
     };
@@ -223,14 +223,7 @@ const CongerListAgent = () => {
                                 className="pl-10 pr-4 py-3 bg-white/70 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 w-full sm:w-80"
                             />
                         </div>
-                        <button
-
-                            className="flex items-center justify-center gap-2 bg-gradient-to-r from-blue-600 to-purple-600 text-white px-6 py-3 rounded-xl hover:from-blue-700 hover:to-purple-700 transition-all duration-200 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 font-medium"
-                            onClick={() => setDemandeConger({ typeConger: "", dateDebutConger: "", dateFinConger: "", idManagerTraiter: 0 })}
-                        >
-                            <Plus size={20} />Faire une demande de conger
-                        </button>
-
+                        
                     </div>
                 </div>
 
@@ -431,30 +424,14 @@ const CongerListAgent = () => {
                                                 </div>
                                             </td>
                                             <td className="px-6 py-4">
-                                                {conger.statutconger === "en attente" ? (
+                                                
                                                     <div className="flex space-x-2">
-                                                        <button className="px-4 py-2 bg-gradient-to-r from-green-500 to-emerald-600 text-white rounded-lg hover:from-green-600 hover:to-emerald-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 transition-all duration-200 transform hover:scale-105 shadow-lg" onClick={() => {
-                                                            setEditingConger({
-                                                                ...conger,
-                                                                idDemandeConger: conger.iddemandeconger,
-                                                                typeConger: conger.typeconger,
-                                                                dateDebutConger: conger.datedebutconger,
-                                                                dateFinConger: conger.datefinconger,
-                                                                idManagerTraiter: conger.idmanagertraiter
-                                                            });
-
-                                                        }}>
-                                                            Modifier
-                                                        </button>
-                                                        <button className="px-4 py-2 bg-gradient-to-r from-red-500 to-rose-600 text-white rounded-lg hover:from-red-600 hover:to-rose-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 transition-all duration-200 transform hover:scale-105 shadow-lg" onClick={() => handleDelete(conger.iddemandeconger)}>
-                                                            Supprimer
+                                                        
+                                                        <button className="px-4 py-2 bg-gradient-to-r from-red-500 to-rose-600 text-white rounded-lg hover:from-red-600 hover:to-rose-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 transition-all duration-200 transform hover:scale-105 shadow-lg flex items-center gap-1" onClick={() => handleDelete(conger.iddemandeconger)}>
+                                                            <Trash2 className="w-4 h-4"/> Supprimer
                                                         </button>
                                                     </div>
-                                                ) : (
-                                                    <span className="text-gray-500 italic">
-                                                        Déjà traité
-                                                    </span>
-                                                )}
+                                                
                                             </td>
                                         </tr>
                                     ))

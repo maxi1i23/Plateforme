@@ -175,7 +175,7 @@ const AutreDemandeAgent = () => {
             <span
                 className={`px-3 py-1 rounded-full text-xs font-semibold ${statusConfig[status] || "bg-gray-200 text-gray-800"}`}
             >
-                {status}
+                {status=="En attente" ? "Attente" : status}
             </span>
         )
     }
