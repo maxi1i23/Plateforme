@@ -1,13 +1,14 @@
 "use client"
 
 // src/pages/Login.jsx
-import { useState, useContext } from "react"
+import { useState, useContext, use } from "react"
 import { useNavigate } from "react-router-dom"
 import { AuthContext } from "../context/AuthContext"
 import { jwtDecode } from "jwt-decode"
 import vite from "../assets/favicon.png"
 import { Mail, Lock, EyeOff, Eye } from "lucide-react"
 import 'animate.css';
+import ForgotPassword from "../components/ForgotPassword"
 
 export default function Login() {
   const navigate = useNavigate()
@@ -16,6 +17,7 @@ export default function Login() {
   const [password, setPassword] = useState("")
   const [worngConnection, setWorngConnection] = useState(false)
   const [showPassword, setShowPassword] = useState(false)
+  const [forgotPassword, setForgotPassword] = useState(false)
 
   const handleSubmit = async (e) => {
     e.preventDefault()
@@ -67,6 +69,9 @@ export default function Login() {
 
       {/* Right Side - Login Form */}
       <div className="flex-1 flex items-center justify-center p-8">
+        {
+          !forgotPassword ? 
+        
         <div className="w-full max-w-md space-y-8">
           {/* Mobile Logo */}
           <div className="lg:hidden flex justify-center mb-8">
@@ -130,21 +135,25 @@ export default function Login() {
             {/* Submit Button */}
             <button
               type="submit"
-              className="w-full py-3.5 bg-gradient-to-r from-gray-900 to-gray-800 hover:from-gray-800 hover:to-gray-700 text-white font-semibold rounded-xl shadow-lg hover:shadow-xl transition-all duration-200 hover:scale-[1.02] focus:outline-none focus:ring-4 focus:ring-gray-300"
-            >
+              className="w-full py-3.5 bg-gradient-to-r from-gray-900 to-gray-800 hover:from-gray-800 hover:to-gray-700 text-white font-semibold rounded-xl shadow-lg hover:shadow-xl transition-all duration-200 hover:scale-[1.02] focus:outline-none focus:ring-4 focus:ring-gray-300">
              Se connecter
             </button>
             {/* Forgot Password Link */}
             <div className="text-center">
               <button
                 type="button"
-                className="text-sm text-gray-500 hover:text-gray-700 underline decoration-1 underline-offset-2 transition-colors duration-200"
-              >
+                onClick={()=>setForgotPassword(true)}
+                className="text-sm text-gray-500 hover:text-gray-700 underline decoration-1 underline-offset-2 transition-colors duration-200">
                 Mot de passe oublié ?
               </button>
             </div>
           </form>
         </div>
+        :
+        <>
+        <ForgotPassword setForgotPassword={setForgotPassword}/>
+        </>
+        }
       </div>
     </div>
   )

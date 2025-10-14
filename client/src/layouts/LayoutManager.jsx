@@ -1,5 +1,5 @@
 import { Outlet, Link, useLocation } from "react-router-dom"
-import { useContext, useState, useEffect, use } from "react"
+import { useContext, useState, useEffect, use, useRef } from "react"
 import { AuthContext } from "../context/AuthContext"
 import { User, BookOpen, Presentation, CalendarDays, FileText, BarChart3, MessageCircle, LogOut, Menu, X, Bell } from "lucide-react"
 import { useSocket } from '../context/SocketContext'
@@ -15,6 +15,7 @@ export default function LayoutManager() {
   const [messageCount, setMessageCount] = useState(0);
   const [showUserMenu, setShowUserMenu] = useState(false)
   const [showProfile, setShowProfile] = useState(false)
+  const userRef = useRef(null)
 
   const menuItems = [
     { to: "/manager", label: "Tableau de bord", icon: BarChart3 },
@@ -24,6 +25,17 @@ export default function LayoutManager() {
     { to: "/manager/formations", label: "Formations", icon: BookOpen },
   ]
 
+  useEffect(() => {
+    const handleClickOutside = event => {
+      if(userRef.current && !userRef.current.contains(event.target)) {
+        setShowUserMenu(false)
+      }
+    }
+    document.addEventListener('mousedown', handleClickOutside)
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside)
+    }
+  }, [])
   // { to: "/manager/activiter", label: "Activité & Performance", icon: BarChart3 },
 
   useEffect(() => {
@@ -249,7 +261,7 @@ export default function LayoutManager() {
               )}
             </div>
 
-            <div className="relative flex items-center gap-3 cursor-pointer">
+            <div className="relative flex items-center gap-3 cursor-pointer" ref={userRef}>
               <div className="w-11 h-11 bg-gradient-to-r from-gray-600 to-gray-800 rounded-full flex items-center justify-center text-white text-sm font-bold"
                 onClick={() => setShowUserMenu(prev => !prev)}>
                 {user?.nomutilisateur?.charAt(0)?.toUpperCase() || "U"}
@@ -265,7 +277,7 @@ export default function LayoutManager() {
               </div>
               {/* Menu utilisateur */}
               {showUserMenu && (
-                <div className="absolute right-0 top-full mt-2 w-56 bg-white/90 backdrop-blur-md rounded-xl shadow-xl border border-gray-200/50 py-2 z-50 overflow-hidden">
+                <div className="absolute right-0 top-full mt-2 w-auto bg-white/90 backdrop-blur-md rounded-xl shadow-xl border border-gray-200/50 py-2 z-50 overflow-hidden">
                 {/* User Info Header */}
                 <div className="px-4 py-3 border-b border-gray-200/50 bg-gradient-to-r from-gray-50 to-white">
                   <div className="flex items-center gap-3">

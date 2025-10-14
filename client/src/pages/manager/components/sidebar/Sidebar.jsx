@@ -4,6 +4,7 @@ const Sidebar = ({ users, groupes, searchTerm, setSearchTerm, setSelectedUser, s
   onCreateGroup, user, lastMessageUser, lastMessageGroupe, getOnleLineUser
 }) => {
   const filteredUsers = users.filter(u => u.nomutilisateur.toLowerCase().includes(searchTerm.toLowerCase()))
+  console.log(lastMessageUser)
 
   return (
     <div className={`${selectedUser || selectedGroupe ? "hidden md:flex" : "flex"}
@@ -35,9 +36,13 @@ const Sidebar = ({ users, groupes, searchTerm, setSearchTerm, setSelectedUser, s
 
       {/* Groupes */}
       <div className="flex-1 overflow-y-auto">
-        <h3 className="text-sm font-semibold text-gray-700 dark:text-gray-300 px-4 mt-4 mb-2">
-          Groupes
-        </h3>
+        {
+          groupes.length > 0 && (
+            <h3 className="text-sm font-semibold text-gray-700 dark:text-gray-300 px-4 mt-4 mb-2">
+              Groupes
+            </h3>
+          )
+        }
         {groupes.map(g => (
           <div key={g.idgroupe}
             onClick={() => { setSelectedGroupe(g); setSelectedUser(null) }}
@@ -91,8 +96,8 @@ const Sidebar = ({ users, groupes, searchTerm, setSearchTerm, setSelectedUser, s
                   {lastMessageUser[u.idutilisateur] ? (
                     <>
                       {lastMessageUser[u.idutilisateur].idutilisateurexpediteur === user.idutilisateur
-                        ? <>Vous : {lastMessageUser[u.idutilisateur].contenumessage}</>
-                        : <strong>{lastMessageUser[u.idutilisateur].contenumessage}</strong>
+                        ? <>Vous : {lastMessageUser[u.idutilisateur].contenumessage || "Vous avez envoyé un fichier"}</>
+                        : <span className="font-semibold">{lastMessageUser[u.idutilisateur].contenumessage || u.nomutilisateur + " a envoyé un fichier"}</span>
                       }
                     </>
                   ) : u.roleutilisateur}

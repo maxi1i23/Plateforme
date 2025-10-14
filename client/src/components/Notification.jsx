@@ -19,7 +19,7 @@ const Notification = () => {
             setLoading(true)
             const response = await api.get("/notification")
             const result = response.data.filter(
-                (item) => item.idutilisateurdestinataire === null || item.idutilisateurdestinataire == user.idutilisateur
+                (item) => item.idutilisateurdestinataire == user.idutilisateur && item.raisonnotification != "Mot de passe oublié"
             );
             if (user.role == "Admin") {
                 setNotification(response.data)

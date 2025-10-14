@@ -1,6 +1,6 @@
 // src/layouts/LayoutAdmin.jsx
 import { Outlet, Link, useLocation } from "react-router-dom"
-import { useContext, useState, useEffect, use } from "react"
+import { useContext, useState, useEffect, use, useRef } from "react"
 import { AuthContext } from "../context/AuthContext"
 import { useSocket } from "../context/SocketContext"
 import api from "../services/api"
@@ -16,6 +16,7 @@ export default function LayoutAdmin() {
   const [notificationCount, setNotificationCount] = useState(0);
   const [messageCount, setMessageCount] = useState(0);
   const [showProfile, setShowProfile] = useState(false)
+  const userRef = useRef(null)
 
   const menuItems = [
     { to: "/admin", label: "Tableau de bord", icon: LayoutDashboard },
@@ -62,6 +63,18 @@ export default function LayoutAdmin() {
     };
     fetchUnreadCount();
   }, []);
+
+  useEffect(() => {
+    const handleClickOutside = event => {
+      if(userRef.current && !userRef.current.contains(event.target)) {
+        setShowUserMenu(false)
+      }
+    }
+    document.addEventListener('mousedown', handleClickOutside)
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside)
+    }
+  }, [])
 
   const updateMessageCount = async () => {
     try {
@@ -246,7 +259,7 @@ export default function LayoutAdmin() {
               )}
             </div>
 
-            <div className="relative flex items-center gap-3 cursor-pointer">
+            <div className="relative flex items-center gap-3 cursor-pointer" ref={userRef}>
               {/* Avatar */}
               <div className="w-11 h-11 bg-gradient-to-r from-gray-600 to-gray-800 rounded-full flex items-center justify-center text-white text-sm font-bold cursor-pointer" 
                 onClick={() => setShowUserMenu(prev => !prev)}>
@@ -264,7 +277,7 @@ export default function LayoutAdmin() {
 
               {/* Menu utilisateur */}
               {showUserMenu && (
-                <div className="absolute right-0 top-full mt-2 w-56 bg-white/90 backdrop-blur-md rounded-xl shadow-xl border border-gray-200/50 py-2 z-50 overflow-hidden">
+                <div className="absolute right-0 top-full mt-2 w-auto bg-white/90 backdrop-blur-md rounded-xl shadow-xl border border-gray-200/50 py-2 z-50 overflow-hidden" >
                 {/* User Info Header */}
                 <div className="px-4 py-3 border-b border-gray-200/50 bg-gradient-to-r from-gray-50 to-white">
                   <div className="flex items-center gap-3">
