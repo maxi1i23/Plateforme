@@ -127,3 +127,6 @@ CREATE TABLE messageSupprimer (
     idUtilisateur INTEGER REFERENCES utilisateur(idUtilisateur) ON DELETE CASCADE ON UPDATE CASCADE,
     dateSuppression TIMESTAMP DEFAULT now()
 );
+
+ALTER TABLE groupe
+ADD COLUMN idUtilisateurCreateur INTEGER REFERENCES utilisateur(idUtilisateur) ON DELETE SET NULL;

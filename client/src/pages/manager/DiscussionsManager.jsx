@@ -8,7 +8,7 @@ import MessageInput from "./components/chat/MessageInput"
 import CreateGroupModal from "./components/chat/CreateGroupModal"
 import Swal from 'sweetalert2'
 import ListeMembre from "./components/chat/ListeMembre"
-import {useSocket} from "../../context/SocketContext"
+import { useSocket } from "../../context/SocketContext"
 
 // Connexion au serveur Socket.IO
 //const socket = io.connect("http://localhost:8000")
@@ -30,7 +30,7 @@ const DiscussionsManager = () => {
   const [lastMessageUser, setLastMessageUser] = useState({})
   const [lastMessageGroupe, setLastMessageGroupe] = useState({})
   const [onLineUser, setOnLineUser] = useState([])
-  const {socket} = useSocket()
+  const { socket } = useSocket()
 
   // Toggle membres pour création de groupe
   const toggleMember = (id) => {
@@ -55,17 +55,29 @@ const DiscussionsManager = () => {
   }
 
   // Quitter un groupe 
-  const handleQuitte = async () => {
+  const handleQuitte = () => {
     try {
-      await api.delete("/groupe/quitter/" + selectedGroupe.idgroupe)
-      Swal.fire({
-        title: "Succés",
-        icon: "success",
-        text: "Vous avez quitter le groupe !",
-        timer: 1500
-      })
-      getGroupe();
 
+      Swal.fire({
+        title: "Etes-vous sûr?",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Oui, je quitte!",
+        cancelButtonText: "Non, annuler!"
+      }).then(async (result) => {
+        if (result.isConfirmed) {
+          await api.delete("/groupe/quitter/" + selectedGroupe.idgroupe)
+          Swal.fire({
+            title: "Succés",
+            icon: "success",
+            text: "Vous avez quitter le groupe !",
+            timer: 1500
+          })
+          getGroupe();
+        }
+      })
     } catch (error) {
       console.log(error.message)
       Swal.fire({
@@ -157,26 +169,24 @@ const DiscussionsManager = () => {
   // Rejoindre room Socket.IO
   useEffect(() => {
     if (!user) return
-    if(!socket) return;
+    if (!socket) return;
     //socket.emit("joinRoom", user.idutilisateur.toString())
     socket.emit('GetOnLineUser', user.idutilisateur.toString())
   }, [user])
 
-  const getOnleLineUser = (userId)=>{
+  const getOnleLineUser = (userId) => {
     return onLineUser.includes(String(userId)) ? true : false;
   }
 
   // Écoute messages entrants
   useEffect(() => {
-    if(!socket) return;
+    if (!socket) return;
 
-    const handleCheckOnLineUser = (user) =>{
-      console.log(user)
+    const handleCheckOnLineUser = (user) => {
       setOnLineUser(user)
     }
 
     const handleReceiveMessage = (msg) => {
-      console.log(msg)
       if (
         (selectedUser && (msg.idutilisateurexpediteur === selectedUser.idutilisateur
           || msg.idutilisateurrecepteur === selectedUser.idutilisateur))
@@ -188,7 +198,6 @@ const DiscussionsManager = () => {
         setMessages(prev =>
           prev.find(m => Number(m.idmessage) === Number(msg.idmessage)) ? prev : [...prev, msg]
         )
-        console.log('ok')
       }
 
       const otherUserId = msg.idutilisateurexpediteur === user.idutilisateur ? msg.idutilisateurrecepteur : msg.idutilisateurexpediteur;
@@ -326,7 +335,10 @@ const DiscussionsManager = () => {
         <ListeMembre
           isOpen={showMembre}
           onClose={() => setShowMembre(!showMembre)}
-          idGroupe={selectedGroupe.idgroupe} />
+          idGroupe={selectedGroupe.idgroupe}
+          user={user}
+          setSelectedUser={setSelectedUser}
+          setSelectedGroupe={setSelectedGroupe} />
       )}
     </div>
   )

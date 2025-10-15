@@ -1,8 +1,8 @@
 const pool = require('../db/db');
 
 module.exports = {
-    createGroupe : async (nomGroupe)=> {
-        const result = await pool.query(`INSERT INTO groupe (nomGroupe) VALUES ($1) RETURNING *`, [nomGroupe]);
+    createGroupe : async (nomGroupe, idUtilisateurCreateur)=> {
+        const result = await pool.query(`INSERT INTO groupe (nomGroupe, idUtilisateurCreateur) VALUES ($1, $2) RETURNING *`, [nomGroupe, idUtilisateurCreateur]);
         return result;
     },
     

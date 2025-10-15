@@ -182,6 +182,8 @@ module.exports.io = io
 // ---------------------
 // Démarrage du serveur
 // ---------------------
-server.listen(8000, async () => {
+const port = process.env.PORT || 5000;
+server.listen(port, async () => {
+  console.log(`Serveur démarré sur le port ${port}`);
   createDefaultAdmin()
 })

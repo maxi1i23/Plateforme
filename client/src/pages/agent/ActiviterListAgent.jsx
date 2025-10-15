@@ -41,7 +41,6 @@ const ActiviterListAgent = () => {
     try {
       const response = await api.get("/activiter/performance")
       setPerformances(response.data.filter((val)=>(val.idagent == user.idutilisateur)))
-      console.log(response.data.filter((val)=>(val.idagent == user.idutilisateur)))
     } catch (error) {
       console.error("Erreur récupération performances :", error)
       Swal.fire("Erreur", "Impossible de récupérer les performances", "error")

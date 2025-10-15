@@ -22,6 +22,7 @@ const ForgotPassword = ({ setForgotPassword }) => {
             console.log(error)
         }
         setEmail('')
+        setForgotPassword(false)
     }
 
     return (

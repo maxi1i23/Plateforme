@@ -4,7 +4,6 @@ const Sidebar = ({ users, groupes, searchTerm, setSearchTerm, setSelectedUser, s
   onCreateGroup, user, lastMessageUser, lastMessageGroupe, getOnleLineUser
 }) => {
   const filteredUsers = users.filter(u => u.nomutilisateur.toLowerCase().includes(searchTerm.toLowerCase()))
-  console.log(lastMessageUser)
 
   return (
     <div className={`${selectedUser || selectedGroupe ? "hidden md:flex" : "flex"}

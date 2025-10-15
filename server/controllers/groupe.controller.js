@@ -4,13 +4,14 @@ const GroupeMembre = require('../models/groupeMembre.model')
 
 exports.creerGroupe = async (req, res) => {
     try {
-        const { nomGroupe, membres } = req.body; 
+        const { nomGroupe, membres } = req.body;
+        const idUtilisateurCreateur = req.user.id;
         // membres = [1,2,3] par exemple
         if(nomGroupe === undefined || nomGroupe.trim() === ""){
             return res.status(400).json({error:"Le nom du groupe est obligatoire."})
         }
 
-        const groupe = await Groupe.createGroupe(nomGroupe)
+        const groupe = await Groupe.createGroupe(nomGroupe, idUtilisateurCreateur)
 
         const idGroupe = groupe.rows[0].idgroupe;
 

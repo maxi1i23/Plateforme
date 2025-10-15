@@ -1,7 +1,7 @@
 // src/services/api.js
 import axios from 'axios';
 
-const baseURL = 'http://localhost:8000/api'
+const baseURL = import.meta.env.VITE_API_URL
 const api = axios.create({
   baseURL: baseURL, // adapte si besoin
   withCredentials: true, // si backend utilise cookie httpOnly

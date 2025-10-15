@@ -3,11 +3,16 @@ import { useEffect, useState } from "react"
 import api from "../../../../services/api"
 import Swal from "sweetalert2"
 
-const ListeMembre = ({ isOpen, onClose, idGroupe }) => {
+const ListeMembre = ({ isOpen, onClose, idGroupe, user, setSelectedUser, setSelectedGroupe }) => {
   const [listeMembre, setListeMembre] = useState([])
+  const [groupe, setGroupe] = useState([])
 
   const getListeMembre = async () => {
     const response = await api.get(`groupe/${idGroupe}/membres`)
+    const result = await api.get(`groupe/`)
+    setGroupe(
+      result.data.filter((gp) => (gp.idgroupe === idGroupe))
+    )
     setListeMembre(response.data)
   }
 
@@ -83,17 +88,29 @@ const ListeMembre = ({ isOpen, onClose, idGroupe }) => {
 
                 {/* Boutons pour retirer ou envoyer un message à un membre */}
                 <div className="flex items-center space-x-2">
-                  <button
-                    onClick={() => handleRetire(membre.idMembre)}
-                    className="p-2 rounded-lg text-red-500 hover:bg-gradient-to-br hover:from-red-50 hover:to-red-100 dark:hover:from-red-900/20 dark:hover:to-red-800/20 transition-all duration-200 hover:scale-110"
-                    title="Retirer le membre"
-                  >
-                    <MinusCircle className="w-5 h-5" />
-                  </button>
+                  {
+                    user.idutilisateur == groupe[0].idutilisateurcreateur && (
+                      <button
+                        onClick={() => handleRetire(membre.idMembre)}
+                        className="p-2 rounded-lg text-red-500 hover:bg-gradient-to-br hover:from-red-50 hover:to-red-100 dark:hover:from-red-900/20 dark:hover:to-red-800/20 transition-all duration-200 hover:scale-110"
+                        title="Retirer le membre">
+                        <MinusCircle className="w-5 h-5" />
+                      </button>
+                    )}
+
                   <button
                     className="p-2 rounded-lg text-blue-500 hover:bg-gradient-to-br hover:from-blue-50 hover:to-blue-100 dark:hover:from-blue-900/20 dark:hover:to-blue-800/20 transition-all duration-200 hover:scale-110"
-                    title="Envoyer un message"
-                  >
+                    title="Envoyer un message" onClick={() => {
+                      if(user.idutilisateur == membre.idUtilisateur){
+                        return;
+                      }
+                      setSelectedUser({
+                        idutilisateur: membre.idUtilisateur,
+                        nomutilisateur: membre.nomUtilisateur,
+                        roleutilisateur: membre.roleUtilisateur})
+                      setSelectedGroupe(null)
+                      onClose()
+                    }}>
                     <MessageCircle className="w-5 h-5" />
                   </button>
                 </div>

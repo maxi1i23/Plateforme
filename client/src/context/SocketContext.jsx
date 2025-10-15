@@ -16,7 +16,7 @@ export const SocketProvider = ({ children }) => {
   useEffect(() => {
     if (!user) return;
 
-    const host = "http://localhost:8000"
+    const host = import.meta.env.VITE_SOCKET
     const socketIo = io(host);
 
     // Rejoindre la room personnelle

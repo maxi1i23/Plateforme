@@ -69,7 +69,7 @@ const ChatHeader = ({ selectedUser, selectedGroupe, onBack, onQuit, getMessages,
       <div className="w-10 h-10 bg-gradient-to-br from-blue-500 to-purple-600 rounded-full 
         flex items-center justify-center text-white font-semibold">
         {(selectedUser ? selectedUser.nomutilisateur : selectedGroupe.nomgroupe)
-          .charAt(0)
+          ?.charAt(0)
           .toUpperCase()}
       </div>
 

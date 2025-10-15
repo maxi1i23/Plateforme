@@ -17,7 +17,7 @@ module.exports = {
     },
 
     deleteGroupeMembre: async (idGroupe, idMembre) => {
-        const result =await pool.query('DELETE FROM groupeMembre WHERE idGroupe=$1 AND idMembre=$2',
+        const result =await pool.query('DELETE FROM groupeMembre WHERE idGroupe=$1 AND idUtilisateur=$2',
             [idGroupe,idMembre]);
         return result.rowCount > 0;
     }
