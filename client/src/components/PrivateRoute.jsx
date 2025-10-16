@@ -4,11 +4,23 @@ import { useContext } from 'react';
 import { AuthContext } from '../context/AuthContext';
 
 const PrivateRoute = ({ allowedRoles }) => {
-  const { user } = useContext(AuthContext);
+  const { user, loading } = useContext(AuthContext);
+  
+  // Attendre que le chargement soit terminé avant de rediriger
+  if (loading) {
+    return <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
+      Chargement...
+    </div>;
+  }
+  
+  // Si pas d'utilisateur après le chargement, rediriger vers login
   if (!user || !user.token) return <Navigate to="/" replace />;
+  
+  // Vérifier les rôles autorisés
   if (allowedRoles && allowedRoles.length && !allowedRoles.includes(user.role)) {
     return <Navigate to="/unauthorized" replace />;
   }
+  
   return <Outlet />;
 };
 

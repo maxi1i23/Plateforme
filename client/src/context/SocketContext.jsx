@@ -20,7 +20,7 @@ export const SocketProvider = ({ children }) => {
     const socketIo = io(host);
 
     // Rejoindre la room personnelle
-    socketIo.emit("joinRoom", user.idutilisateur.toString());
+    socketIo.emit("joinRoom", user.idutilisateur?.toString());
 
     setSocket(socketIo);
 

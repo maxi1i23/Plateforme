@@ -15,27 +15,62 @@ export function AuthProvider({ children }) {
     if (token && parsedUser) return { token, role, ...parsedUser };
     return null;
   });
+  
+  const [loading, setLoading] = useState(true); // État de chargement
 
   useEffect(() => {
-    const token = localStorage.getItem('token');
-    if (token && !user) {
-      try {
-        const decoded = jwtDecode(token);
-        const storedUser = localStorage.getItem('user');
-        const parsedUser = storedUser ? JSON.parse(storedUser) : {};
+    const loadUser = async () => {
+      // Charger depuis localStorage
+      const token = localStorage.getItem('token');
+      const storedUser = localStorage.getItem('user');
+      const parsedUser = storedUser ? JSON.parse(storedUser) : null;
 
-        setUser({
-          token,
-          role: decoded.role || localStorage.getItem('role'),
-          id: decoded.id,
-          nomutilisateur: parsedUser.nomutilisateur || decoded.nomUtilisateur,
-          email: parsedUser.emailutilisateur || decoded.email,
-        });
-      } catch (e) {
-        console.warn('token invalide', e);
-        logout();
+      // Si on a déjà un token valide dans localStorage, on l'utilise
+      if (token && parsedUser) {
+        try {
+          const decoded = jwtDecode(token);
+          
+          // Vérifier si le token n'est pas expiré
+          if (decoded.exp && decoded.exp * 1000 < Date.now()) {
+            console.warn('Token expiré');
+            logout();
+            return;
+          }
+
+          // Charger l'utilisateur depuis localStorage
+          setUser({
+            token,
+            role: decoded.role || localStorage.getItem('role'),
+            id: decoded.id,
+            idutilisateur: decoded.id,
+            nomutilisateur: parsedUser.nomutilisateur || decoded.nomUtilisateur,
+            email: parsedUser.emailutilisateur || decoded.email,
+            emailutilisateur: parsedUser.emailutilisateur || decoded.email,
+          });
+        } catch (err) {
+          console.warn('Token invalide localStorage:', err);
+          logout();
+        }
+      } else {
+        // Pas de token dans localStorage, on est déconnecté
+        setUser(null);
       }
-    }
+    };
+
+    loadUser().finally(() => setLoading(false)); // Marquer comme chargé après l'init
+
+    // 🔄 Synchroniser entre les onglets : écouter les changements de localStorage
+    const handleStorageChange = (e) => {
+      if (e.key === 'token' || e.key === 'user') {
+        loadUser(); // Recharger l'utilisateur quand le localStorage change
+      }
+    };
+
+    window.addEventListener('storage', handleStorageChange);
+    
+    return () => {
+      window.removeEventListener('storage', handleStorageChange);
+    };
   }, []);
 
   const login = async (email, password) => {
@@ -71,7 +106,7 @@ export function AuthProvider({ children }) {
   };
 
   return (
-    <AuthContext.Provider value={{ user, login, logout }}>
+    <AuthContext.Provider value={{ user, login, logout, loading }}>
       {children}
     </AuthContext.Provider>
   );

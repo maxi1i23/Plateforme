@@ -62,7 +62,12 @@ exports.login = async (req, res) => {
      const { motdepasseutilisateur, ...safeUser } = existingUser;
  
      // Enregistrer le token dans les cookies
-     res.cookie("jwtToken", token, { httpOnly: true });
+     res.cookie("jwtToken", token, { 
+      httpOnly: true,
+      sameSite: "lax", // Changé de "strict" à "lax" pour permettre navigation entre onglets
+      secure: process.env.NODE_ENV === "production",
+      maxAge: 24 * 60 * 60 * 1000, // 24h en millisecondes
+    });
  
      console.log("Connexion réussie");
      res.status(200).json({
@@ -79,3 +84,16 @@ exports.logout = (req,res) => {
    res.clearCookie('jwtToken');
    res.status(200).json({ message: 'Déconnecté avec succès' });
 }
+
+// Pour renvoyer si le token existe ou pas et qui est l'utilisateur connecté
+exports.me = (req, res) => {
+  try {
+    const token = req.cookies.jwtToken;
+    if (!token) return res.status(401).json({ error: 'Non connecté' });
+
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    res.status(200).json({ user: decoded });
+  } catch (err) {
+    res.status(401).json({ error: 'Token invalide' });
+  }
+};

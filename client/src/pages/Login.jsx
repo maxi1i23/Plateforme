@@ -1,7 +1,7 @@
 "use client"
 
 // src/pages/Login.jsx
-import { useState, useContext, use } from "react"
+import { useState, useContext, useEffect } from "react"
 import { useNavigate } from "react-router-dom"
 import { AuthContext } from "../context/AuthContext"
 import { jwtDecode } from "jwt-decode"
@@ -12,12 +12,22 @@ import ForgotPassword from "../components/ForgotPassword"
 
 export default function Login() {
   const navigate = useNavigate()
-  const { login } = useContext(AuthContext)
+  const { login, user } = useContext(AuthContext)
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
   const [worngConnection, setWorngConnection] = useState(false)
   const [showPassword, setShowPassword] = useState(false)
   const [forgotPassword, setForgotPassword] = useState(false)
+
+  // Rediriger si l'utilisateur est déjà connecté
+  useEffect(() => {
+    if (user && user.token) {
+      const role = user.role || user.roleutilisateur;
+      if (role === "Admin") navigate("/admin", { replace: true });
+      else if (role === "Manager") navigate("/manager", { replace: true });
+      else navigate("/agent", { replace: true });
+    }
+  }, [user, navigate]);
 
   const handleSubmit = async (e) => {
     e.preventDefault()
