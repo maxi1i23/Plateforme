@@ -90,6 +90,14 @@ const FormationListManager = () => {
         descriptionFormation: creatingFormation.descriptionformation,
         idUtilisateurManager: user.idutilisateur,
       })
+
+      Swal.fire({
+        icon: "success",
+        title: "Formation publiée avec succès",
+        showConfirmButton: false,
+        timer: 1500,
+      })
+
       setFormationList((prev) => [response.data, ...prev])
       setCreatingFormation(false)
       getFormation()
