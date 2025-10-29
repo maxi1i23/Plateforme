@@ -356,8 +356,8 @@ const ActiviterListAgent = () => {
             </div>
           </div>
         </div>
-
-        {showForm && (
+      </div>
+      {showForm && (
           <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm p-4">
             <div className="bg-white rounded-2xl w-full max-w-2xl shadow-2xl relative transform transition-all duration-300 scale-100">
               <div className="bg-gradient-to-r from-indigo-600 to-purple-600 p-6 rounded-t-2xl">
@@ -447,7 +447,6 @@ const ActiviterListAgent = () => {
             </div>
           </div>
         )}
-      </div>
     </div>
   )
 }
