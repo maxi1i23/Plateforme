@@ -46,6 +46,7 @@ export function AuthProvider({ children }) {
             nomutilisateur: parsedUser.nomutilisateur || decoded.nomUtilisateur,
             email: parsedUser.emailutilisateur || decoded.email,
             emailutilisateur: parsedUser.emailutilisateur || decoded.email,
+            dateinscription : parsedUser.dateinscription || null
           });
         } catch (err) {
           console.warn('Token invalide localStorage:', err);
@@ -89,7 +90,7 @@ export function AuthProvider({ children }) {
       if (userFromServer) {
         localStorage.setItem('user', JSON.stringify(userFromServer));
       }
-  
+  console.log(JSON.stringify(userFromServer))
       setUser({ token, role, ...userFromServer });
     }
   

@@ -145,7 +145,7 @@ const ProfileModal = ({ user, onClose, logout }) => {
                         </div>
                         <div className="flex-1">
                             <p className="text-xs text-gray-500 font-medium">Rôle</p>
-                            <p className="text-sm text-gray-800 font-semibold">{user.roleutilisateur}</p>
+                            <p className="text-sm text-gray-800 font-semibold">{user.role}</p>
                         </div>
                     </div>
 
