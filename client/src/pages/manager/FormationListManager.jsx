@@ -19,6 +19,7 @@ import {
 import { AuthContext } from "../../context/AuthContext"
 import Swal from "sweetalert2"
 import { useSocket } from '../../context/SocketContext'
+import Display from "../../components/Display"
 
 const FormationListManager = () => {
   const [formationList, setFormationList] = useState([])
@@ -30,6 +31,7 @@ const FormationListManager = () => {
   const [isLoading, setIsLoading] = useState(true)
   const { user } = useContext(AuthContext)
   const { socket } = useSocket() // Initialisation du socke
+  const [selectedFormation, setSelectedFormation] = useState(null)
 
   // 🔎 Correction de la recherche (évite les erreurs undefined)
   useEffect(() => {
@@ -264,7 +266,7 @@ const FormationListManager = () => {
                   </div>
                 )}
 
-                <div className="mb-4">
+                <div className="mb-4" onClick={() => setSelectedFormation(formation)}>
                   <div className="flex items-center gap-3 mb-3">
                     <div className="p-2 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-lg">
                       <FileText className="w-5 h-5 text-white" />
@@ -309,30 +311,30 @@ const FormationListManager = () => {
               </div>
             ))}
 
-            
+
           </div>
         )}
         {filteredFormations.length === 0 && !isLoading && (
-              <div className="text-center py-20 w-full ">
-                <div className="bg-white/80 1backdrop-blur-sm rounded-2xl p-12 shadow-lg border border-white/20 max-w-md mx-auto">
-                  <FileText className="w-16 h-16 text-gray-400 mx-auto mb-4" />
-                  <h3 className="text-xl font-semibold text-gray-900 mb-2">
-                    {searchTerm ? "Aucune formation trouvée" : "Aucune formation disponible"}
-                  </h3>
-                  <p className="text-gray-600 mb-6">
-                    {searchTerm ? "Essayez avec d'autres mots-clés" : "Commencez par créer votre premier formation"}
-                  </p>
-                  {!searchTerm && (
-                    <button
-                      onClick={() => setCreatingFormation({ nomformation: "", descriptionformation: "" })}
-                      className="bg-gradient-to-r from-blue-600 to-purple-600 text-white px-6 py-3 rounded-xl hover:from-blue-700 hover:to-purple-700 transition-all duration-200 shadow-lg"
-                    >
-                      Créer un Formation
-                    </button>
-                  )}
-                </div>
-              </div>
-            )}
+          <div className="text-center py-20 w-full ">
+            <div className="bg-white/80 1backdrop-blur-sm rounded-2xl p-12 shadow-lg border border-white/20 max-w-md mx-auto">
+              <FileText className="w-16 h-16 text-gray-400 mx-auto mb-4" />
+              <h3 className="text-xl font-semibold text-gray-900 mb-2">
+                {searchTerm ? "Aucune formation trouvée" : "Aucune formation disponible"}
+              </h3>
+              <p className="text-gray-600 mb-6">
+                {searchTerm ? "Essayez avec d'autres mots-clés" : "Commencez par créer votre premier formation"}
+              </p>
+              {!searchTerm && (
+                <button
+                  onClick={() => setCreatingFormation({ nomformation: "", descriptionformation: "" })}
+                  className="bg-gradient-to-r from-blue-600 to-purple-600 text-white px-6 py-3 rounded-xl hover:from-blue-700 hover:to-purple-700 transition-all duration-200 shadow-lg"
+                >
+                  Créer un Formation
+                </button>
+              )}
+            </div>
+          </div>
+        )}
       </div>
       {editingFormation && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm p-4">
@@ -434,6 +436,12 @@ const FormationListManager = () => {
           </div>
         </div>
       )}
+      {
+        selectedFormation && (
+          <Display formation={selectedFormation} setFormation={setSelectedFormation} />
+        )
+      }
+
     </div>
   )
 }
