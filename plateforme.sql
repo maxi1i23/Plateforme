@@ -130,3 +130,11 @@ CREATE TABLE messageSupprimer (
 
 ALTER TABLE groupe
 ADD COLUMN idUtilisateurCreateur INTEGER REFERENCES utilisateur(idUtilisateur) ON DELETE SET NULL;
+
+CREATE TABLE avisBriefing (
+  idAvis SERIAL PRIMARY KEY,
+  idBriefing INT REFERENCES briefing(idBriefing) ON DELETE CASCADE ON UPDATE CASCADE,
+  idUtilisateurAvis INT REFERENCES utilisateur(idUtilisateur) ON DELETE CASCADE ON UPDATE CASCADE,
+  commentaire TEXT,
+  dateAvis TIMESTAMP DEFAULT now()
+);

@@ -21,6 +21,7 @@ const demandeCongerRouter = require("./routes/demandeConger.routes")
 const messageRouter = require("./routes/message.routes")
 const activiterRouter = require("./routes/activiter.routes")
 const groupeRouter = require("./routes/groupe.routes")
+const avisRouter = require("./routes/avis.routes")
 
 // Fonction création admin par défaut
 const createDefaultAdmin = require("./function/createAdmin")
@@ -56,6 +57,7 @@ app.use("/api/demandeConger", demandeCongerRouter)
 app.use("/api/message", messageRouter)
 app.use("/api/activiter", activiterRouter)
 app.use("/api/groupe", groupeRouter)
+app.use("/api/avis", avisRouter)
 
 // ---------------------
 // Serveur HTTP + Socket.IO
