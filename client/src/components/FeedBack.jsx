@@ -1,9 +1,9 @@
 import React, { useState } from "react";
-import { User, Send, X, Star } from "lucide-react";
+import { User, Send, X, Star, Trash } from "lucide-react";
 import api from "../services/api";
 import { useEffect } from "react";
 
-const FeedBack = ({onClose, briefing }) => {
+const FeedBack = ({ onClose, briefing, user }) => {
   const [commentaire, setCommentaire] = useState("");
   const [feedbacks, setFeedbacks] = useState([]);
 
@@ -16,18 +16,18 @@ const FeedBack = ({onClose, briefing }) => {
     }
   }
 
-  useEffect(()=>{
+  useEffect(() => {
     fetchFeedbacks();
-  },[])
+  }, [])
 
-  const onSubmit = async() => {
+  const onSubmit = async () => {
     // Logique pour envoyer le feedback au serveur ou le traiter
     try {
-        const response = await api.post("/avis", { commentaire, idBriefing: briefing.idbriefing });
-        let newFeedback = response.data;
-        fetchFeedbacks()
+      const response = await api.post("/avis", { commentaire, idBriefing: briefing.idbriefing });
+      let newFeedback = response.data;
+      fetchFeedbacks()
     } catch (error) {
-        console.error("Erreur lors de l'envoi du feedback :", error);
+      console.error("Erreur lors de l'envoi du feedback :", error);
     }
   }
 
@@ -38,10 +38,19 @@ const FeedBack = ({onClose, briefing }) => {
     }
   };
 
+  const handleDelete = async (id) => {
+    try {
+      await api.delete(`/avis/${id}`);
+      fetchFeedbacks();
+    } catch (error) {
+      console.error("Erreur lors de la suppression du feedback :", error);
+    }
+  };
+
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm p-4">
       <div className="bg-white/90 backdrop-blur-sm p-6 rounded-2xl w-full max-w-md shadow-2xl border border-white/20 relative flex flex-col gap-4">
-        
+
         {/* Header */}
         <div className="flex items-center justify-between mb-3">
           <h2 className="text-xl font-bold text-gray-800 flex items-center"><Star className="mr-2" /> Feedback</h2>
@@ -54,14 +63,30 @@ const FeedBack = ({onClose, briefing }) => {
         <div className="max-h-64 overflow-y-auto flex flex-col gap-3">
           {feedbacks.length > 0 ? (
             feedbacks.map((fb, idx) => (
-              <div key={idx} className="flex items-start gap-3 bg-gray-50 p-3 rounded-xl shadow-sm">
-                <div className="p-1 bg-gradient-to-br from-green-500 to-emerald-600 rounded-full">
-                  <User className="w-5 h-5 text-white" />
+              <div
+                key={idx}
+                className="flex items-center justify-between bg-gray-50 p-3 rounded-xl shadow-sm"
+              >
+                {/* Section gauche : icône + texte */}
+                <div className="flex items-center gap-3 flex-1 min-w-0">
+                  <div className="flex-shrink-0 p-1 bg-gradient-to-br from-green-500 to-emerald-600 rounded-full">
+                    <User className="w-5 h-5 text-white" />
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <p className="text-gray-700 text-sm truncate">{fb.commentaire}</p>
+                    <span className="text-gray-400 text-xs">{fb.nomUtilisateur}</span>
+                  </div>
                 </div>
-                <div className="flex-1">
-                  <p className="text-gray-700 text-sm">{fb.commentaire}</p>
-                  <span className="text-gray-400 text-xs">{fb.nomUtilisateur}</span>
-                </div>
+
+                {/* Bouton supprimer */}
+                {user.id === fb.idUtilisateur && (
+                  <button
+                    onClick={() => handleDelete(fb.id)}
+                    className="ml-3 flex-shrink-0"
+                  >
+                    <Trash className="w-4 h-4 text-red-500 hover:text-red-700" />
+                  </button>
+                )}
               </div>
             ))
           ) : (

@@ -4,7 +4,7 @@ import { FileText, Calendar, User, X } from 'lucide-react'
 const Display = ({ formation, setFormation }) => {
     return (
         <div className='fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm p-4'>
-            <div className="bg-white/90 backdrop-blur-sm p-8 rounded-2xl w-full max-w-md shadow-2xl border border-white/20 relative">
+            <div className="bg-white/90 backdrop-blur-sm p-8 rounded-2xl w-full max-w-200 shadow-2xl border border-white/20 relative">
                 <div>
                     <div className='flex items-center justify-between  mb-3'>
                         <div className="flex items-center gap-3">
@@ -31,7 +31,7 @@ const Display = ({ formation, setFormation }) => {
                         </span>
                     </div>
 
-                    <p className="text-gray-700 mb-4 max-h-56 overflow-y-auto p-2">
+                    <p className="text-gray-700 mb-4 max-h-100 overflow-y-auto p-2 indent-10 text-justify">
                         {formation.descriptionformation}
                     </p>
                 </div>

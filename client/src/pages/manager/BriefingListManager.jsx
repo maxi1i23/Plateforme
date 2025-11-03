@@ -2,10 +2,11 @@
 
 import { useContext, useEffect, useState } from "react"
 import api from "../../services/api"
-import { Calendar, User, FileText, MoreVertical, Edit, Trash, X, Plus, Search, Clock } from "lucide-react"
+import { Calendar, User, FileText, MoreVertical, Edit, Trash, X, Plus, Search, Clock, Star } from "lucide-react"
 import { AuthContext } from "../../context/AuthContext"
 import Swal from "sweetalert2"
 import { useSocket } from "../../context/SocketContext"
+import FeedBack from "../../components/FeedBack.jsx"
 
 const BriefingListManager = () => {
   const [briefingList, setBriefingList] = useState([])
@@ -17,6 +18,8 @@ const BriefingListManager = () => {
   const [loading, setLoading] = useState(true)
   const { user } = useContext(AuthContext)
   const { socket } = useSocket()
+  const [Feedback, setFeedback] = useState(false)
+  const [selectedBriefing, setSelectedBriefing] = useState(null)
 
   // 🔎 Sécurisation de la recherche
   useEffect(() => {
@@ -165,6 +168,11 @@ const BriefingListManager = () => {
   useEffect(() => {
     getBriefing()
   }, [])
+
+  const feed = (briefing) => {
+    setFeedback(true)
+    setSelectedBriefing(briefing)
+  }
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-indigo-50 via-white to-purple-50 p-6">
@@ -322,6 +330,14 @@ const BriefingListManager = () => {
                       <span className="text-sm font-medium text-gray-600">{briefing.nommanager}</span>
                     </div>
 
+                    <button
+                      className="flex items-center gap-1 text-xs font-medium px-3 py-1 bg-blue-50 text-blue-600 rounded-lg hover:bg-blue-100 hover:shadow-sm transition-all duration-200"
+                      onClick={() => feed(briefing)}
+                    >
+                      <Star className="w-4 h-4" />
+                      Avis
+                    </button>
+
                     {briefing.idmanager === user.idutilisateur && (
                       <div className="bg-blue-100 text-blue-600 px-2 py-1 rounded-full text-xs font-medium">
                         Mes briefings
@@ -474,6 +490,10 @@ const BriefingListManager = () => {
           </div>
         </div>
       )}
+
+      {
+        Feedback && (<FeedBack onClose={() => setFeedback(false)} briefing={selectedBriefing} user={user} />)
+      }
     </div>
   )
 }

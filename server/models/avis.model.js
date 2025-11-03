@@ -7,7 +7,7 @@ module.exports = {
     },
     getAvisByBriefing: async (idBriefing) => {
         const result = await pool.query(`
-            SELECT a.*, u.nomUtilisateur
+            SELECT a.*, u.nomUtilisateur, u.idUtilisateur
             FROM avisBriefing a
             JOIN utilisateur u ON a.idUtilisateurAvis = u.idUtilisateur 
             WHERE idBriefing = $1`, 
@@ -28,10 +28,10 @@ module.exports = {
         );
         return result.rows[0];
     },
-    deleteAvis: async (idBriefing, idUtilisateurAvis) => {
-        await pool.query(
-            "DELETE FROM avisBriefing WHERE idBriefing = $1 AND idUtilisateurAvis = $2",
-            [idBriefing, idUtilisateurAvis]
+    deleteAvis: async (id) => {
+        const result = await pool.query(
+            "DELETE FROM avisBriefing WHERE idAvis = $1 RETURNING *",
+            [id]
         );
         return result.rows[0];
     }

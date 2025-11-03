@@ -28,7 +28,8 @@ exports.getAvisByBriefing = async (req, res) => {
             commentaire: row.commentaire,
             dateAvis: row.dateavis,
             nomUtilisateur: row.nomutilisateur,
-            id: row.idavis
+            id: row.idavis,
+            idUtilisateur: row.idutilisateur
         }));
 
         return res.json(avis);
@@ -69,8 +70,8 @@ exports.updateAvis = async (req, res) => {
 };
 exports.deleteAvis = async (req, res) => {
     try {
-        const { idBriefing, idUtilisateurAvis } = req.body;
-        await Avis.deleteAvis(idBriefing, idUtilisateurAvis);
+        const { id } = req.params;
+        await Avis.deleteAvis(id);
         return res.status(204).send();
     } catch (error) {
         console.error("Error deleting avis:", error);

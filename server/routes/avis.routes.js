@@ -8,6 +8,6 @@ router.get('/', avisController.getAvis);
 router.get('/:idBriefing', avisController.getAvisByBriefing);
 router.post('/', avisController.createAvis);
 router.put('/', avisController.updateAvis);
-router.delete('/', avisController.deleteAvis);
+router.delete('/:id', avisController.deleteAvis);
 
 module.exports = router;

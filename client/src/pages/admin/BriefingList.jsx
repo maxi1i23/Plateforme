@@ -480,7 +480,7 @@ const BriefingListManager = () => {
         </div>
       )}
       {
-        Feedback && (<FeedBack onClose={()=>setFeedback(false)} briefing={selectedBriefing}/>)
+        Feedback && (<FeedBack onClose={()=>setFeedback(false)} briefing={selectedBriefing} user={user}/>)
       }
     </div>
   )
