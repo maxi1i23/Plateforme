@@ -6,7 +6,8 @@ module.exports = {
         const result = await pool.query(`
             SELECT f.* , u.nomutilisateur AS nomManager
             FROM formation f
-            JOIN utilisateur u ON u.idUtilisateur = f.idUtilisateurManager`);
+            JOIN utilisateur u ON u.idUtilisateur = f.idUtilisateurManager
+            ORDER BY f.dateFormation DESC`);
         return result.rows;
     },
 

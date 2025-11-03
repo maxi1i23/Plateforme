@@ -5,6 +5,7 @@ import api from "../../services/api"
 import { Calendar, User, FileText, MoreVertical, Edit, Trash, X, Plus, Search, BookOpen } from "lucide-react"
 import { AuthContext } from "../../context/AuthContext"
 import Swal from "sweetalert2"
+import Display from "../../components/Display"
 
 const FormationListManager = () => {
   const [formationList, setFormationList] = useState([])
@@ -15,6 +16,7 @@ const FormationListManager = () => {
   const [creatingFormation, setCreatingFormation] = useState(false)
   const [isLoading, setIsLoading] = useState(true)
   const { user } = useContext(AuthContext)
+  const [selectedFormation, setSelectedFormation] = useState(null)
 
   // 🔎 Correction de la recherche (évite les erreurs undefined)
   useEffect(() => {
@@ -29,6 +31,10 @@ const FormationListManager = () => {
     })
     setFilteredFormations(filtered)
   }, [formationList, searchTerm])
+
+  useEffect(()=>{
+    console.log(selectedFormation)
+  }, [selectedFormation])
 
   const getFormation = async () => {
     try {
@@ -196,8 +202,7 @@ const FormationListManager = () => {
             {filteredFormations.map((formation) => (
               <div
                 key={formation.idformation}
-                className="relative p-6 bg-white/70 backdrop-blur-sm border border-white/20 rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 group"
-              >
+                className="relative p-6 bg-white/70 backdrop-blur-sm border border-white/20 rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 group cursor-pointer">
                 {formation.idutilisateurmanager === user.idutilisateur || user.role === "Admin" && (
                   <div className="absolute top-4 right-4 menu-formation">
                     <button
@@ -226,7 +231,7 @@ const FormationListManager = () => {
                   </div>
                 )}
 
-                <div className="mb-4">
+                <div className="mb-4" onClick={()=>setSelectedFormation(formation)}>
                   <div className="flex items-center gap-3 mb-3">
                     <div className="p-2 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-lg">
                       <FileText className="w-5 h-5 text-white" />
@@ -397,6 +402,11 @@ const FormationListManager = () => {
           </div>
         </div>
       )}
+      {
+        selectedFormation && (
+          <Display formation={selectedFormation} setFormation={setSelectedFormation}/>
+        )
+      }
     </div>
   )
 }
