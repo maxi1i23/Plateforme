@@ -91,7 +91,7 @@ const AutreDemandeAgent = () => {
             getDemande();
             const notification = await api.post('notification/add',
                 {
-                    contenu: `${user.nomutilisateur} vous a fait une demande}`,
+                    contenu: `${user.nomutilisateur} vous a fait une demande`,
                     raisonNotification: "Nouvelle demande",
                     idUtilisateurDestinataire: createDemande.idManagerTraiterAutreDemande
                 }
