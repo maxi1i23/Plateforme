@@ -1,141 +1,176 @@
-import React, { useState, useEffect } from "react";
-import { User, Send, X, Star, Trash } from "lucide-react";
-import api from "../services/api";
+"use client"
+
+import { useState, useEffect } from "react"
+import { User, Send, X, Star, Trash, MessageCircle } from "lucide-react"
+import api from "../services/api"
 
 const FeedBack = ({ onClose, briefing, user }) => {
-  const [commentaire, setCommentaire] = useState("");
-  const [feedbacks, setFeedbacks] = useState([]);
-  const [loading, setLoading] = useState(false);
-  const [sending, setSending] = useState(false);
+  const [commentaire, setCommentaire] = useState("")
+  const [feedbacks, setFeedbacks] = useState([])
+  const [loading, setLoading] = useState(false)
+  const [sending, setSending] = useState(false)
 
   const fetchFeedbacks = async () => {
     try {
-      setLoading(true);
-      const response = await api.get(`/avis/${briefing.idbriefing}`);
-      setFeedbacks(response.data);
+      setLoading(true)
+      const response = await api.get(`/avis/${briefing.idbriefing}`)
+      setFeedbacks(response.data)
     } catch (error) {
-      console.error("Erreur lors de la récupération des feedbacks :", error);
+      console.error("Erreur lors de la récupération des feedbacks :", error)
     } finally {
-      setLoading(false);
+      setLoading(false)
     }
-  };
+  }
 
   useEffect(() => {
-    fetchFeedbacks();
-  }, []);
+    fetchFeedbacks()
+  }, [])
 
   const onSubmit = async () => {
     try {
-      setSending(true);
+      setSending(true)
       await api.post("/avis", {
         commentaire,
         idBriefing: briefing.idbriefing,
-      });
-      setCommentaire("");
-      fetchFeedbacks();
+      })
+      setCommentaire("")
+      fetchFeedbacks()
     } catch (error) {
-      console.error("Erreur lors de l'envoi du feedback :", error);
+      console.error("Erreur lors de l'envoi du feedback :", error)
     } finally {
-      setSending(false);
+      setSending(false)
     }
-  };
+  }
 
   const handleDelete = async (id) => {
     try {
-      await api.delete(`/avis/${id}`);
-      fetchFeedbacks();
+      await api.delete(`/avis/${id}`)
+      fetchFeedbacks()
     } catch (error) {
-      console.error("Erreur lors de la suppression du feedback :", error);
+      console.error("Erreur lors de la suppression du feedback :", error)
     }
-  };
+  }
 
   const handleSubmit = () => {
-    if (commentaire.trim()) onSubmit();
-  };
+    if (commentaire.trim()) onSubmit()
+  }
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm p-4">
-      <div className="relative bg-white/95 backdrop-blur-lg p-6 rounded-2xl w-full max-w-md shadow-xl border border-gray-100 flex flex-col gap-5 animate-fadeIn">
-
-        {/* --- HEADER --- */}
-        <div className="flex items-center justify-between border-b pb-3">
-          <h2 className="text-lg font-semibold text-gray-800 flex items-center gap-2">
-            <Star className="w-5 h-5 text-yellow-500" /> Avis sur le briefing
-          </h2>
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm p-4">
+      <div className="relative bg-white rounded-2xl w-full max-w-2xl shadow-2xl transform transition-all duration-300 scale-100 overflow-hidden">
+        <div className="bg-gradient-to-r from-gray-500 to-gray-600 p-6">
           <button
             onClick={onClose}
-            className="p-1 rounded-full hover:bg-gray-100 transition-all"
+            className="absolute top-4 right-4 p-2 rounded-full hover:bg-white/20 transition-colors duration-200"
           >
-            <X className="w-5 h-5 text-gray-600" />
+            <X size={20} className="text-white" />
           </button>
+
+          <div className="flex items-center gap-3">
+            <div className="bg-white/20 backdrop-blur-sm p-3 rounded-xl">
+              <Star className="w-6 h-6 text-white" />
+            </div>
+            <div>
+              <h2 className="text-2xl font-bold text-white">Avis sur le briefing</h2>
+              <p className="text-blue-100 mt-1">{briefing.nombriefing}</p>
+            </div>
+          </div>
         </div>
 
-        {/* --- LISTE DES AVIS --- */}
-        <div className="max-h-64 overflow-y-auto space-y-3 pr-1">
-          {loading ? (
-            <p className="text-center text-gray-400 text-sm">Chargement...</p>
-          ) : feedbacks.length > 0 ? (
-            feedbacks.map((fb, idx) => (
-              <div
-                key={idx}
-                className="flex items-start justify-between bg-gradient-to-br from-gray-50 to-white border border-gray-100 p-3 rounded-xl shadow-sm hover:shadow-md transition-all duration-200"
-              >
-                <div className="flex items-start gap-3 flex-1 min-w-0">
-                  <div className="flex-shrink-0 p-1.5 bg-gradient-to-br from-indigo-500 to-blue-500 rounded-full shadow-sm">
-                    <User className="w-4 h-4 text-white" />
-                  </div>
-                  <div className="flex-1 min-w-0">
-                    <p className="text-gray-700 text-sm leading-snug break-words">
-                      {fb.commentaire}
-                    </p>
-                    <span className="text-gray-400 text-xs">
-                      {fb.nomUtilisateur}
-                    </span>
+        <div className="p-6 space-y-6">
+          {/* Stats section */}
+          <div className="bg-gradient-to-br from-indigo-50 to-purple-50 rounded-xl p-4 border border-white/20">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-2">
+                <MessageCircle className="w-5 h-5 text-indigo-600" />
+                <span className="text-sm font-medium text-gray-700">
+                  {feedbacks.length} {feedbacks.length > 1 ? "avis" : "avis"}
+                </span>
+              </div>
+              <div className="text-xs text-gray-500">Partagez votre opinion</div>
+            </div>
+          </div>
+
+          <div className="max-h-96 overflow-y-auto space-y-3 pr-2">
+            {loading ? (
+              <div className="flex justify-center items-center py-12">
+                <div className="animate-spin rounded-full h-10 w-10 border-b-2 border-blue-600"></div>
+              </div>
+            ) : feedbacks.length > 0 ? (
+              feedbacks.map((fb, idx) => (
+                <div
+                  key={idx}
+                  className="group relative bg-white/80 backdrop-blur-sm border border-white/20 rounded-xl shadow-md hover:shadow-lg transition-all duration-300 transform hover:-translate-y-0.5 overflow-hidden"
+                  style={{ animationDelay: `${idx * 50}ms` }}
+                >
+                  <div className="absolute inset-0 bg-gradient-to-br from-blue-500/5 to-purple-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+
+                  <div className="relative p-4">
+                    <div className="flex items-start justify-between gap-3">
+                      <div className="flex items-start gap-3 flex-1 min-w-0">
+                        <div className="flex-shrink-0 bg-gradient-to-r from-blue-500 to-purple-500 p-2 rounded-lg shadow-sm">
+                          <User className="w-4 h-4 text-white" />
+                        </div>
+                        <div className="flex-1 min-w-0">
+                          <p className="text-gray-800 text-sm leading-relaxed break-words mb-2">{fb.commentaire}</p>
+                          <div className="flex items-center gap-2">
+                            <span className="text-xs font-medium text-indigo-600 bg-indigo-50 px-2 py-1 rounded-lg">
+                              {fb.nomUtilisateur}
+                            </span>
+                          </div>
+                        </div>
+                      </div>
+
+                      {user.id === fb.idUtilisateur && (
+                        <button
+                          onClick={() => handleDelete(fb.id)}
+                          className="flex-shrink-0 p-2 rounded-lg hover:bg-red-50 transition-all duration-200 group/delete"
+                        >
+                          <Trash className="w-4 h-4 text-red-500 group-hover/delete:text-red-600" />
+                        </button>
+                      )}
+                    </div>
                   </div>
                 </div>
-
-                {user.id === fb.idUtilisateur && (
-                  <button
-                    onClick={() => handleDelete(fb.id)}
-                    className="ml-2 flex-shrink-0 p-1.5 rounded-lg hover:bg-red-50 transition-all"
-                  >
-                    <Trash className="w-4 h-4 text-red-500 hover:text-red-600" />
-                  </button>
-                )}
+              ))
+            ) : (
+              <div className="text-center py-12">
+                <div className="bg-white/80 backdrop-blur-sm rounded-xl p-8 border border-white/20">
+                  <MessageCircle className="w-12 h-12 text-gray-400 mx-auto mb-3" />
+                  <p className="text-gray-600 text-sm font-medium">Aucun avis pour le moment</p>
+                  <p className="text-gray-400 text-xs mt-1">Soyez le premier à partager votre opinion</p>
+                </div>
               </div>
-            ))
-          ) : (
-            <p className="text-center text-gray-500 text-sm italic">
-              Aucun avis pour le moment.
-            </p>
-          )}
-        </div>
+            )}
+          </div>
 
-        {/* --- INPUT --- */}
-        <div className="flex items-center gap-2 mt-2">
-          <input
-            type="text"
-            placeholder="Partagez votre avis..."
-            value={commentaire}
-            onChange={(e) => setCommentaire(e.target.value)}
-            className="flex-1 px-3 py-2 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-400 text-sm"
-            disabled={sending}
-          />
-          <button
-            onClick={handleSubmit}
-            disabled={!commentaire.trim() || sending}
-            className={`flex items-center gap-1.5 px-4 py-2 rounded-xl text-white text-sm font-medium transition-all duration-200 ${sending
-                ? "bg-gray-400 cursor-not-allowed"
-                : "bg-indigo-600 hover:bg-indigo-700 hover:-translate-y-0.5 shadow-sm"
+          <div className="flex items-center gap-3 pt-4 border-t border-gray-100">
+            <input
+              type="text"
+              placeholder="Partagez votre avis..."
+              value={commentaire}
+              onChange={(e) => setCommentaire(e.target.value)}
+              onKeyPress={(e) => e.key === "Enter" && handleSubmit()}
+              className="flex-1 px-4 py-3 bg-white/70 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 text-sm"
+              disabled={sending}
+            />
+            <button
+              onClick={handleSubmit}
+              disabled={!commentaire.trim() || sending}
+              className={`flex items-center gap-2 px-6 py-3 rounded-xl text-white text-sm font-medium transition-all duration-200 shadow-lg ${
+                sending || !commentaire.trim()
+                  ? "bg-gray-400 cursor-not-allowed"
+                  : "bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 hover:shadow-xl transform hover:-translate-y-0.5"
               }`}
-          >
-            <Send className="w-4 h-4" />
-            {sending ? "..." : "Envoyer"}
-          </button>
+            >
+              <Send className="w-4 h-4" />
+              {sending ? "Envoi..." : "Envoyer"}
+            </button>
+          </div>
         </div>
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default FeedBack;
+export default FeedBack
