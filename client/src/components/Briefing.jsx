@@ -4,7 +4,7 @@ import { FileText, Calendar, User, X } from "lucide-react"
 const Briefing = ({ briefing, setBriefing }) => {
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm p-4 animate-in fade-in duration-200">
-      <div className="bg-white/90 backdrop-blur-sm rounded-2xl w-full max-w-3xl shadow-2xl border border-gray-200/50 relative overflow-hidden animate-in zoom-in-95 duration-300">
+      <div className="bg-white/90 backdrop-blur-sm rounded-2xl w-full max-w-3xl shadow-2xl  relative overflow-hidden animate-in zoom-in-95 duration-300">
         <div className="bg-gradient-to-r from-gray-600 via-slate-600 to-gray-700 p-6 relative overflow-hidden">
           <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGRlZnM+PHBhdHRlcm4gaWQ9ImdyaWQiIHdpZHRoPSI2MCIgaGVpZ2h0PSI2MCIgcGF0dGVyblVuaXRzPSJ1c2VyU3BhY2VPblVzZSI+PHBhdGggZD0iTSAxMCAwIEwgMCAwIDAgMTAiIGZpbGw9Im5vbmUiIHN0cm9rZT0id2hpdGUiIHN0cm9rZS1vcGFjaXR5PSIwLjEiIHN0cm9rZS13aWR0aD0iMSIvPjwvcGF0dGVybj48L2RlZnM+PHJlY3Qgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgZmlsbD0idXJsKCNncmlkKSIvPjwvc3ZnPg==')] opacity-30"></div>
 

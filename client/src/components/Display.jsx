@@ -4,8 +4,8 @@ import { FileText, Calendar, User, X, Clock, Tag } from "lucide-react"
 const Display = ({ formation, setFormation }) => {
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm p-4 animate-in fade-in duration-200">
-      <div className="bg-white/90 backdrop-blur-md rounded-2xl w-full max-w-3xl shadow-2xl border border-white/20 relative overflow-hidden animate-in zoom-in-95 duration-300">
-        <div className="bg-gradient-to-r from-blue-600 via-purple-600 to-indigo-600 p-6 relative overflow-hidden">
+      <div className="bg-white/90 backdrop-blur-md rounded-2xl w-full max-w-3xl shadow-2xl relative overflow-hidden animate-in zoom-in-95 duration-300">
+        <div className="bg-gradient-to-r from-gray-600 to-gray-700 p-6 relative overflow-hidden">
           <div className="absolute inset-0 bg-gradient-to-br from-white/10 to-transparent"></div>
           <div className="flex items-start justify-between relative z-10">
             <div className="flex items-start gap-4 flex-1">
