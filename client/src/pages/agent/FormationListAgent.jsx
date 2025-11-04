@@ -67,7 +67,6 @@ const FormationListAgent = () => {
         <div className="absolute -top-40 -right-40 w-80 h-80 bg-gradient-to-br from-blue-400/20 to-purple-600/20 rounded-full blur-3xl animate-pulse"></div>
         <div className="absolute -bottom-40 -left-40 w-80 h-80 bg-gradient-to-tr from-indigo-400/20 to-pink-600/20 rounded-full blur-3xl animate-pulse delay-1000"></div>
       </div>
-
       <div className="relative z-10">
         <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center mb-8 gap-4">
           <div>
@@ -76,9 +75,7 @@ const FormationListAgent = () => {
             </h1>
             <p className="text-gray-600">Organisez et suivez vos programmes de formation</p>
           </div>
-
           <div className="flex flex-col sm:flex-row gap-4 w-full lg:w-auto">
-
             <div className="relative max-w-md">
               <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
               <input
@@ -90,9 +87,7 @@ const FormationListAgent = () => {
               />
             </div>
           </div>
-
         </div>
-
         <div className="grid grid-cols-1 md:grid-cols-1 lg:grid-cols-1 gap-6 mb-8">
           <div className="bg-white/70 backdrop-blur-sm p-6 rounded-2xl shadow-lg border border-white/20 hover:shadow-xl transition-all duration-300">
             <div className="flex items-center justify-between">
@@ -106,7 +101,6 @@ const FormationListAgent = () => {
             </div>
           </div>
         </div>
-
         {isLoading ? (
           <div className="flex justify-center items-center py-12">
             <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-indigo-600"></div>
@@ -117,7 +111,7 @@ const FormationListAgent = () => {
               <div
                 key={formation.idformation}
                 className="relative p-6 bg-white/70 backdrop-blur-sm border border-white/20 rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 group cursor-pointer"
-                onClick={()=>setSelectedFormation(formation)}
+                onClick={() => setSelectedFormation(formation)}
               >
                 <div className="mb-4">
                   <div className="flex items-center gap-3 mb-3">
@@ -137,12 +131,8 @@ const FormationListAgent = () => {
                       })}
                     </span>
                   </div>
-
-                  <p className="text-gray-700 line-clamp-3 mb-4 leading-relaxed">{formation.descriptionformation}</p>
-
-
+                  <p className="text-gray-700 line-clamp-1 mb-4 leading-relaxed">{formation.descriptionformation}</p>
                 </div>
-
                 <div className="mt-4 pt-4 border-t border-gray-200/50">
 
                   <div className="flex items-center justify-between gap-2 text-sm">
@@ -152,7 +142,6 @@ const FormationListAgent = () => {
                       </div>
                       <span className="font-medium ms-2 text-gray-700">{formation.nommanager}</span>
                     </div>
-
                   </div>
                 </div>
               </div>
@@ -173,14 +162,12 @@ const FormationListAgent = () => {
             </div>
           </div>
         )}
-
-        
       </div>
       {
-          selectedFormation && (
-            <Display formation={selectedFormation} setFormation={setSelectedFormation} />
-          )
-        }
+        selectedFormation && (
+          <Display formation={selectedFormation} setFormation={setSelectedFormation} />
+        )
+      }
     </div>
   )
 }

@@ -2,10 +2,11 @@
 
 import { useContext, useEffect, useState } from "react"
 import api from "../../services/api"
-import { Calendar, User, FileText, MoreVertical, Edit, Trash, X, Plus, Search, Clock, Star } from "lucide-react"
+import { Calendar, User, FileText, MoreVertical, Edit, Trash, X, Plus, Search, Clock, Star, Eye } from "lucide-react"
 import { AuthContext } from "../../context/AuthContext"
 import Swal from "sweetalert2"
 import FeedBack from "../../components/FeedBack.jsx"
+import Briefing from "../../components/Briefing.jsx"
 
 const BriefingListManager = () => {
   const [briefingList, setBriefingList] = useState([])
@@ -16,8 +17,9 @@ const BriefingListManager = () => {
   const [creatingBriefing, setCreatingBriefing] = useState(false)
   const [loading, setLoading] = useState(true)
   const { user } = useContext(AuthContext)
-  const [Feedback, setFeedback] = useState(false)
+  const [feedback, setFeedback] = useState(false)
   const [selectedBriefing, setSelectedBriefing] = useState(null)
+  const [see, setSee] = useState(false)
 
   // 🔎 Sécurisation de la recherche
   useEffect(() => {
@@ -308,30 +310,54 @@ const BriefingListManager = () => {
                   </div>
 
                   <div className="mb-4">
-                    <p className="text-gray-700 leading-relaxed line-clamp-3">{briefing.contenubriefing}</p>
+                    <p className="text-gray-700 leading-relaxed line-clamp-1">{briefing.contenubriefing}</p>
                   </div>
 
-                  <div className="flex items-center justify-between pt-4 border-t border-gray-100">
+                  <div className="flex-1 flex-wrap items-center justify-between gap-3 pt-4 border-t border-gray-100">
+                    {/* --- Manager info --- */}
                     <div className="flex items-center gap-2">
-                      <div className="bg-gradient-to-r from-blue-400 to-purple-400 p-1.5 rounded-full">
-                        <User className="w-3 h-3 text-white" />
+                      <div className="bg-gradient-to-r from-blue-500 to-indigo-500 p-1.5 rounded-full shadow-sm">
+                        <User className="w-4 h-4 text-white" />
                       </div>
-                      <span className="text-sm font-medium text-gray-600">{briefing.nommanager}</span>
+                      <span className="text-sm font-semibold text-gray-700">
+                        {briefing.nommanager}
+                      </span>
                     </div>
+                    {/* --- Action buttons --- */}
+                    <div className="flex items-center justify-between gap-2 mt-2">
+                      <button
+                        onClick={() => {
+                          setSee(true);
+                          setSelectedBriefing(briefing);
+                        }}
+                        className="flex items-center gap-1.5 text-xs font-medium px-3 py-1.5 bg-indigo-50 text-indigo-600 rounded-lg  hover:bg-indigo-100 hover:shadow transition-all duration-200"
+                      >
+                        <Eye className="w-4 h-4" />
+                        Voir
+                      </button>
 
-                    <button
-                      className="flex items-center gap-1 text-xs font-medium px-3 py-1 bg-blue-50 text-blue-600 rounded-lg hover:bg-blue-100 hover:shadow-sm transition-all duration-200"
-                      onClick={()=>feed(briefing)}
-                    >
-                      <Star className="w-4 h-4" />
-                      Avis
-                    </button>
+                      <button
+                        onClick={() => feed(briefing)}
+                        className="flex items-center gap-1.5 text-xs font-medium px-3 py-1.5 
+                        bg-yellow-50 text-yellow-600 rounded-lg 
+                        hover:bg-yellow-100 hover:shadow transition-all duration-200"
+                      >
+                        <Star className="w-4 h-4" />
+                        Avis
+                      </button>
 
-                    {briefing.idmanager === user.idutilisateur && (
-                      <div className="bg-blue-100 text-blue-600 px-2 py-1 rounded-full text-xs font-medium">
-                        Mes briefings
-                      </div>
-                    )}
+                      {briefing.idmanager === user.idutilisateur && (
+                        <div
+                          className="flex items-center gap-1 px-3 py-1.5 
+                          bg-gradient-to-r from-blue-500 to-indigo-500 
+                          text-white rounded-lg text-xs font-semibold 
+                          shadow-sm"
+                        >
+                          <User className="w-3.5 h-3.5" />
+                          Mes briefings
+                        </div>
+                      )}
+                    </div>
                   </div>
                 </div>
               </div>
@@ -480,7 +506,10 @@ const BriefingListManager = () => {
         </div>
       )}
       {
-        Feedback && (<FeedBack onClose={()=>setFeedback(false)} briefing={selectedBriefing} user={user}/>)
+        feedback && (<FeedBack onClose={() => setFeedback(false)} briefing={selectedBriefing} user={user} />)
+      }
+      {
+        selectedBriefing && see && (<Briefing briefing={selectedBriefing} setBriefing={() => { setSelectedBriefing(null); setSee(false) }} />)
       }
     </div>
   )

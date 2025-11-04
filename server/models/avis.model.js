@@ -10,7 +10,7 @@ module.exports = {
             SELECT a.*, u.nomUtilisateur, u.idUtilisateur
             FROM avisBriefing a
             JOIN utilisateur u ON a.idUtilisateurAvis = u.idUtilisateur 
-            WHERE idBriefing = $1`, 
+            WHERE a.idBriefing = $1 ORDER BY a.dateAvis DESC`, 
             [idBriefing]);
         return result.rows;
     },

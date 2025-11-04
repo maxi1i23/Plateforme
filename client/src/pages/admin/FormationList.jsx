@@ -250,7 +250,7 @@ const FormationListManager = () => {
                     </span>
                   </div>
 
-                  <p className="text-gray-700 line-clamp-3 mb-4 leading-relaxed">{formation.descriptionformation}</p>
+                  <p className="text-gray-700 line-clamp-1 mb-4 leading-relaxed">{formation.descriptionformation}</p>
 
 
                 </div>
