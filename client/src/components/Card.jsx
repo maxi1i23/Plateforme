@@ -3,7 +3,6 @@ import React from 'react'
 
 const Card = ({ title, value, Icon, style, bg }) => {
     const tab = style.split(' ')
-    console.log(tab)
     const textStyle = tab[2]
     return (
         <div className="bg-white/80 backdrop-blur-sm rounded-xl p-6 shadow-lg border border-white/20 hover:scale-105 transition-all duration-300 cursor-pointer">
