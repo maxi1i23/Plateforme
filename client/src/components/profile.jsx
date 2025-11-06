@@ -4,7 +4,7 @@ import { useState, useRef, useEffect } from "react"
 import api from "../services/api"
 import Swal from 'sweetalert2'
 
-const ProfileModal = ({ user, onClose, logout }) => {
+const Profile = ({ user, onClose, logout }) => {
     if (!user) return null
 
     const [nomUtilisateur, setNomUtilisateur] = useState(user.nomutilisateur)
@@ -26,7 +26,7 @@ const ProfileModal = ({ user, onClose, logout }) => {
     }
     const handleSubmit = async () => {
         try {
-            if(nomUtilisateur==user.nomutilisateur || nomUtilisateur.trim()==""){
+            if (nomUtilisateur == user.nomutilisateur || nomUtilisateur.trim() == "") {
                 return;
             }
             await api.put(`/user/update/${user.idutilisateur}`, { nomUtilisateur })
@@ -38,11 +38,11 @@ const ProfileModal = ({ user, onClose, logout }) => {
                 confirmButtonText: 'Oui, me déconnecter',
                 cancelButtonText: 'Non, plus tard'
             })
-            .then((result) => {
-                if (result.isConfirmed) {
-                    logout()
-                }
-            });
+                .then((result) => {
+                    if (result.isConfirmed) {
+                        logout()
+                    }
+                });
         } catch (error) {
             console.error(error);
         }
@@ -173,4 +173,4 @@ const ProfileModal = ({ user, onClose, logout }) => {
     )
 }
 
-export default ProfileModal
+export default Profile

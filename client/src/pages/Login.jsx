@@ -22,10 +22,7 @@ export default function Login() {
   // Rediriger si l'utilisateur est déjà connecté
   useEffect(() => {
     if (user && user.token) {
-      const role = user.role || user.roleutilisateur;
-      if (role === "Admin") navigate("/admin", { replace: true });
-      else if (role === "Manager") navigate("/manager", { replace: true });
-      else navigate("/agent", { replace: true });
+      navigate('/plateforme', { replace: true });
     }
   }, [user, navigate]);
 
@@ -35,9 +32,9 @@ export default function Login() {
       const res = await login(email, password)
       // Exemple: backend retourne user.roleUtilisateur dans res.data.user
       const role = res.data.user?.roleUtilisateur || (res.data.token ? jwtDecode(res.data.token).role : null)
-      if (role === "Admin") navigate("/admin")
-      else if (role === "Manager") navigate("/manager")
-      else navigate("/agent")
+      if(res.data.token){
+        navigate('/plateforme', { replace: true })
+      }
     } catch (err) {
       console.error(err?.response?.data || err.message)
       setWorngConnection(true)

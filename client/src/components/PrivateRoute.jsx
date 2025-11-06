@@ -3,7 +3,7 @@ import { Navigate, Outlet } from 'react-router-dom';
 import { useContext } from 'react';
 import { AuthContext } from '../context/AuthContext';
 
-const PrivateRoute = ({ allowedRoles }) => {
+const PrivateRoute = () => {
   const { user, loading } = useContext(AuthContext);
   
   // Attendre que le chargement soit terminé avant de rediriger
@@ -15,11 +15,6 @@ const PrivateRoute = ({ allowedRoles }) => {
   
   // Si pas d'utilisateur après le chargement, rediriger vers login
   if (!user || !user.token) return <Navigate to="/" replace />;
-  
-  // Vérifier les rôles autorisés
-  if (allowedRoles && allowedRoles.length && !allowedRoles.includes(user.role)) {
-    return <Navigate to="/unauthorized" replace />;
-  }
   
   return <Outlet />;
 };

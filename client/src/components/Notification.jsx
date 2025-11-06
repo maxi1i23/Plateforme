@@ -22,7 +22,6 @@ const Notification = () => {
             const result = response.data.filter(
                 (item) => item.idutilisateurdestinataire == user.idutilisateur || (item.idutilisateurdestinataire == null && item.raisonnotification != raisonForgetPass) 
             );
-            console.log(result)
             if (user.role == "Admin") {
                 setNotification(response.data)
             } else {
