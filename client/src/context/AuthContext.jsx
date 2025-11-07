@@ -15,7 +15,7 @@ export function AuthProvider({ children }) {
     if (token && parsedUser) return { token, role, ...parsedUser };
     return null;
   });
-  
+
   const [loading, setLoading] = useState(true); // État de chargement
 
   useEffect(() => {
@@ -29,7 +29,7 @@ export function AuthProvider({ children }) {
       if (token && parsedUser) {
         try {
           const decoded = jwtDecode(token);
-          
+
           // Vérifier si le token n'est pas expiré
           if (decoded.exp && decoded.exp * 1000 < Date.now()) {
             console.warn('Token expiré');
@@ -46,7 +46,7 @@ export function AuthProvider({ children }) {
             nomutilisateur: parsedUser.nomutilisateur || decoded.nomUtilisateur,
             email: parsedUser.emailutilisateur || decoded.email,
             emailutilisateur: parsedUser.emailutilisateur || decoded.email,
-            dateinscription : parsedUser.dateinscription || null
+            dateinscription: parsedUser.dateinscription || null
           });
         } catch (err) {
           console.warn('Token invalide localStorage:', err);
@@ -68,38 +68,37 @@ export function AuthProvider({ children }) {
     };
 
     window.addEventListener('storage', handleStorageChange);
-    
+
     return () => {
       window.removeEventListener('storage', handleStorageChange);
     };
   }, []);
 
   const login = async (email, password) => {
-    const res = await api.post('/auth/login', { 
-      emailUtilisateur: email, 
-      motDePasseUtilisateur: password 
+    const res = await api.post('/auth/login', {
+      emailUtilisateur: email,
+      motDePasseUtilisateur: password
     });
-  
+
     const { token, user: userFromServer } = res.data;
     const role = userFromServer?.roleutilisateur || (token ? jwtDecode(token).role : null);
-  
+
     if (token) {
       localStorage.setItem('token', token);
       if (role) localStorage.setItem('role', role);
-  
+
       if (userFromServer) {
         localStorage.setItem('user', JSON.stringify(userFromServer));
       }
-  console.log(JSON.stringify(userFromServer))
       setUser({ token, role, ...userFromServer });
     }
-  
+
     return res;
   };
-  
+
 
   const logout = async () => {
-    try { await api.post('/auth/logout'); } catch (e) {}
+    try { await api.post('/auth/logout'); } catch (e) { }
     localStorage.removeItem('token');
     localStorage.removeItem('role');
     localStorage.removeItem('user'); //  important

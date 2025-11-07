@@ -71,17 +71,14 @@ const Layout = () => {
     if (!socket) return;
 
     const handleNouvelleDemande = (data) => {
-      console.log(" Nouvelle demande reçue:", data);
       setNotificationCount(prev => prev + 1);
     };
 
     const handleNouvellePublication = (data) => {
-      console.log("📰 Nouvelle publication reçue:", data);
       setNotificationCount(prev => prev + 1);
     };
 
     const handleMessage = (data) => {
-      console.log("💌 Nouveau message reçu:", data);
       setMessageCount(prev => parseInt(prev) + 1);
     }
 

@@ -1,4 +1,4 @@
-import React, { useContext, useState, useEffect } from 'react'
+import React, { useContext, useState, useEffect, useMemo } from 'react'
 import Header from '../components/Header'
 import { useSocket } from '../context/SocketContext'
 import { AuthContext } from '../context/AuthContext'
@@ -24,21 +24,22 @@ const Formation = () => {
     const isAuthor = user.role === 'Admin' || user.role === 'Manager' || false // Pour savoir si l'utilisateurs peut publier
 
     {/** Liste des formatons cette semaine */ }
-    const semaine = formationList.filter((f) => {
+    const semaine = useMemo(() => formationList.filter((f) => {
         const formationDate = new Date(f.dateformation)
         const weekAgo = new Date()
         weekAgo.setDate(weekAgo.getDate() - 7)
         return formationDate >= weekAgo
-    })
-    const mois = formationList.filter((f) => {
+    }), [formationList])
+
+    const mois = useMemo(() => formationList.filter((f) => {
         const formationDate = new Date(f.dateformation)
         const monthAgo = new Date()
         monthAgo.setDate(monthAgo.getDate() - 12)
         return formationDate >= monthAgo
-    })
+    }), [formationList])
 
     {/** Pour le composant card */ }
-    const card = [
+    const card = useMemo(() => [
         {
             title: "Total Formations",
             value: formationList.length,
@@ -66,7 +67,7 @@ const Formation = () => {
             style: "w-6 h-6 text-purple-600",
             bg: "bg-purple-100"
         } : false
-    ].filter(Boolean)
+    ].filter(Boolean), [formationList, mois, semaine, isAuthor, user.idutilisateur])
 
     {/** Quand on rechercher une formation */ }
     useEffect(() => {
@@ -101,7 +102,7 @@ const Formation = () => {
     }, [])
 
     {/** Reformer les donner pour la carte info */ }
-    const info = filteredFormations.map((f) => (
+    const info = useMemo(() => filteredFormations.map((f) => (
         {
             id: f.idformation,
             idAuthor: f.idutilisateurmanager,
@@ -110,7 +111,7 @@ const Formation = () => {
             description: f.descriptionformation,
             date: f.dateformation
         }
-    ))
+    )), [filteredFormations])
 
     {/** Supprimer une formation */ }
     const handleDelete = async (idformation) => {

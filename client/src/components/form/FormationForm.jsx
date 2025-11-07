@@ -1,7 +1,7 @@
 import React from 'react'
 import { X, Plus } from 'lucide-react'
 
-const FormationForm = ({formation, handleChange, onClose, handleSubmit}) => {
+const FormationForm = React.memo(({formation, handleChange, onClose, handleSubmit}) => {
     return (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm p-4">
             <div className="bg-white/90 backdrop-blur-sm p-8 rounded-2xl w-full max-w-md shadow-2xl border border-white/20 relative overflow-hidden">
@@ -58,6 +58,8 @@ const FormationForm = ({formation, handleChange, onClose, handleSubmit}) => {
             </div>
         </div>
     )
-}
+})
+
+FormationForm.displayName = 'FormationForm'
 
 export default FormationForm
