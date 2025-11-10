@@ -3,7 +3,7 @@ import React from 'react'
 import api from '../../services/api'
 import FeedbackService from '../../services/FeedBackService'
 
-const BriefingForm = ({ briefing, setBriefing, socket, getBriefing, setBriefingList, onClose }) => {
+const BriefingForm = React.memo(({ briefing, setBriefing, socket, getBriefing, setBriefingList, onClose }) => {
 
     {/** Modifier un briefing */ }
     const handleUpdate = async () => {
@@ -136,6 +136,6 @@ const BriefingForm = ({ briefing, setBriefing, socket, getBriefing, setBriefingL
             </div>
         </div>
     )
-}
-
+})
+BriefingForm.displayName = "BriefingForm"
 export default BriefingForm

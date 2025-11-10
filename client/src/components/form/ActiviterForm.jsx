@@ -1,7 +1,7 @@
 import { Clock, Coffee, Phone, X } from 'lucide-react'
 import React from 'react'
 
-const ActiviterForm = ({formData, setFormData, handleSubmit, onClose, editingActivite}) => {
+const ActiviterForm = React.memo(({formData, setFormData, handleSubmit, onClose, editingActivite}) => {
     return (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm p-4">
             <div className="bg-white rounded-2xl w-full max-w-2xl shadow-2xl relative transform transition-all duration-300 scale-100">
@@ -86,6 +86,7 @@ const ActiviterForm = ({formData, setFormData, handleSubmit, onClose, editingAct
             </div>
         </div>
     )
-}
+})
 
+ActiviterForm.displayName = "ActiviterForm";
 export default ActiviterForm

@@ -1,7 +1,7 @@
 import { X } from 'lucide-react'
 import React from 'react'
 
-const CongerForm = ({ conger, onClose, handleChange, handleSubmit, managerList }) => {
+const CongerForm = React.memo(({ conger, onClose, handleChange, handleSubmit, managerList }) => {
 
     return (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm p-4">
@@ -90,6 +90,6 @@ const CongerForm = ({ conger, onClose, handleChange, handleSubmit, managerList }
             </div>
         </div>
     )
-}
-
+})
+CongerForm.displayName = 'CongerForm'
 export default CongerForm

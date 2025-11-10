@@ -1,7 +1,7 @@
 import { X } from 'lucide-react'
 import React from 'react'
 
-const AutreForm = ({ autre, handleChange, handleSubmit, onClose, managerList }) => {
+const AutreForm = React.memo(({ autre, handleChange, handleSubmit, onClose, managerList }) => {
     return (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm p-4">
             <div
@@ -87,6 +87,8 @@ const AutreForm = ({ autre, handleChange, handleSubmit, onClose, managerList }) 
             </div>
         </div>
     )
-}
+})
+
+AutreForm.displayName = "AutreForm";
 
 export default AutreForm
