@@ -2,7 +2,7 @@ import React from 'react'
 import { Link } from 'react-router-dom'
 import { X, LogOut } from 'lucide-react'
 
-const SideBar = ({sidebarOpen, setSidebarOpen, menuItems, location, logout}) => {
+const SideBar = ({sidebarOpen, setSidebarOpen, menuItems, location, logout, role}) => {
     return (
         <aside
             className={`fixed top-0 left-0 h-screen w-64 bg-white/90 backdrop-blur-md border-r border-gray-200/50 text-gray-700 flex flex-col shadow-xl z-50 
@@ -17,7 +17,7 @@ const SideBar = ({sidebarOpen, setSidebarOpen, menuItems, location, logout}) => 
                     </div>
                     <div>
                         <h2 className="text-xl font-bold text-gray-800">SUCCESS MDG</h2>
-                        <p className="text-sm text-gray-500">Espace Manager</p>
+                        <p className="text-sm text-gray-500">Espace {role}</p>
                     </div>
                 </div>
                 {/* Bouton X (mobile) */}

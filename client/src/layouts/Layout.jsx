@@ -101,6 +101,7 @@ const Layout = () => {
         menuItems={menuItems}
         setSidebarOpen={setSidebarOpen}
         sidebarOpen={sidebarOpen}
+        role={user.role}
       />
       {/* Overlay sombre sur mobile */}
       {sidebarOpen && (
