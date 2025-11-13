@@ -234,6 +234,7 @@ const Briefing = () => {
                         setBriefingList={setBriefingList}
                         socket={socket}
                         onClose={onClose}
+                        user={user} 
                     />
                 )
             }

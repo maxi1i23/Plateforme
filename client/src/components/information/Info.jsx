@@ -53,7 +53,7 @@ const Info = ({ user, info, openMenuId, setOpenMenuId, Icon, handleDelete, handl
             )}
             <div className="mb-4">
                 <div className="flex items-center gap-3 mb-3">
-                    <div className="p-2 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-lg">
+                    <div className="p-2 bg-purple-600 rounded-lg">
                         <Icon className="w-5 h-5 text-white" />
                     </div>
                     <h5 className="text-xl font-bold text-gray-800 line-clamp-1">{info.title}</h5>
@@ -83,20 +83,20 @@ const Info = ({ user, info, openMenuId, setOpenMenuId, Icon, handleDelete, handl
                         {/** Bouton voir */}
                         <button
                             onClick={() => handleInfo(info)}
-                            className="flex items-center gap-1.5 text-xs font-medium px-3 py-1.5 bg-emerald-100 text-emerald-600 rounded-lg  hover:bg-emerald-100 hover:shadow transition-all duration-200">
+                            className="flex items-center gap-1.5 text-xs font-medium px-3 py-1.5 bg-emerald-500 text-white rounded-lg  hover:bg-emerald-700 hover:shadow transition-all duration-200">
                             <Eye className="w-4 h-4" />
                             Voir
                         </button>
                         {
                             isBriefing && (
-                                <button onClick={() => feed(info)}className="flex items-center gap-1.5 text-xs font-medium px-3 py-1.5 bg-yellow-50 text-yellow-600 rounded-lg hover:bg-yellow-100 hover:shadow transition-all duration-200">
+                                <button onClick={() => feed(info)}className="flex items-center gap-1.5 text-xs font-medium px-3 py-1.5 bg-yellow-500 text-white rounded-lg hover:bg-yellow-700 hover:shadow transition-all duration-200">
                                     <Star className="w-4 h-4" />
                                     Avis
                                 </button>
                             )
                         }
                         {info.idAuthor === user.idutilisateur && (
-                            <div className="bg-blue-100 text-blue-600 px-2 py-1 rounded-full text-xs font-medium">
+                            <div className="bg-blue-500 text-white px-1 py-1.5 rounded-lg text-xs font-medium">
                                 {isBriefing ? "Mes Briefings" : " Mes Formations"}
                             </div>
                         )}
