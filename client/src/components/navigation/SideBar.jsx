@@ -8,7 +8,7 @@ const SideBar = ({sidebarOpen, setSidebarOpen, menuItems, location, logout, role
             className={`fixed top-0 left-0 h-screen w-64 bg-white/90 backdrop-blur-md border-r border-gray-200/50 text-gray-700 flex flex-col shadow-xl z-50 
           transform transition-transform duration-300 
           ${sidebarOpen ? "translate-x-0" : "-translate-x-full"} 
-          md:translate-x-0`}>{/** // 👈 visible par défaut sur desktop */}
+          lg:translate-x-0`}>{/** // 👈 visible par défaut sur desktop */}
             {/* Logo */}
             <div className="p-6 border-b border-gray-200/50 bg-gradient-to-r from-gray-50 to-white flex items-center justify-between">
                 <div className="flex items-center gap-3">
@@ -22,7 +22,7 @@ const SideBar = ({sidebarOpen, setSidebarOpen, menuItems, location, logout, role
                 </div>
                 {/* Bouton X (mobile) */}
                 <button
-                    className="md:hidden text-gray-600 hover:text-gray-900"
+                    className="lg:hidden text-gray-600 hover:text-gray-900"
                     onClick={() => setSidebarOpen(false)}>
                     <X size={22} />
                 </button>

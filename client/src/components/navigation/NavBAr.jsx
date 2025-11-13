@@ -28,7 +28,7 @@ const NavBAr = (
         <header className="h-16 bg-white/80 backdrop-blur-md shadow-sm border-b border-slate-200/50 flex items-center justify-between px-6 sticky top-0 z-30">
             {/* Bouton hamburger (mobile) */}
             <button
-                className="md:hidden text-gray-600 hover:text-gray-900"
+                className="lg:hidden text-gray-600 hover:text-gray-900"
                 onClick={() => setSidebarOpen(true)}>
                 <Menu size={24} />
             </button>

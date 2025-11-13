@@ -6,7 +6,7 @@ import { AuthContext } from '../context/AuthContext'
 import { useSocket } from '../context/SocketContext'
 import { BarChart3, BookOpen, CalendarDays, CalendarRange, FileText, LayoutDashboard, Presentation, Users } from 'lucide-react'
 import api from '../services/api'
-import Profile from '../components/profile'
+import Profile from '../components/Profile'
 
 const Layout = () => {
   const { logout, user } = useContext(AuthContext)
@@ -111,7 +111,7 @@ const Layout = () => {
         />
       )}
       {/* Contenu principal */}
-      <div className="flex flex-col flex-1 md:ml-64">
+      <div className="flex flex-col flex-1 lg:ml-64">
         {/* Navbar */}
         <NavBAr
           logout={logout} messageCount={messageCount}
