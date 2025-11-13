@@ -52,7 +52,7 @@ const Utilisateur = () => {
       value: users.length,
       icon: Users,
       style: "w-6 h-6 text-blue-600",
-      bg: "bg-blue-500"
+      bg: "bg-purple-500"
     },
     {
       title: "Admin",

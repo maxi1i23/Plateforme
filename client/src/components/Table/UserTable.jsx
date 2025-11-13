@@ -7,19 +7,19 @@ const UserTable = ({ users, setSelectedUser, setShowUpdateModal, handleDelete}) 
     const getRoleColor = (role) => {
         switch (role) {
             case "Admin":
-                return "bg-red-100 text-red-600"
+                return "bg-red-500 text-white"
             case "Manager":
-                return "bg-blue-100 text-blue-600"
+                return "bg-blue-500 text-white"
             case "Agent":
-                return "bg-green-100 text-green-600"
+                return "bg-green-500 text-white"
             default:
-                return "bg-gray-100 text-gray-600"
+                return "bg-gray-500 text-white"
         }
     }
     return (
         <div className="overflow-x-auto">
             <table className="min-w-full">
-                <thead className="bg-gradient-to-r from-indigo-500/10 to-purple-500/10">
+                <thead className="bg-gradient-to-r from-indigo-500/20 to-purple-500/20">
                     <tr>
                         <th className="px-6 py-4 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">
                             Utilisateur
@@ -84,13 +84,13 @@ const UserTable = ({ users, setSelectedUser, setShowUpdateModal, handleDelete}) 
                                         setSelectedUser(user)
                                         setShowUpdateModal(true)
                                     }}
-                                    className="inline-flex items-center px-3 py-1.5 bg-blue-100 text-blue-700 rounded-lg hover:bg-blue-200 transition-colors duration-200"
+                                    className="inline-flex items-center px-3 py-1.5 bg-blue-500 text-white rounded-lg hover:bg-blue-700 transition-colors duration-200"
                                 >
                                     <Edit className="w-4 h-4" />
                                 </button>
                                 <button
                                     onClick={() => handleDelete(user.idutilisateur)}
-                                    className="inline-flex items-center px-3 py-1.5 bg-red-100 text-red-700 rounded-lg hover:bg-red-200 transition-colors duration-200"
+                                    className="inline-flex items-center px-3 py-1.5 bg-red-500 text-white rounded-lg hover:bg-red-700 transition-colors duration-200"
                                 >
                                     <Trash className="w-4 h-4" />
                                 </button>
