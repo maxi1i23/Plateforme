@@ -317,7 +317,7 @@ const Discussion = () => {
               newMessage={newMessage}
               setNewMessage={setNewMessage}
               selectedFiles={selectedFiles}
-              handleFilesChange={handleFilesChange}
+              setSelectedFiles={setSelectedFiles}
               handleSendMessage={handleSendMessage}
             />
           </>
