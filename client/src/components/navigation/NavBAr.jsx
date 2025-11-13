@@ -1,5 +1,5 @@
 import React, { useEffect, useRef } from 'react'
-import { Bell, MessageCircle, Menu, LogOut, User } from 'lucide-react'
+import { Bell, MessageCircle, Menu, LogOut, User, ChevronDown } from 'lucide-react'
 import { Link } from 'react-router-dom'
 
 const NavBAr = (
@@ -91,16 +91,19 @@ const NavBAr = (
                     )}
                 </div>
                 <div className="relative flex items-center gap-3 cursor-pointer" ref={userRef}>
-                    <div className="w-11 h-11 bg-gradient-to-r from-gray-600 to-gray-800 rounded-full flex items-center justify-center text-white text-sm font-bold"
+                    <div className="w-11 h-11 bg-gradient-to-r from-blue-600 to-indigo-700 rounded-full flex items-center justify-center text-white text-sm font-bold"
                         onClick={() => setShowUserMenu(prev => !prev)}>
                         {user?.nomutilisateur?.charAt(0)?.toUpperCase() || "U"}
                     </div>
-                    <div className="hidden md:block text-left" onClick={() => setShowUserMenu(prev => !prev)}>
-                        <p className="text-sm font-medium text-slate-700">{user?.nomutilisateur || "Utilisateur"}</p>
-                        <div className="flex items-center gap-1">
-                            <span className="w-2 h-2 bg-green-500 rounded-full"></span>
-                            <span className="text-xs text-slate-500">En ligne</span>
+                    <div className="hidden md:flex text-left items-center gap-2 " onClick={() => setShowUserMenu(prev => !prev)}>
+                        <div>
+                            <p className="text-sm font-medium text-slate-700">{user?.nomutilisateur || "Utilisateur"}</p>
+                            <div className="flex items-center gap-1">
+                                <span className="w-2 h-2 bg-green-500 rounded-full"></span>
+                                <span className="text-xs text-slate-500">En ligne</span>
+                            </div>
                         </div>
+                        <ChevronDown className='w-5 h-5' />
                     </div>
                     {/* Menu utilisateur */}
                     {showUserMenu && (
@@ -108,7 +111,7 @@ const NavBAr = (
                             {/* User Info Header */}
                             <div className="px-4 py-3 border-b border-gray-200/50 bg-gradient-to-r from-gray-50 to-white">
                                 <div className="flex items-center gap-3">
-                                    <div className="w-10 h-10 bg-gradient-to-br from-gray-600 to-gray-800 rounded-full flex items-center justify-center text-white font-bold">
+                                    <div className="w-10 h-10 bg-gradient-to-br from-blue-600 to-indigo-700 rounded-full flex items-center justify-center text-white font-bold">
                                         {user?.nomutilisateur?.charAt(0)?.toUpperCase() || "U"}
                                     </div>
                                     <div>

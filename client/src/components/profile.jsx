@@ -67,7 +67,7 @@ const Profile = ({ user, onClose, logout }) => {
                             className="w-28 h-28 rounded-full border-4 border-white shadow-xl ring-4 ring-gray-200/50"
                         />
                     ) : (
-                        <div className="w-28 h-28 rounded-full bg-gradient-to-br from-gray-600 to-gray-800 flex items-center justify-center text-white text-4xl font-bold shadow-xl ring-4 ring-gray-200/50">
+                        <div className="w-28 h-28 rounded-full bg-gradient-to-br from-blue-600 to-indigo-700 flex items-center justify-center text-white text-4xl font-bold shadow-xl ring-4 ring-gray-200/50">
                             {user.nomutilisateur?.charAt(0)?.toUpperCase() || "U"}
                         </div>
                     )}
@@ -83,7 +83,7 @@ const Profile = ({ user, onClose, logout }) => {
 
                 <div className="mt-6 space-y-4">
                     <div className="flex items-center gap-4 p-4 rounded-xl bg-gradient-to-r from-gray-50 to-white border border-gray-200/50 hover:shadow-md transition-all duration-200">
-                        <div className="w-10 h-10 rounded-full bg-gradient-to-br from-gray-600 to-gray-700 flex items-center justify-center">
+                        <div className="w-10 h-10 rounded-full bg-gradient-to-br from-blue-600 to-indigo-700 flex items-center justify-center">
                             <User size={18} className="text-white" />
                         </div>
                         <div className="flex-1">
@@ -130,7 +130,7 @@ const Profile = ({ user, onClose, logout }) => {
                     </div>
 
                     <div className="flex items-center gap-4 p-4 rounded-xl bg-gradient-to-r from-gray-50 to-white border border-gray-200/50 hover:shadow-md transition-all duration-200">
-                        <div className="w-10 h-10 rounded-full bg-gradient-to-br from-gray-600 to-gray-700 flex items-center justify-center">
+                        <div className="w-10 h-10 rounded-full bg-gradient-to-br from-blue-600 to-indigo-700 flex items-center justify-center">
                             <Mail size={18} className="text-white" />
                         </div>
                         <div className="flex-1">
@@ -140,7 +140,7 @@ const Profile = ({ user, onClose, logout }) => {
                     </div>
 
                     <div className="flex items-center gap-4 p-4 rounded-xl bg-gradient-to-r from-gray-50 to-white border border-gray-200/50 hover:shadow-md transition-all duration-200">
-                        <div className="w-10 h-10 rounded-full bg-gradient-to-br from-gray-600 to-gray-700 flex items-center justify-center">
+                        <div className="w-10 h-10 rounded-full bg-gradient-to-br from-blue-600 to-indigo-700 flex items-center justify-center">
                             <Shield size={18} className="text-white" />
                         </div>
                         <div className="flex-1">
@@ -150,7 +150,7 @@ const Profile = ({ user, onClose, logout }) => {
                     </div>
 
                     <div className="flex items-center gap-4 p-4 rounded-xl bg-gradient-to-r from-gray-50 to-white border border-gray-200/50 hover:shadow-md transition-all duration-200">
-                        <div className="w-10 h-10 rounded-full bg-gradient-to-br from-gray-600 to-gray-700 flex items-center justify-center">
+                        <div className="w-10 h-10 rounded-full bg-gradient-to-br from-blue-600 to-indigo-700 flex items-center justify-center">
                             <Calendar size={18} className="text-white" />
                         </div>
                         <div className="flex-1">
