@@ -151,9 +151,9 @@ const Manager = () => {
       <div className="relative z-10 p-6 space-y-8">
         <div className="text-center mb-8">
           <h1 className="text-4xl font-bold bg-gradient-to-r from-indigo-600 via-purple-600 to-blue-600 bg-clip-text text-transparent mb-2">
-            Dashboard Manager
+            Tableau de bord
           </h1>
-          <p className="text-gray-600">Vue d'ensemble de vos activités et performances</p>
+          <p className="text-gray-600">Vue d'ensemble des activités et performances de vos agents</p>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
@@ -229,15 +229,6 @@ const Manager = () => {
                 </div>
               </div>
             ))}
-          </div>
-        </div>
-
-        <div className="bg-white/80 backdrop-blur-sm rounded-2xl shadow-xl border border-white/20 overflow-hidden">
-          <div className="bg-gradient-to-r from-indigo-500 to-purple-600 p-4">
-            <h3 className="text-xl font-semibold text-white">Centre de discussions</h3>
-          </div>
-          <div className="p-6">
-            <Discussion />
           </div>
         </div>
       </div>

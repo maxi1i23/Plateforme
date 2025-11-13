@@ -232,7 +232,7 @@ const Agent = () => {
         <div className="text-center mb-8">
           <h1 className="text-4xl font-bold bg-gradient-to-r from-indigo-600 via-purple-600 to-blue-600 bg-clip-text text-transparent mb-2 flex items-center justify-center gap-3">
             <Activity size={40} className="text-indigo-600" />
-            Tableau de bord Agent
+            Tableau de bord
           </h1>
           <p className="text-gray-600">Suivi de vos performances et activités</p>
         </div>
