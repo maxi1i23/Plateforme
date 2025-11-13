@@ -266,6 +266,13 @@ const Discussion = () => {
     }
   }
 
+  const getColor = (role = null) => {
+    if (role === "Admin") return "bg-red-500"
+    else if (role === "Manager") return "bg-blue-500"
+    else if (role === "Agent") return "bg-emerald-500"
+    return "bg-purple-500"
+  }
+
   return (
     <div className="flex h-[85vh] w-full max-w-7xl mx-auto bg-white dark:bg-gray-900 rounded-2xl shadow-2xl overflow-hidden border border-gray-100 dark:border-gray-800">
 
@@ -284,6 +291,7 @@ const Discussion = () => {
         lastMessageGroupe={lastMessageGroupe}
         lastMessageUser={lastMessageUser}
         getOnleLineUser={getOnleLineUser}
+        getColor={getColor}
       />
 
       {/* Chat */}
@@ -299,10 +307,11 @@ const Discussion = () => {
               getMessagesGroupe={getMessagesGroupe}
               setShowMembre={() => setShowMembre(!showMembre)}
               getOnleLineUser={getOnleLineUser}
+              getColor={getColor}
             />
             <MessageList messages={messages} user={user} selectedGroupe={selectedGroupe}
               getGroupeMessage={getMessagesGroupe}
-              getMessage={() => getMessages(selectedUser.idutilisateur)} />
+              getMessage={() => getMessages(selectedUser.idutilisateur)} getColor={getColor} selectedUser={selectedUser} />
             <MessageInput
               newMessage={newMessage}
               setNewMessage={setNewMessage}

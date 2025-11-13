@@ -1,7 +1,7 @@
 import { PlusCircle, Search, Circle } from "lucide-react"
 
 const Sidebar = ({ users, groupes, searchTerm, setSearchTerm, setSelectedUser, setSelectedGroupe, selectedUser, selectedGroupe,
-  onCreateGroup, user, lastMessageUser, lastMessageGroupe, getOnleLineUser
+  onCreateGroup, user, lastMessageUser, lastMessageGroupe, getOnleLineUser, getColor
 }) => {
   const filteredUsers = users.filter(u => u.nomutilisateur.toLowerCase().includes(searchTerm.toLowerCase()))
 
@@ -84,7 +84,7 @@ const Sidebar = ({ users, groupes, searchTerm, setSearchTerm, setSelectedUser, s
                 : ""}`}>
             <div className="flex items-center space-x-3">
               <div className="relative">
-                <div className="w-12 h-12 bg-gradient-to-br from-blue-500 to-purple-600 rounded-full flex items-center justify-center text-white font-semibold text-lg">
+                <div className={`w-12 h-12 ${getColor(u.roleutilisateur)} rounded-full flex items-center justify-center text-white font-semibold text-lg`}>
                   {u.nomutilisateur.charAt(0).toUpperCase()}
                 </div>
                 {getOnleLineUser(u.idutilisateur) && <Circle className="absolute -bottom-1 -right-1 w-4 h-4 text-green-500 fill-current" />}

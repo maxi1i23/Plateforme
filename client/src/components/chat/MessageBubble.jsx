@@ -4,7 +4,7 @@ import { Paperclip, Trash2, DownloadIcon } from "lucide-react"
 import api from "../../services/api"
 import Swal from "sweetalert2"
 
-const MessageBubble = ({ message, isOwn, getMessage, getGroupeMessage }) => {
+const MessageBubble = ({ message, isOwn, getMessage, getGroupeMessage, color }) => {
   const [modalSrc, setModalSrc] = useState(null)
 
   const deleteMessage = async (idMessage, idUtilisateurRecepteur = null, idGroupe = null) => {
@@ -32,7 +32,7 @@ const MessageBubble = ({ message, isOwn, getMessage, getGroupeMessage }) => {
         {/* Avatar */}
         {!isOwn && (
           <div className="flex-shrink-0 mr-3">
-            <div className="w-10 h-10 bg-gradient-to-br from-purple-500 to-blue-500 rounded-full flex items-center justify-center text-white font-bold">
+            <div className={`w-10 h-10 ${color} rounded-full flex items-center justify-center text-white font-bold`}>
               {message.nomutilisateur
                 ? message.nomutilisateur.charAt(0).toUpperCase()
                 : "?"}

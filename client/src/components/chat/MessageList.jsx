@@ -1,7 +1,7 @@
 import { useEffect, useRef } from "react"
 import MessageBubble from "./MessageBubble"
 
-const MessageList = ({ messages, user, selectedGroupe, getMessage, getGroupeMessage }) => {
+const MessageList = ({ messages, user, selectedGroupe, getMessage, getGroupeMessage, getColor, selectedUser }) => {
   const messagesEndRef = useRef(null)
 
   useEffect(() => {
@@ -25,6 +25,7 @@ const MessageList = ({ messages, user, selectedGroupe, getMessage, getGroupeMess
             }
             getMessage={getMessage}
             getGroupeMessage={getGroupeMessage}
+            color={getColor(selectedUser?.roleutilisateur)}
           />
         ))
       )}

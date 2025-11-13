@@ -3,9 +3,11 @@ import { ArrowLeft, LogOut, MoreVertical, Trash2, Users } from "lucide-react"
 import api from '../../services/api'
 import Swal from "sweetalert2"
 
-const ChatHeader = ({ selectedUser, selectedGroupe, onBack, onQuit, getMessages, getMessagesGroupe, setShowMembre, getOnleLineUser }) => {
+const ChatHeader = ({ selectedUser, selectedGroupe, onBack, onQuit, getMessages, getMessagesGroupe, setShowMembre, getOnleLineUser, getColor }) => {
   const [menuOpen, setMenuOpen] = useState(false)
   const menuRef = useRef(null)
+
+
 
   // Ferme le menu quand on clique en dehors
   useEffect(() => {
@@ -66,8 +68,8 @@ const ChatHeader = ({ selectedUser, selectedGroupe, onBack, onQuit, getMessages,
       </button>
 
       {/* Avatar cercle */}
-      <div className="w-10 h-10 bg-gradient-to-br from-blue-500 to-purple-600 rounded-full 
-        flex items-center justify-center text-white font-semibold">
+      <div className={`w-10 h-10 ${getColor(selectedUser?.roleutilisateur)} rounded-full 
+        flex items-center justify-center text-white font-semibold`}>
         {(selectedUser ? selectedUser.nomutilisateur : selectedGroupe.nomgroupe)
           ?.charAt(0)
           .toUpperCase()}
