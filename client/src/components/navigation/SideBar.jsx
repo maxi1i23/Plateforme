@@ -12,7 +12,7 @@ const SideBar = ({sidebarOpen, setSidebarOpen, menuItems, location, logout, role
             {/* Logo */}
             <div className="p-6 border-b border-gray-200/50 bg-gradient-to-r from-gray-50 to-white flex items-center justify-between">
                 <div className="flex items-center gap-3">
-                    <div className="w-10 h-10 bg-gradient-to-br from-gray-600 to-gray-800 rounded-xl flex items-center justify-center">
+                    <div className="w-10 h-10 bg-gradient-to-br from-blue-600 to-indigo-700 rounded-xl flex items-center justify-center">
                         <span className="text-white font-bold text-lg">S</span>
                     </div>
                     <div>
@@ -39,7 +39,7 @@ const SideBar = ({sidebarOpen, setSidebarOpen, menuItems, location, logout, role
                             onClick={() => setSidebarOpen(false)} // 👈 ferme menu après clic
                             className={`flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-300 group relative overflow-hidden
                                 ${active
-                                    ? "bg-gradient-to-r from-gray-600 to-gray-700 text-white shadow-lg transform scale-105"
+                                    ? "bg-gradient-to-br from-blue-600 to-indigo-700 text-white shadow-lg transform scale-105"
                                     : "hover:bg-gray-100 hover:text-gray-800 hover:shadow-md hover:transform hover:scale-102"
                                 }`}>
                             {active && (
@@ -64,8 +64,8 @@ const SideBar = ({sidebarOpen, setSidebarOpen, menuItems, location, logout, role
             <div className="p-4 border-t border-gray-200/50 bg-gradient-to-r from-gray-50 to-white">
                 <button
                     onClick={logout}
-                    className="flex items-center gap-3 w-full px-4 py-3 rounded-xl bg-gradient-to-r from-gray-600 to-gray-700 text-white 
-              hover:from-gray-500 hover:to-gray-700 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-105 group cursor-pointer"
+                    className="flex items-center gap-3 w-full px-4 py-3 rounded-xl bg-gradient-to-br from-blue-600 to-indigo-700 text-white 
+              hover:from-blue-500 hover:to-indigo-700 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-105 group cursor-pointer"
                 >
                     <LogOut size={20} className="group-hover:rotate-12 transition-transform duration-300" />
                     <span className="font-medium">Déconnexion</span>

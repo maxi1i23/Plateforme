@@ -53,15 +53,14 @@ export default function Login() {
 
         {/* Main Content */}
         <div className="z-10 space-y-6 animate__animated animate__backInDown">
-          <h1 className="text-5xl font-bold text-gray-900 leading-tight">
-          Communiquer, Collaborer
+          <h1 className="text-5xl font-extrabold text-gray-900 leading-tight">
+            Communiquez. <br />Collaborez.
             <br />
-            Votre {" "}
-            <span className="bg-gradient-to-r from-purple-600 via-pink-500 to-indigo-600 bg-clip-text text-transparent">
-            équipe digitale 24/7
+            <span className="bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600 bg-clip-text text-transparent">
+              Réussissez.
             </span>
           </h1>
-          <p className="text-lg text-gray-600 font-medium">Centraliser toutes vos communications et de collaborer efficacement</p>
+          <p className="text-lg text-gray-700 font-medium leading-relaxed">Centraliser toutes vos communications et de collaborer efficacement</p>
         </div>
 
         {/* Character Illustration */}
