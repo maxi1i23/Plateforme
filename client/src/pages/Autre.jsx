@@ -40,28 +40,28 @@ const Autre = () => {
       value: stats.total,
       icon: Clipboard,
       style: "w-6 h-6 text-blue-600",
-      bg: "bg-blue-100"
+      bg: "bg-blue-500"
     },
     {
       title: "En attente",
       value: stats.enAttente,
       icon: Clock,
       style: "w-6 h-6 text-orange-600",
-      bg: "bg-orange-100"
+      bg: "bg-orange-500"
     },
     {
       title: "Acceptées",
       value: stats.acceptees,
       icon: Check,
       style: "w-6 h-6 text-green-600",
-      bg: "bg-green-100"
+      bg: "bg-green-500"
     },
     {
       title: "Refusées",
       value: stats.refusees,
       icon: X,
       style: "w-6 h-6 text-red-600",
-      bg: "bg-red-100"
+      bg: "bg-red-500"
     }
   ]
 

@@ -76,25 +76,25 @@ const Activiter = () => {
             value: totalActivites,
             icon: BarChart3,
             style: "w-6 h-6 text-blue-600",
-            bg: "bg-blue-100"
+            bg: "bg-blue-500"
         }, {
             title: "Appels Totaux",
             value: totalAppels,
             icon: Phone,
             style: "w-6 h-6 text-emerald-600",
-            bg: "bg-emerald-100"
+            bg: "bg-emerald-500"
         }, {
             title: "Durée Totale",
             value: totalDuree + " min",
             icon: Clock,
             style: "w-6 h-6 text-indigo-600",
-            bg: "bg-indigo-100"
+            bg: "bg-indigo-500"
         }, {
             title: "Pauses Totales",
             value: totalPauses,
             icon: Coffee,
             style: "w-6 h-6 text-orange-600",
-            bg: "bg-orange-100"
+            bg: "bg-orange-500"
         }
     ]
 

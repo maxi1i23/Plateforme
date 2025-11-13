@@ -52,28 +52,28 @@ const Utilisateur = () => {
       value: users.length,
       icon: Users,
       style: "w-6 h-6 text-blue-600",
-      bg: "bg-blue-100"
+      bg: "bg-blue-500"
     },
     {
       title: "Admin",
       value: users.filter((u) => u.roleutilisateur === "Admin").length,
       icon: Shield,
       style: "w-6 h-6 text-red-600",
-      bg: "bg-red-100"
+      bg: "bg-red-500"
     },
     {
       title: "Manager",
       value: users.filter((u) => u.roleutilisateur === "Manager").length,
       icon: User,
       style: "w-6 h-6 text-blue-600",
-      bg: "bg-blue-100"
+      bg: "bg-blue-500"
     },
     {
       title: "Agent",
       value: users.filter((u) => u.roleutilisateur === "Agent").length,
       icon: Users,
       style: "w-6 h-6 text-green-600",
-      bg: "bg-green-100"
+      bg: "bg-green-500"
     }
   ]
 

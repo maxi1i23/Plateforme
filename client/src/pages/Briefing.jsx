@@ -50,27 +50,27 @@ const Briefing = () => {
             value: briefingList.length,
             icon: Presentation,
             style: "w-6 h-6 text-blue-600",
-            bg: "bg-blue-100"
+            bg: "bg-blue-500"
         },
         {
             title: "Ce mois",
             value: mois.length,
             icon: CalendarRange,
             style: "w-6 h-6 text-red-600",
-            bg: "bg-red-100"
+            bg: "bg-red-500"
         },
         {
             title: "Cette semaine",
             value: semaine.length,
             icon: Clock,
             style: "w-6 h-6 text-green-600",
-            bg: "bg-green-100"
+            bg: "bg-green-500"
         }, isAuthor ? {
             title: "Mes briefings",
             value: briefingList.filter((b) => b.idmanager === user.idutilisateur).length,
             icon: User,
             style: "w-6 h-6 text-purple-600",
-            bg: "bg-purple-100"
+            bg: "bg-purple-500"
         } : false
     ].filter(Boolean)
 
@@ -189,7 +189,7 @@ const Briefing = () => {
                     </div>
                 ) : (
                     <>
-                        <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+                        <div className={`grid grid-cols-1 md:grid-cols-${isAuthor ? '4' : '3'} gap-6 mb-8`}>
                             {
                                 card.map((item) => (
                                     <Card
