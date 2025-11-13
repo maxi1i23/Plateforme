@@ -9,6 +9,7 @@ import CreateGroupModal from "../components/chat/CreateGroupModal"
 import Swal from 'sweetalert2'
 import ListeMembre from "../components/chat/ListeMembre"
 import { useSocket } from "../context/SocketContext"
+import { MessageSquare } from "lucide-react"
 
 // Connexion au serveur Socket.IO
 //const socket = io.connect("http://localhost:8000")
@@ -322,8 +323,8 @@ const Discussion = () => {
           </>
         ) : (
           // Écran vide
-          <div className="hidden md:flex flex-1 items-center justify-center">
-            ...
+          <div className="hidden md:flex flex-1 items-center gap-2 justify-center italic font-semibold text-gray-400">
+           <MessageSquare className="w-5 h-5"/><span>Séléctionner une conversation</span>
           </div>
         )}
       </div>
