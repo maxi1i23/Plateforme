@@ -99,7 +99,6 @@ const Formation = () => {
     {/** Fonction a éxécuter lors du rendu du composant */ }
     useEffect(() => {
         getFormation()
-        console.log('rendu')
     }, [])
 
     {/** Reformer les donner pour la carte info */ }

@@ -1,13 +1,14 @@
 import { X } from 'lucide-react'
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import FeedbackService from '../../services/FeedBackService'
 import api from '../../services/api'
 
-const FormationForm = React.memo(({ formation, onClose, setFormation, setFormationList, user, socket }) => {
+const FormationForm = React.memo(({ formation, onClose, user, socket, getFormation }) => {
+    const [localForm, setLocalForm] = useState({id: '', nomFormation: '', descriptionFormation: ''})
     {/** Lorsqu'on soumet la formulaire */ }
     const handleSubmit = (e) => {
         e.preventDefault()
-        if (formation.id) {
+        if (formation.idFormation) {
             handleUpdate()
         } else {
             handleCreate()
@@ -16,19 +17,17 @@ const FormationForm = React.memo(({ formation, onClose, setFormation, setFormati
 
     {/** Quand l'utilisateur saisi des données */ }
     const handleChange = (e) => {
-        setFormation({ ...formation, [e.target.name]: e.target.value })
+        setLocalForm({ ...localForm, [e.target.name]: e.target.value })
     }
 
     const handleUpdate = async () => {
         try {
-            const { idFormation, nomFormation, descriptionFormation } = formation
+            const { idFormation, nomFormation, descriptionFormation } = localForm
             await api.put(`/formation/update/${idFormation}`, {
                 nomFormation: nomFormation,
                 descriptionFormation: descriptionFormation,
             })
-            setFormationList((prev) =>
-                prev.map((f) => (f.idformation === idFormation ? { ...f, nomFormation, descriptionFormation } : f)),
-            )
+            getFormation()
             onClose()
             FeedbackService.success()
         } catch (error) {
@@ -41,14 +40,14 @@ const FormationForm = React.memo(({ formation, onClose, setFormation, setFormati
     const handleCreate = async () => {
         try {
             const response = await api.post("/formation/add", {
-                nomFormation: formation.nomFormation,
-                descriptionFormation: formation.descriptionFormation,
+                nomFormation: localForm.nomFormation,
+                descriptionFormation: localForm.descriptionFormation,
                 idUtilisateurManager: user.idutilisateur,
             })
             getFormation()
             const notification = await api.post('/notification/add', {
                 raisonNotification: 'Nouvelle formation',
-                contenu: `La formation ${formation.nomFormation} a été créée par le manager ${user.nomutilisateur}.`
+                contenu: `La formation ${localForm.nomFormation} a été créée par le manager ${user.nomutilisateur}.`
             })
             // Creation de la notification via socket
             socket.emit('Publication', notification.data)
@@ -59,6 +58,16 @@ const FormationForm = React.memo(({ formation, onClose, setFormation, setFormati
             FeedbackService.error()
         }
     }
+
+    useEffect(()=>{
+        if(formation){
+            setLocalForm({
+                idFormation: formation.idFormation,
+                nomFormation: formation.nomFormation,
+                descriptionFormation: formation.descriptionFormation
+            })
+        }
+    }, [formation])
 
     return (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm p-4">
@@ -71,7 +80,7 @@ const FormationForm = React.memo(({ formation, onClose, setFormation, setFormati
                         <X size={20} className="text-white" />
                     </button>
                     {
-                        formation.id ?
+                        localForm.id ?
                             (<>
                                 <h3 className="text-2xl font-bold text-white">Modifier la formation</h3>
                                 <p className="text-blue-100 mt-1">Mettez à jour les informations de votre formation</p>
@@ -91,7 +100,7 @@ const FormationForm = React.memo(({ formation, onClose, setFormation, setFormati
                         <input
                             ttype="text"
                             name='nomFormation'
-                            value={formation.nomFormation}
+                            value={localForm.nomFormation}
                             onChange={handleChange}
                             className="w-full p-4 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all duration-200"
                             placeholder="Nom de la formation"
@@ -102,7 +111,7 @@ const FormationForm = React.memo(({ formation, onClose, setFormation, setFormati
                     <div>
                         <label className="block text-sm font-medium text-gray-700 mb-2">Description</label>
                         <textarea
-                            value={formation.descriptionFormation}
+                            value={localForm.descriptionFormation}
                             name='descriptionFormation'
                             onChange={handleChange}
                             className="w-full p-4 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all duration-200 resize-none"
@@ -125,7 +134,7 @@ const FormationForm = React.memo(({ formation, onClose, setFormation, setFormati
                             className="flex-1 bg-gradient-to-r from-blue-600 to-purple-600 text-white px-6 py-3 rounded-xl hover:from-blue-700 hover:to-purple-700 transition-all duration-200 shadow-lg font-medium"
                         >
                             {
-                                formation.idFormation ? "Modifier la formation" : "Créer la formation"
+                                localForm.idFormation ? "Modifier la formation" : "Créer la formation"
                             }
                         </button>
                     </div>

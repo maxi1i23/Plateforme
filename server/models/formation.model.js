@@ -24,10 +24,10 @@ module.exports = {
         return result.rows[0];
     }, 
 
-    updateFormation: async (idFormation, nomFormation, descriptionFormation, idUtilisateurManager)=>{
+    updateFormation: async (idFormation, nomFormation, descriptionFormation)=>{
         const result = await pool.query(
-            'UPDATE formation SET nomformation=$1, descriptionformation=$2, idutilisateurmanager=$3 WHERE idformation=$4 RETURNING *',
-            [nomFormation, descriptionFormation, idUtilisateurManager, idFormation]
+            'UPDATE formation SET nomformation=$1, descriptionformation=$2 WHERE idformation=$3 RETURNING *',
+            [nomFormation, descriptionFormation, idFormation]
         );
         return result.rows[0];
     },
