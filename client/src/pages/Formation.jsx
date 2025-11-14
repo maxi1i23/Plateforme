@@ -99,6 +99,7 @@ const Formation = () => {
     {/** Fonction a éxécuter lors du rendu du composant */ }
     useEffect(() => {
         getFormation()
+        console.log('rendu')
     }, [])
 
     {/** Reformer les donner pour la carte info */ }
@@ -139,66 +140,10 @@ const Formation = () => {
         setopenModal(true)
     }
 
-    const handleUpdate = async () => {
-        try {
-            const { idFormation, nomFormation, descriptionFormation } = formation
-            await api.put(`/formation/update/${idFormation}`, {
-                nomFormation: nomFormation,
-                descriptionFormation: descriptionFormation,
-            })
-            setFormationList((prev) =>
-                prev.map((f) => (f.idformation === idFormation ? { ...f, nomFormation, descriptionFormation } : f)),
-            )
-            onClose()
-            FeedbackService.success()
-        } catch (error) {
-            console.error("Erreur modification :", error)
-            FeedbackService.error()
-        }
-    }
-
-    {/** Creer une formation */ }
-    const handleCreate = async () => {
-        try {
-            const response = await api.post("/formation/add", {
-                nomFormation: formation.nomFormation,
-                descriptionFormation: formation.descriptionFormation,
-                idUtilisateurManager: user.idutilisateur,
-            })
-            getFormation()
-            const notification = await api.post('/notification/add', {
-                raisonNotification: 'Nouvelle formation',
-                contenu: `La formation ${formation.nomFormation} a été créée par le manager ${user.nomutilisateur}.`
-            })
-            // Creation de la notification via socket
-            socket.emit('Publication', notification.data)
-            onClose()
-            FeedbackService.success("Formation publiée avec succès")
-        } catch (error) {
-            console.error("Erreur création :", error)
-            FeedbackService.error()
-        }
-    }
-
-    {/** Quand l'utilisateur saisi des données */ }
-    const handleChange = (e) => {
-        setFormation({ ...formation, [e.target.name]: e.target.value })
-    }
-
     {/** Fermer le modal / la formulaire */ }
     const onClose = () => {
         setopenModal(false)
         setFormation({ idFormation: '', nomFormation: '', descriptionFormation: '' })
-    }
-
-    {/** Lorsqu'on soumet la formulaire */ }
-    const handleSubmit = (e) => {
-        e.preventDefault()
-        if (formation.id) {
-            handleUpdate()
-        } else {
-            handleCreate()
-        }
     }
 
     {/** Quand l'utilisateur sélectionne une formation */ }
@@ -264,9 +209,13 @@ const Formation = () => {
                 openModal && (
                     <FormationForm
                         formation={formation}
-                        handleChange={handleChange}
                         onClose={onClose}
-                        handleSubmit={handleSubmit} />
+                        setFormation={setFormation}
+                        setFormationList={setFormationList}
+                        socket={socket}
+                        user={user}
+                        getFormation={getFormation}
+                    />
                 )
             }
             {
