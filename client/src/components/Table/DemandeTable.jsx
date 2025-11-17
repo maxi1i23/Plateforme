@@ -94,7 +94,7 @@ const DemandeTable = ({ demandes, typeDemande, onEdit, handleDelete, isAgent, is
                                             <td className="px-6 py-4 text-gray-600">
                                                 {new Date(d.datedemande).toLocaleDateString("fr-FR", {
                                                     day: "2-digit",
-                                                    month: "2-digit",
+                                                    month: "short",
                                                     year: "numeric",
                                                 })}
                                             </td>
@@ -105,14 +105,14 @@ const DemandeTable = ({ demandes, typeDemande, onEdit, handleDelete, isAgent, is
                                             <td className="px-6 py-4 text-gray-600 text-sm ">
                                                 {new Date(d.datedebutconger).toLocaleDateString("fr-FR", {
                                                     day: "2-digit",
-                                                    month: "2-digit",
+                                                    month: "short",
                                                     year: "numeric",
                                                 })}
                                             </td>
                                             <td className="px-6 py-4 text-gray-600 text-sm">
                                                 {new Date(d.datefinconger).toLocaleDateString("fr-FR", {
                                                     day: "2-digit",
-                                                    month: "2-digit",
+                                                    month: "short",
                                                     year: "numeric",
                                                 })}
                                             </td>
