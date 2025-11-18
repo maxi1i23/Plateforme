@@ -5,7 +5,8 @@ module.exports = {
         const result = await pool.query(`
             SELECT b.* , u.nomutilisateur AS nomManager
             FROM briefing b
-            JOIN utilisateur u ON u.idUtilisateur = b.idManager`)
+            JOIN utilisateur u ON u.idUtilisateur = b.idManager
+            ORDER BY b.dateBriefing DESC`)
         return result.rows;
     },
     getOneById: async(idBriefing)=>{

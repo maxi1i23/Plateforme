@@ -75,7 +75,7 @@ const Autre = () => {
         setListDemande(response.data)
       } else if (user.role === 'Manager') {
         // Filtrer les demandes des agents gérés par ce manager
-        let value = response.data.filter(d => d.idmanagerautredemande === user.idutilisateur)
+        let value = response.data.filter(d => d.idmanagertraiterautredemande === user.idutilisateur)
         setListDemande(value)
       } else if (user.role === 'Agent') {
         setListDemande(response.data.filter((d) => d.idagentautredemande === user.idutilisateur))
