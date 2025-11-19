@@ -79,7 +79,7 @@ const Layout = () => {
     };
 
     const handleMessage = (data) => {
-      setMessageCount(prev => parseInt(prev) + 1);
+      setMessageCount(prev => prev + 1);
     }
 
     socket.on("NouvelleDemande", handleNouvelleDemande);
@@ -89,6 +89,7 @@ const Layout = () => {
     return () => {
       socket.off("NouvelleDemande", handleNouvelleDemande);
       socket.off("NouvellePublication", handleNouvellePublication);
+      socket.off("NouveauxMessage", handleMessage);
     };
   }, [socket]);
 
