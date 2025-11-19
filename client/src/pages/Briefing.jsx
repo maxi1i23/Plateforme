@@ -248,6 +248,19 @@ const Briefing = () => {
                     <FeedBack briefing={briefing} user={user} onClose={onClose} />
                 )
             }
+            {filteredBriefings.length === 0 && !loading && (
+                <div className="text-center py-20 w-full">
+                    <div className="bg-white/80 backdrop-blur-sm rounded-2xl p-12 shadow-lg border border-white/20 max-w-md mx-auto">
+                        <Presentation className="w-16 h-16 text-gray-400 mx-auto mb-4" />
+                        <h3 className="text-xl font-semibold text-gray-900 mb-2">
+                            {searchTerm ? "Aucune formation trouvée" : "Aucune briefing disponible"}
+                        </h3>
+                        <p className="text-gray-600 mb-6">
+                            {searchTerm ? "Essayez avec d'autres mots-clés" : "Aucune briefing disponible"}
+                        </p>
+                    </div>
+                </div>
+            )}
         </div>
     )
 }

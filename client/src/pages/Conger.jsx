@@ -225,13 +225,16 @@ const Conger = () => {
 
     {/** Traiter une demande de congé */ }
     const handleTraiter = async (id, statutConger) => {
-        try {
-            await api.put(`/demandeConger/traiter/${id}`, { statutConger });
-            FeedbackService.success("Demande de congé traitée avec succès");
-            getConger();
-        } catch (err) {
-            console.error(err);
-            FeedbackService.error("Échec du traitement de la demande");
+        const result = await FeedbackService.confirm('Vous êtes sur le point de traiter cette demande. Êtes-vous sûr?');
+        if (result) {
+            try {
+                await api.put(`/demandeConger/traiter/${id}`, { statutConger });
+                FeedbackService.success("Demande de congé traitée avec succès");
+                getConger();
+            } catch (err) {
+                console.error(err);
+                FeedbackService.error("Échec du traitement de la demande");
+            }
         }
     };
 

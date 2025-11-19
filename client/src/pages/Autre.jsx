@@ -180,7 +180,7 @@ const Autre = () => {
       getDemande();
       const notification = await api.post('notification/add',
         {
-          contenu: `${user.nomutilisateur} vous a fait une demande}`,
+          contenu: `${user.nomutilisateur} vous a fait une demande`,
           raisonNotification: "Nouvelle demande",
           idUtilisateurDestinataire: autre.idManagerTraiteraAutreDemande
         }
@@ -218,13 +218,16 @@ const Autre = () => {
 
   {/** Traitement d'une demande */ }
   const handleTraiter = async (id, statutAutreDemande) => {
-    try {
-      await api.put(`/autreDemande/traiter/${id}`, { statutAutreDemande })
-      FeedbackService.success("Demande traitée avec succès")
-      getDemande()
-    } catch (err) {
-      console.error(err.message)
-      FeedbackService.error("Échec du traitement de la demande")
+    const result = await FeedbackService.confirm('Vous êtes sur le point de traiter cette demande. Êtes-vous sûr?');
+    if (result) {
+      try {
+        await api.put(`/autreDemande/traiter/${id}`, { statutAutreDemande })
+        FeedbackService.success("Demande traitée avec succès")
+        getDemande()
+      } catch (err) {
+        console.error(err.message)
+        FeedbackService.error("Échec du traitement de la demande")
+      }
     }
   }
 

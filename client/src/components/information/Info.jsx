@@ -96,7 +96,7 @@ const Info = ({ user, info, openMenuId, setOpenMenuId, Icon, handleDelete, handl
                             )
                         }
                         {info.idAuthor === user.idutilisateur && (
-                            <div className="bg-blue-500 text-white px-1 py-1.5 rounded-lg text-xs font-medium">
+                            <div className={`bg-blue-500 text-white ${isBriefing ? 'px-0.5' : 'px-1'} py-1.5 rounded-lg text-xs font-medium`}>
                                 {isBriefing ? "Mes Briefings" : " Mes Formations"}
                             </div>
                         )}
