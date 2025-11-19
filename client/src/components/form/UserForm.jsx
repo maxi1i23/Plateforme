@@ -61,7 +61,7 @@ function UserForm({ user, onClose }) {
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm p-4">
             <div className="bg-white rounded-2xl w-full max-w-2xl shadow-2xl relative transform transition-all duration-300 scale-100">
                 <div
-                    className={`${isEdit ? "bg-gradient-to-r from-blue-600 to-purple-600" : "bg-gradient-to-r from-green-600 to-blue-600"} p-6 rounded-t-2xl`}
+                    className={`bg-gradient-to-r from-blue-600 to-purple-600  p-6 rounded-t-2xl`}
                 >
                     <button
                         className="absolute top-4 right-4 p-2 rounded-full hover:bg-white/20 transition-colors duration-200"
@@ -212,10 +212,7 @@ function UserForm({ user, onClose }) {
                         </button>
                         <button
                             type="submit"
-                            className={`flex-1 text-white px-6 py-3 rounded-xl transition-all duration-200 shadow-lg font-medium ${isEdit
-                                ? "bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700"
-                                : "bg-gradient-to-r from-green-600 to-blue-600 hover:from-green-700 hover:to-blue-700"
-                                }`}
+                            className={`flex-1 text-white px-6 py-3 rounded-xl transition-all duration-200 shadow-lg font-medium bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700`}
                         >
                             {isEdit ? "Modifier" : "Créer"}
                         </button>

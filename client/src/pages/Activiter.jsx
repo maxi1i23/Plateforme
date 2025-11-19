@@ -44,6 +44,7 @@ const Activiter = () => {
     const getPerformances = async () => {
         try {
             const response = await api.get("/activiter/performance")
+            console.log(response.data);
             if (user.role === 'Admin') {
                 setPerformances(response.data)
             } else {
@@ -208,7 +209,7 @@ const Activiter = () => {
                             <h2 className="text-3xl font-bold bg-gradient-to-r from-green-600 to-blue-600 bg-clip-text text-transparent mb-6">
                                 Performances
                             </h2>
-                            <PerformanceTable performances={performances} />
+                            <PerformanceTable performances={performances} isAdmin={user.role === 'Admin'}/>
                         </div>
                     </>
                 )

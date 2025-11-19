@@ -1,4 +1,4 @@
-import { BarChart3, Clock, Coffee, Edit, Phone, Trash2 } from 'lucide-react'
+import { BarChart3, Clock, Coffee, Edit, Phone, Trash2, User } from 'lucide-react'
 import React from 'react'
 
 const ActiviterTable = ({ filteredActivites, onEdit, handleDelete, isAdmin = false }) => {
@@ -13,6 +13,11 @@ const ActiviterTable = ({ filteredActivites, onEdit, handleDelete, isAdmin = fal
                             <th className="px-6 py-4 text-left text-xs uppercase font-semibold text-gray-700">Appels</th>
                             <th className="px-6 py-4 text-left text-xs uppercase font-semibold text-gray-700">Pauses</th>
                             <th className="px-6 py-4 text-left text-xs uppercase font-semibold text-gray-700">Durée appels (min)</th>
+                            {isAdmin &&(
+                                <th className="px-6 py-4 text-left text-xs uppercase font-semibold text-gray-700">
+                                    Agent
+                                </th>
+                            )}
                             <th className="px-6 py-4 text-left text-xs uppercase font-semibold text-gray-700">Actions</th>
                         </tr>
                     </thead>
@@ -47,6 +52,16 @@ const ActiviterTable = ({ filteredActivites, onEdit, handleDelete, isAdmin = fal
                                             <span className="font-semibold text-sm text-gray-900">{a.dureeappelle.toFixed(2)}</span>
                                         </div>
                                     </td>
+                                    {
+                                        isAdmin && (
+                                            <td className="px-6 py-4">
+                                        <div className="flex items-center">
+                                            <User className="w-4 h-4 text-blue-500 mr-2" />
+                                            <span className="font-semibold text-sm text-gray-900">{a.nomutilisateur}</span>
+                                        </div>
+                                    </td>
+                                        )
+                                    }
                                     <td className="px-6 py-4">
                                         <div className="flex space-x-2">
                                             {

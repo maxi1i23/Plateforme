@@ -58,7 +58,10 @@ module.exports = {
   // Récupérer toutes les activités d'un agent
   getActiviterByAgent: async () => {
     const result = await pool.query(
-      'SELECT * FROM activiter ORDER BY dateActiviter DESC'
+      `SELECT a.*, u.nomUtilisateur 
+      FROM activiter a 
+      JOIN utilisateur u ON a.idAgent = u.idUtilisateur
+      ORDER BY a.dateActiviter DESC`
     );
     return result.rows;
   },
@@ -66,7 +69,10 @@ module.exports = {
   // Récupérer toutes les performances d'un agent
   getPerformanceByAgent: async () => {
     const result = await pool.query(
-      'SELECT * FROM performance ORDER BY mois DESC, semaine DESC'
+      `SELECT p.* , u.nomUtilisateur 
+      FROM performance p
+      JOIN utilisateur u ON p.idAgent = u.idUtilisateur
+      ORDER BY p.mois DESC, p.semaine DESC`
     );
     return result.rows;
   },

@@ -1,7 +1,7 @@
-import { TrendingUp } from 'lucide-react'
+import { TrendingUp, User } from 'lucide-react'
 import React from 'react'
 
-const PerformanceTable = ({performances}) => {
+const PerformanceTable = ({performances, isAdmin}) => {
     return (
         <div className="bg-white/70 backdrop-blur-sm rounded-2xl border border-white/20 shadow-xl overflow-hidden">
             <div className="overflow-x-auto">
@@ -11,6 +11,9 @@ const PerformanceTable = ({performances}) => {
                             <th className="px-6 py-4 text-left text-xs uppercase font-semibold text-gray-700">Semaine</th>
                             <th className="px-6 py-4 text-left text-xs uppercase font-semibold text-gray-700">Mois</th>
                             <th className="px-6 py-4 text-left text-xs uppercase font-semibold text-gray-700">Productivité</th>
+                            {isAdmin && (
+                                <th className="px-6 py-4 text-left text-xs uppercase font-semibold text-gray-700">Agent</th>
+                            )}
                         </tr>
                     </thead>
                     <tbody className="divide-y divide-gray-100">
@@ -29,6 +32,16 @@ const PerformanceTable = ({performances}) => {
                                             <span className="font-semibold text-sm text-green-600">{(p.productiviter * 100).toFixed(1)} %</span>
                                         </div>
                                     </td>
+                                    {
+                                        isAdmin && (
+                                            <td className="px-6 py-4">
+                                        <div className="flex items-center">
+                                            <User className="w-4 h-4 text-blue-500 mr-2" />
+                                            <span className="font-semibold text-sm text-gray-900">{p.nomutilisateur} </span>
+                                        </div>
+                                    </td>
+                                        )
+                                    }
                                 </tr>
                             ))
                         ) : (
