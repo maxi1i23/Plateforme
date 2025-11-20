@@ -1,6 +1,7 @@
 import React, { useEffect, useRef } from 'react'
-import { Bell, MessageCircle, Menu, LogOut, User, ChevronDown } from 'lucide-react'
+import { Bell, MessageCircle, Menu, LogOut, User, ChevronDown, ToggleLeft, ToggleRight, Sun, Moon } from 'lucide-react'
 import { Link } from 'react-router-dom'
+import { useTheme } from '../../context/ThemeContext'
 
 const NavBAr = (
     {
@@ -9,6 +10,7 @@ const NavBAr = (
         showUserMenu, showProfile
     }) => {
     const userRef = useRef(null)
+    const { theme, toggleTheme } = useTheme();
 
     {/** Pour fermer le menu profile en cas de clic à l'éxétieur */ }
     useEffect(() => {
@@ -135,6 +137,32 @@ const NavBAr = (
                                     <User size={18} className="text-gray-600 group-hover:text-gray-800 transition-colors duration-300" />
                                     <span className="font-medium group-hover:text-gray-900">Profil</span>
                                 </button>
+                                <button
+                                    onClick={toggleTheme}
+                                    className="w-full flex items-center justify-between px-4 py-2.5 text-sm text-gray-700 hover:bg-gradient-to-r hover:from-gray-100 hover:to-gray-50 transition-all duration-300 group"
+                                >
+                                    <div className="flex items-center gap-3">
+                                        {theme === "dark" ? (
+                                            <Moon size={18} className="text-gray-600 group-hover:text-gray-800 transition-colors duration-300" />
+                                        ) : (
+                                            <Sun size={18} className="text-yellow-500 group-hover:text-yellow-600 transition-colors duration-300" />
+                                        )}
+
+                                        <span className="font-medium group-hover:text-gray-900">
+                                            {theme === "dark" ? "Mode sombre" : "Mode clair"}
+                                        </span>
+                                    </div>
+
+                                    {/* Toggle Switch animé */}
+                                    <div
+                                        className={`relative w-10 h-5 rounded-full transition-all duration-300 ${theme === "dark" ? "bg-gray-700" : "bg-gray-300"}`}
+                                    >
+                                        <div
+                                            className={`absolute top-0.5 h-4 w-4 rounded-full bg-white shadow transition-all duration-300 ${theme === "dark" ? "translate-x-5" : "translate-x-1"}`}
+                                        ></div>
+                                    </div>
+                                </button>
+
                                 {/* Divider */}
                                 <div className="my-1 mx-2 border-t border-gray-200/50"></div>
                                 {/* Logout Button */}

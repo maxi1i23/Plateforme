@@ -5,6 +5,7 @@ import { AuthProvider } from './context/AuthContext';
 import { SocketProvider } from "./context/SocketContext";
 import PrivateRoute from './components/PrivateRoute';
 import './App.css'
+import { ThemeProvider } from './context/ThemeContext';
 
 // Lazy load components for better performance
 const Login = React.lazy(() => import('./pages/Login'));
@@ -31,28 +32,30 @@ function App() {
   return (
     <AuthProvider>
       <SocketProvider>
-        <BrowserRouter>
-          <Suspense fallback={<LoadingSpinner />}>
-            <Routes>
-              <Route path="/" element={<Login />} />
-              <Route element={<PrivateRoute />}>
-                <Route path='/plateforme' element={<Layout/>}>
-                <Route index element={<Dashboard/>}/>
-                <Route path='utilisateurs' element={<Utilisateur/>} />
-                <Route path='formations' element={<Formation/>} />
-                <Route path='briefings' element={<Briefing/>} />
-                <Route path='congers' element={<Conger/>} />
-                <Route path='autres' element={<Autre/>} />
-                <Route path='activiter' element={<Activiter/>} />
-                <Route path='discussion' element={<Discussion/>} />
-                <Route path='notifications' element={<Notification/>} />
-              </Route>
-              </Route>
-              {/* Route 404 - à placer en dernier */}
-              <Route path="*" element={<NotFound/>} />
-            </Routes>
-          </Suspense>
-        </BrowserRouter>
+        <ThemeProvider>
+          <BrowserRouter>
+            <Suspense fallback={<LoadingSpinner />}>
+              <Routes>
+                <Route path="/" element={<Login />} />
+                <Route element={<PrivateRoute />}>
+                  <Route path='/plateforme' element={<Layout />}>
+                    <Route index element={<Dashboard />} />
+                    <Route path='utilisateurs' element={<Utilisateur />} />
+                    <Route path='formations' element={<Formation />} />
+                    <Route path='briefings' element={<Briefing />} />
+                    <Route path='congers' element={<Conger />} />
+                    <Route path='autres' element={<Autre />} />
+                    <Route path='activiter' element={<Activiter />} />
+                    <Route path='discussion' element={<Discussion />} />
+                    <Route path='notifications' element={<Notification />} />
+                  </Route>
+                </Route>
+                {/* Route 404 - à placer en dernier */}
+                <Route path="*" element={<NotFound />} />
+              </Routes>
+            </Suspense>
+          </BrowserRouter>
+        </ThemeProvider>
       </SocketProvider>
     </AuthProvider>
   );
