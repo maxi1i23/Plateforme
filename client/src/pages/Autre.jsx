@@ -266,22 +266,16 @@ const Autre = () => {
               }
             </div>
             {/** Filtres pour les stat */}
-            <div className="bg-white/70 backdrop-blur-sm rounded-2xl p-6 border border-white/20 shadow-xl mb-8">
-              <div className="flex flex-col md:flex-row gap-4">
-
-                <div className="md:w-48">
-                  <select
-                    value={statusFilter}
-                    onChange={(e) => setStatusFilter(e.target.value)}
-                    className="w-full px-4 py-3 bg-white/50 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all duration-200"
-                  >
-                    <option value="all">Tous les statuts</option>
-                    <option value="En attente">En attente</option>
-                    <option value="Accepter">Acceptées</option>
-                    <option value="Refuser">Refusées</option>
-                  </select>
-                </div>
-              </div>
+            <div className="bg-white/70 backdrop-blur-sm rounded-2xl p-6 border border-white/20 shadow-xl mb-8 dark:bg-white/5">
+              <select
+                value={statusFilter}
+                onChange={(e) => setStatusFilter(e.target.value)}
+                className="w-full px-4 py-3 bg-white/50 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all duration-200 dark:bg-white/5 dark:text-gray-300">
+                <option value="all" className='dark:text-gray-700'>Tous les statuts</option>
+                <option value="En attente" className='dark:text-gray-700'>En attente</option>
+                <option value="Accepter" className='dark:text-gray-700'>Acceptées</option>
+                <option value="Refuser" className='dark:text-gray-700'>Refusées</option>
+              </select>
             </div>
             {/** tableau pour afficher les demandes */}
             <DemandeTable
