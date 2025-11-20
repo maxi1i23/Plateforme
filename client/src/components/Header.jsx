@@ -15,10 +15,10 @@ const Header = ({
 
     const isAllowed = !allowedRoles || allowedRoles.includes(userRole)
     return (
-        <div className="bg-white/80 backdrop-blur-sm rounded-2xl shadow-xl border border-white/20 p-8 mb-8">
-            <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-6">
+        <div className="bg-white/80 backdrop-blur-sm rounded-2xl shadow-xl border border-white/20 p-8 mb-8 dark:bg-white/5">
+            <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-6 dark:border-white/10 dark:shadow-2xl dark:shadow-indigo-900/30">
                 <div>
-                    <h2 className="text-4xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent mb-2">
+                    <h2 className="text-4xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent mb-2 dark:from-blue-400 dark:to-purple-400">
                         {title || "Gestion des Utilisateurs"}
                     </h2>
                     <p className="text-gray-600">{description || "Gérez les comptes utilisateurs et leurs permissions"}</p>

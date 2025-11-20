@@ -166,13 +166,13 @@ const Activiter = () => {
     }
 
     return (
-        <div className='bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100 p-6'>
+        <div className='bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100 dark:bg-gradient-to-br dark:from-gray-900 dark:via-slate-900 dark:to-indigo-950 transition-all duration-500 p-6'>
             <Header
                 title={"Activité de l'agent"}
                 description={"Suivez et gérez vos performances quotidiennes"}
                 buttonText={"Enregistrer votre activité"}
                 allowedRoles={['Agent']}
-                search = {false}
+                search={false}
                 userRole={user.role}
                 openAddModal={setShowForm}
             />
@@ -209,7 +209,7 @@ const Activiter = () => {
                             <h2 className="text-3xl font-bold bg-gradient-to-r from-green-600 to-blue-600 bg-clip-text text-transparent mb-6">
                                 Performances
                             </h2>
-                            <PerformanceTable performances={performances} isAdmin={user.role === 'Admin'}/>
+                            <PerformanceTable performances={performances} isAdmin={user.role === 'Admin'} />
                         </div>
                     </>
                 )

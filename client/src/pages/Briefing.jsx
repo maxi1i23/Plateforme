@@ -171,7 +171,7 @@ const Briefing = () => {
     }
 
     return (
-        <div className='bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100 p-6'>
+        <div className='bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100 dark:bg-gradient-to-br dark:from-gray-900 dark:via-slate-900 dark:to-indigo-950 transition-all duration-500 p-6'>
             <Header
                 title={"Gestion des Briefings"}
                 description={"Organisez la communications d'équipe efficacement"}

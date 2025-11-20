@@ -25,25 +25,36 @@ const Info = ({ user, info, openMenuId, setOpenMenuId, Icon, handleDelete, handl
     return (
         <div
             key={info.id}
-            className="relative p-6 bg-white/70 backdrop-blur-sm border border-white/20 rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 group">
+            className="relative p-6 rounded-2xl
+        bg-white/70 dark:bg-white/5
+        backdrop-blur-md
+        border border-white/20 dark:border-white/10
+        shadow-lg dark:shadow-2xl dark:shadow-indigo-900/30
+        hover:shadow-xl dark:hover:shadow-white/10
+        hover:-translate-y-1
+        transition-all duration-300
+        group">
             {info.idAuthor === user.idutilisateur && (
                 <div className="absolute top-4 right-4 menu-formation">
                     <button
                         onClick={() => setOpenMenuId(openMenuId === info.id ? null : info.id)}
-                        className="p-2 rounded-full hover:bg-white/50 transition-all duration-200 opacity-0 group-hover:opacity-100">
+                        className="p-2 rounded-full hover:bg-white/40 dark:hover:bg-white/20 transition-all duration-200 opacity-0 group-hover:opacity-100">
                         <MoreVertical className="w-5 h-5 text-gray-600" />
                     </button>
                     {openMenuId === info.id && (
-                        <div className="absolute right-0 mt-2 w-40 bg-white/90 backdrop-blur-sm border border-white/20 rounded-xl shadow-lg z-10 overflow-hidden">
+                        <div className="absolute right-0 mt-2 w-40 bg-white/90 backdrop-blur-sm border border-white/20 rounded-xl shadow-lg z-10 overflow-hidden dark:bg-gray-900/95 dark:border-white/10">
                             <button
                                 onClick={() => handleEdit(info)}
-                                className="flex items-center w-full px-4 py-3 text-sm text-gray-700 hover:bg-indigo-50 transition-colors"
+                                className="flex items-center w-full px-4 py-3 text-sm
+                  text-gray-700 dark:text-gray-200
+                  hover:bg-indigo-50 dark:hover:bg-indigo-900/50
+                  transition-colors"
                             >
-                                <Edit className="w-4 h-4 mr-2 text-indigo-600" /> Modifier
+                                <Edit className="w-4 h-4 mr-2 text-indigo-600 dark:text-indigo-400" /> Modifier
                             </button>
                             <button
                                 onClick={() => handleDelete(info.id)}
-                                className="flex items-center w-full px-4 py-3 text-sm text-red-600 hover:bg-red-50 transition-colors"
+                                className="flex items-center w-full px-4 py-3 text-sm text-red-600 hover:bg-red-50 transition-colors dark:text-red-400 dark:hover:bg-red-900/50"
                             >
                                 <Trash className="w-4 h-4 mr-2" /> Supprimer
                             </button>
@@ -56,9 +67,9 @@ const Info = ({ user, info, openMenuId, setOpenMenuId, Icon, handleDelete, handl
                     <div className="p-2 bg-purple-600 rounded-lg">
                         <Icon className="w-5 h-5 text-white" />
                     </div>
-                    <h5 className="text-xl font-bold text-gray-800 line-clamp-1">{info.title}</h5>
+                    <h5 className="text-xl font-bold text-gray-800 line-clamp-1 dark:text-white">{info.title}</h5>
                 </div>
-                <div className="flex items-center gap-2 text-sm text-gray-500 mb-3">
+                <div className="flex items-center gap-2 text-sm text-gray-500 mb-3 dark:text-gray-400">
                     <Calendar className="w-4 h-4" />
                     <span>
                         {new Date(info.date).toLocaleDateString("fr-FR", {
@@ -68,15 +79,15 @@ const Info = ({ user, info, openMenuId, setOpenMenuId, Icon, handleDelete, handl
                         })}
                     </span>
                 </div>
-                <p className="text-gray-700 line-clamp-3 mb-4 leading-relaxed">{info.description}</p>
+                <p className="text-gray-700 line-clamp-3 mb-4 leading-relaxed dark:text-gray-300">{info.description}</p>
             </div>
-            <div className="mt-4 pt-4 border-t border-gray-200/50">
+            <div className="mt-4 pt-4 border-t border-gray-200/50 dark:border-white/10">
                 <div className="flex items-center justify-between gap-2 text-sm">
                     <div className="flex items-center justify-between text-sm ">
                         <div className="p-1 bg-gradient-to-br from-green-500 to-emerald-600 rounded-full">
                             <User className="w-3 h-3 text-white" />
                         </div>
-                        <span className="font-medium ms-2 text-gray-700"> {info.author}</span>
+                        <span className="font-medium ms-2 text-gray-700 dark:text-gray-300"> {info.author}</span>
                     </div>
                     {/** Les boutons voir , avis */}
                     <div className="flex items-center justify-between gap-2 mt-2">
