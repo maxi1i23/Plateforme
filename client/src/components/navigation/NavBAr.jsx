@@ -26,16 +26,7 @@ const NavBAr = (
 
     return (
         <header
-            className="
-        h-16 
-        bg-white/80 dark:bg-gray-900/80
-        backdrop-blur-md 
-        shadow-sm 
-        border-b border-slate-200/50 dark:border-gray-700/50
-        flex items-center justify-between px-6 
-        sticky top-0 z-30
-        transition-all duration-300
-    "
+            className="h-16 bg-white/80 dark:bg-gray-900/80 backdrop-blur-md shadow-sm border-b border-slate-200/50 dark:border-gray-700/50 flex items-center justify-between px-6 sticky top-0 z-30 transition-all duration-300"
         >
             {/* Bouton hamburger (mobile) */}
             <button
@@ -153,7 +144,7 @@ const NavBAr = (
                     {showUserMenu && (
                         <div
                             className="
-                        absolute right-0 top-full mt-2 w-auto 
+                        absolute right-0 top-full mt-2 w-50
                         bg-white/90 dark:bg-gray-900/90
                         backdrop-blur-xl 
                         rounded-xl shadow-xl 
