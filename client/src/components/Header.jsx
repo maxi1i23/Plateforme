@@ -16,12 +16,12 @@ const Header = ({
     const isAllowed = !allowedRoles || allowedRoles.includes(userRole)
     return (
         <div className="bg-white/80 backdrop-blur-sm rounded-2xl shadow-xl border border-white/20 p-8 mb-8 dark:bg-white/5">
-            <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-6 dark:border-white/10 dark:shadow-2xl dark:shadow-indigo-900/30">
+            <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-6 dark:border-white/10 dark:shadow-2xl ">
                 <div>
                     <h2 className="text-4xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent mb-2 dark:from-blue-400 dark:to-purple-400">
                         {title || "Gestion des Utilisateurs"}
                     </h2>
-                    <p className="text-gray-600">{description || "Gérez les comptes utilisateurs et leurs permissions"}</p>
+                    <p className="text-gray-600 dark:text-gray-300">{description || "Gérez les comptes utilisateurs et leurs permissions"}</p>
                 </div>
 
                 <div className="flex flex-col sm:flex-row gap-4 w-full lg:w-auto">
@@ -34,7 +34,7 @@ const Header = ({
                             placeholder="Faites votre recherche"
                             value={searchTerm}
                             onChange={(e) => setSearchTerm(e.target.value)}
-                            className="pl-10 pr-4 py-3 bg-white/70 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 w-full sm:w-80"
+                            className="pl-10 pr-4 py-3 bg-white/70 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 w-full sm:w-80 dark:bg-white/5 dark:border-gray-600 dark:text-gray-100"
                         />
                     </div>
                         )

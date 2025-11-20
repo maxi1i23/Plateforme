@@ -221,8 +221,6 @@ const NavBAr = (
                                         ) : (
                                             <Sun size={18} className="text-yellow-500" />
                                         )}
-
-                                        <span>{theme === "dark" ? "Mode sombre" : "Mode clair"}</span>
                                     </div>
 
                                     {/* Switch animé */}
