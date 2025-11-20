@@ -140,7 +140,7 @@ const Manager = () => {
     )
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-indigo-50 via-white to-purple-50 relative overflow-hidden">
+    <div className="min-h-screen bg-gradient-to-br from-indigo-50 via-white to-purple-50 dark:from-gray-900 dark:via-gray-950 dark:to-indigo-950 relative overflow-hidden p-6">
       {/* Animated background elements */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         <div className="absolute -top-40 -right-40 w-80 h-80 bg-gradient-to-br from-blue-400/20 to-purple-600/20 rounded-full blur-3xl animate-pulse"></div>
@@ -157,21 +157,21 @@ const Manager = () => {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          <EnhancedCard
+          <DashboardCard
             title="Formations créées"
             value={formationCreer}
             subtitle="Publié"
             icon={<BookOpen />}
             gradient="from-blue-500 to-indigo-600"
           />
-          <EnhancedCard
+          <DashboardCard
             title="Congés en attente"
             value={congesPending}
             subtitle="À traiter"
             icon={<CalendarDays />}
             gradient="from-amber-500 to-orange-600"
           />
-          <EnhancedCard
+          <DashboardCard
             title="Autres demandes"
             value={autresDemandesPending}
             subtitle="En attente de validation"
@@ -181,20 +181,20 @@ const Manager = () => {
         </div>
 
         <div className="grid grid-cols-1 xl:grid-cols-2 gap-6">
-          <div className="bg-white/80 backdrop-blur-sm p-6 rounded-2xl shadow-xl border border-white/20 hover:shadow-2xl transition-all duration-300">
+          <div className="bg-white/80 dark:bg-gray-900/40 backdrop-blur-sm p-6 rounded-2xl shadow-xl border border-white/20 dark:border-gray-700 hover:shadow-2xl hover:scale-105 transition-all duration-300">
             <div className="flex items-center mb-6">
               <div className="w-3 h-8 bg-gradient-to-b from-blue-500 to-indigo-600 rounded-full mr-3"></div>
-              <h3 className="text-xl font-semibold text-gray-800">Productivité par semaine</h3>
+              <h3 className="text-xl font-semibold text-gray-800 dark:text-gray-100">Productivité par semaine</h3>
             </div>
             <div className="h-64">
               <Bar data={performanceChart} options={{ ...options, maintainAspectRatio: false }} />
             </div>
           </div>
 
-          <div className="bg-white/80 backdrop-blur-sm p-6 rounded-2xl shadow-xl border border-white/20 hover:shadow-2xl transition-all duration-300">
+          <div className="bg-white/80 dark:bg-gray-900/40 backdrop-blur-sm p-6 rounded-2xl shadow-xl border border-white/20 dark:border-gray-700 hover:shadow-2xl hover:scale-105 transition-all duration-300">
             <div className="flex items-center mb-6">
               <div className="w-3 h-8 bg-gradient-to-b from-emerald-500 to-teal-600 rounded-full mr-3"></div>
-              <h3 className="text-xl font-semibold text-gray-800">Activités des agents</h3>
+              <h3 className="text-xl font-semibold text-gray-800 dark:text-gray-100">Activités des agents</h3>
             </div>
             <div className="h-64">
               <Bar data={activiterChart} options={{ ...options, maintainAspectRatio: false }} />
@@ -202,10 +202,10 @@ const Manager = () => {
           </div>
         </div>
 
-        <div className="bg-white/80 backdrop-blur-sm p-6 rounded-2xl shadow-xl border border-white/20">
+        <div className="bg-white/80 dark:bg-gray-900/40 backdrop-blur-sm p-6 rounded-2xl shadow-xl border border-white/20 dark:border-gray-700 hover:shadow-2xl hover:scale-105 transition-all duration-300">
           <div className="flex items-center mb-6">
             <div className="w-3 h-8 bg-gradient-to-b from-purple-500 to-pink-600 rounded-full mr-3"></div>
-            <h3 className="text-xl font-semibold text-gray-800">Agents supervisés</h3>
+            <h3 className="text-xl font-semibold text-gray-800 dark:text-gray-100">Agents supervisés</h3>
             <span className="ml-auto bg-gradient-to-r from-purple-500 to-pink-600 text-white px-3 py-1 rounded-full text-sm font-medium">
               {agentList.length} agents
             </span>
@@ -221,10 +221,10 @@ const Manager = () => {
                     {agent.nomutilisateur.charAt(0).toUpperCase()}
                   </div>
                   <div>
-                    <p className="font-medium text-gray-800 group-hover:text-indigo-600 transition-colors">
+                    <p className="font-medium text-gray-800 dark:text-gray-100 group-hover:text-indigo-600 transition-colors">
                       {agent.nomutilisateur}
                     </p>
-                    <p className="text-sm text-gray-500">{agent.roleutilisateur}</p>
+                    <p className="text-sm text-gray-500 dark:text-gray-300">{agent.roleutilisateur}</p>
                   </div>
                 </div>
               </div>
@@ -237,29 +237,24 @@ const Manager = () => {
 }
 
 export default Manager
-
-function EnhancedCard({ title, value, subtitle, icon, gradient }) {
+DashboardCard
+function DashboardCard({ title, value, icon, gradient }) {
   return (
-    <div className="group bg-white/80 backdrop-blur-sm p-6 rounded-2xl shadow-xl border border-white/20 hover:shadow-2xl hover:scale-105 transition-all duration-300">
+    <div className="group bg-white/80 dark:bg-gray-900/40 backdrop-blur-sm p-6 rounded-2xl shadow-xl border border-white/20 dark:border-gray-700 hover:shadow-2xl hover:scale-105 transition-all duration-300">
       <div className="flex items-start justify-between mb-4">
-        <div
-          className={`w-12 h-12 bg-gradient-to-r ${gradient} rounded-xl flex items-center justify-center text-white text-xl shadow-lg`}
-        >
+        <div className={`w-12 h-12 bg-gradient-to-r ${gradient} rounded-xl flex items-center justify-center text-white shadow-lg`}>
           {icon}
         </div>
         <div className="text-right">
-          <p className="text-3xl font-bold bg-gradient-to-r from-gray-800 to-gray-600 bg-clip-text text-transparent">
+          <p className="text-3xl font-bold bg-gradient-to-r from-gray-800 to-gray-600 dark:from-white dark:to-gray-300 bg-clip-text text-transparent">
             {value}
           </p>
         </div>
       </div>
-      <h3 className="text-lg font-semibold text-gray-800 mb-1 group-hover:text-indigo-600 transition-colors">
+      <h3 className="text-lg font-semibold text-gray-800 dark:text-gray-100 mb-1 group-hover:text-indigo-600 transition-colors">
         {title}
       </h3>
-      <p className="text-sm text-gray-500">{subtitle}</p>
-      <div
-        className={`mt-4 h-1 bg-gradient-to-r ${gradient} rounded-full transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300`}
-      ></div>
+      <div className={`mt-4 h-1 bg-gradient-to-r ${gradient} rounded-full transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300`}></div>
     </div>
   )
 }
