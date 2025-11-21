@@ -5,7 +5,7 @@ import { X, LogOut } from 'lucide-react'
 const SideBar = ({ sidebarOpen, setSidebarOpen, menuItems, location, logout, role }) => {
     return (
         <aside
-            className={`fixed top-0 left-0 h-screen w-64 
+            className={`fixed top-0 left-0 h-screen md:w-64 w-full 
             bg-white/90 dark:bg-gray-900/90 
             backdrop-blur-xl 
             border-r border-gray-200/50 dark:border-gray-700/50 
