@@ -5,6 +5,8 @@ import api from "../services/api"
 import { MoreVertical, Bell, BellOff, Trash, ChevronLeft, ChevronRight, Clock, CheckCircle } from "lucide-react"
 import Swal from "sweetalert2"
 import { AuthContext } from '../context/AuthContext'
+import Header from "./Header"
+import Card from "./Card"
 
 const Notification = () => {
     const [notification, setNotification] = useState([])
@@ -20,7 +22,7 @@ const Notification = () => {
             const response = await api.get("/notification")
             const raisonForgetPass = "Mot de passe oublié"
             const result = response.data.filter(
-                (item) => item.idutilisateurdestinataire == user.idutilisateur || (item.idutilisateurdestinataire == null && item.raisonnotification != raisonForgetPass) 
+                (item) => item.idutilisateurdestinataire == user.idutilisateur || (item.idutilisateurdestinataire == null && item.raisonnotification != raisonForgetPass)
             );
             if (user.role == "Admin") {
                 setNotification(response.data)
@@ -90,71 +92,42 @@ const Notification = () => {
     }, [])
 
     return (
-        <div className="min-h-screen bg-gradient-to-br from-indigo-50 via-white to-purple-50 p-6">
-            <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center mb-8 gap-4">
-                <div>
-                    <h1 className="text-4xl font-bold bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent mb-2">
-                        Notifications
-                    </h1>
-                    <p className="text-gray-600">Restez informé de toutes vos activités</p>
-                </div>
-            </div>
-
+        <div className="min-h-screenbg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100 dark:bg-gradient-to-br dark:from-gray-900 dark:via-slate-900 dark:to-indigo-950 transition-all duration-500 p-6">
+            <Header
+                title={'Notifications'}
+                description={'Restez informé de toutes vos activités'}
+                allowedRoles={['']}
+                search={false} 
+            />
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-                <div className="bg-white/80 backdrop-blur-sm rounded-xl p-6 shadow-lg border border-white/20">
-                    <div className="flex items-center justify-between">
-                        <div>
-                            <p className="text-gray-600 text-sm font-medium">Total Notifications</p>
-                            <p className="text-2xl font-bold text-gray-900">{notification.length}</p>
-                        </div>
-                        <div className="bg-blue-100 p-3 rounded-lg">
-                            <Bell className="w-6 h-6 text-blue-600" />
-                        </div>
-                    </div>
-                </div>
-
-                <div className="bg-white/80 backdrop-blur-sm rounded-xl p-6 shadow-lg border border-white/20">
-                    <div className="flex items-center justify-between">
-                        <div>
-                            <p className="text-gray-600 text-sm font-medium">Aujourd'hui</p>
-                            <p className="text-2xl font-bold text-gray-900">
-                                {
-                                    notification.filter((n) => {
-                                        const notifDate = new Date(n.datenotification)
-                                        const today = new Date()
-                                        return notifDate.toDateString() === today.toDateString()
-                                    }).length
-                                }
-                            </p>
-                        </div>
-                        <div className="bg-purple-100 p-3 rounded-lg">
-                            <Clock className="w-6 h-6 text-purple-600" />
-                        </div>
-                    </div>
-                </div>
-
-                <div className="bg-white/80 backdrop-blur-sm rounded-xl p-6 shadow-lg border border-white/20">
-                    <div className="flex items-center justify-between">
-                        <div>
-                            <p className="text-gray-600 text-sm font-medium">Cette semaine</p>
-                            <p className="text-2xl font-bold text-gray-900">
-                                {
-                                    notification.filter((n) => {
-                                        const notifDate = new Date(n.datenotification)
-                                        const weekAgo = new Date()
-                                        weekAgo.setDate(weekAgo.getDate() - 7)
-                                        return notifDate >= weekAgo
-                                    }).length
-                                }
-                            </p>
-                        </div>
-                        <div className="bg-green-100 p-3 rounded-lg">
-                            <CheckCircle className="w-6 h-6 text-green-600" />
-                        </div>
-                    </div>
-                </div>
+                <Card Icon={Bell}
+                    title={'Total Notifications'}
+                    value={notification.length}
+                    bg={'bg-purple-500'}
+                    style={'w-6 h-6 text-purple-600'}
+                />
+                <Card Icon={Clock}
+                    title={"Aujourd'hui"}
+                    value={notification.filter((n) => {
+                        const notifDate = new Date(n.datenotification)
+                        const today = new Date()
+                        return notifDate.toDateString() === today.toDateString()
+                    }).length}
+                    bg={'bg-blue-500'}
+                    style={'w-6 h-6 text-blue-600'}
+                />
+                <Card Icon={CheckCircle}
+                    title={"Cette semaine"}
+                    value={notification.filter((n) => {
+                        const notifDate = new Date(n.datenotification)
+                        const weekAgo = new Date()
+                        weekAgo.setDate(weekAgo.getDate() - 7)
+                        return notifDate >= weekAgo
+                    }).length}
+                    bg={'bg-emerald-500'}
+                    style={'w-6 h-6 text-emerald-600'}
+                />
             </div>
-
             {loading ? (
                 <div className="flex justify-center items-center py-20">
                     <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
@@ -164,7 +137,7 @@ const Notification = () => {
                     <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
                         {currentNotifications.map((notif, index) => (
                             <div
-                                className="group relative bg-white/80 backdrop-blur-sm border border-white/20 rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-1 overflow-hidden"
+                                className="group relative bg-white/80 backdrop-blur-sm border border-white/20 rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-1 overflow-hidden dark:bg-white/5"
                                 key={notif.idnotification}
                                 style={{ animationDelay: `${index * 100}ms` }}
                             >
@@ -176,8 +149,8 @@ const Notification = () => {
                                             user.role === "Admin" && (<div>
                                                 <button
                                                     onClick={() => setOpenMenuId(openMenuId === notif.idnotification ? null : notif.idnotification)}
-                                                    className="p-2 rounded-full hover:bg-gray-100/80 transition-colors duration-200 backdrop-blur-sm">
-                                                    <MoreVertical className="w-5 h-5 text-gray-600" />
+                                                    className="p-2 rounded-full hover:bg-gray-100/80 transition-colors duration-200 backdrop-blur-sm dark:hover:bg-gray-600">
+                                                    <MoreVertical className="w-5 h-5 text-gray-600 dark:text-gray-300 " />
                                                 </button>
                                                 {openMenuId === notif.idnotification && (
                                                     <div className="absolute right-0 mt-2 w-48 bg-white/95 backdrop-blur-sm border border-gray-100 rounded-xl shadow-xl z-10 overflow-hidden">
@@ -195,17 +168,17 @@ const Notification = () => {
                                         <div className="bg-gradient-to-r from-blue-500 to-purple-500 p-2 rounded-lg">
                                             <Bell className="w-5 h-5 text-white" />
                                         </div>
-                                        <h5 className="text-xl font-bold text-gray-900 leading-tight flex-1 line-clamp-2">
+                                        <h5 className="text-xl font-bold text-gray-900 leading-tight flex-1 line-clamp-2 dark:text-gray-100">
                                             {notif.raisonnotification}
                                         </h5>
                                     </div>
 
                                     <div className="mb-4">
-                                        <p className="text-gray-700 leading-relaxed line-clamp-3">{notif.contenu}</p>
+                                        <p className="text-gray-700 leading-relaxed line-clamp-3 dark:text-gray-300">{notif.contenu}</p>
                                     </div>
 
-                                    <div className="flex items-center justify-between pt-4 border-t border-gray-100">
-                                        <div className="flex items-center gap-2 text-sm text-gray-500">
+                                    <div className="flex items-center justify-between pt-4 border-t border-gray-300">
+                                        <div className="flex items-center gap-2 text-sm text-gray-500 dark:text-gray-400">
                                             <Clock className="w-4 h-4" />
                                             <span>
                                                 {new Date(notif.datenotification).toLocaleDateString("fr-FR", {
