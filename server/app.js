@@ -51,4 +51,11 @@ app.use("/api/activiter", activiterRouter)
 app.use("/api/groupe", groupeRouter)
 app.use("/api/avis", avisRouter)
 
+// Pour le deployement en intranet
+// app.use(express.static(path.join(__dirname, "../client/dist")));
+
+// app.get(/.*/, (req, res) => {
+//  res.sendFile(path.join(__dirname, "../client/dist", "index.html"));
+// });
+
 module.exports = app;

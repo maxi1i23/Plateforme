@@ -4,6 +4,7 @@ const { Server } = require("socket.io");
 let onlineUsers = new Map();
 let socketToUser = new Map();
 
+// orgigin : ["http://192.168.0.11:5173", "http://localhost:5173"] en cas de deploiement sur le reseaux local
 function setupSocket(server) {
   const io = new Server(server, {
     cors: {
