@@ -75,11 +75,11 @@ const Layout = () => {
     };
 
     const handleNouvellePublication = (data) => {
-      setNotificationCount(prev => prev + 1);
+      setNotificationCount(prev => parseInt(prev) + 1);
     };
 
     const handleMessage = (data) => {
-      setMessageCount(prev => prev + 1);
+      setMessageCount(prev => parseInt(prev) + 1);
     }
 
     socket.on("NouvelleDemande", handleNouvelleDemande);
