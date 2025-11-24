@@ -72,14 +72,14 @@ const Sidebar = ({
           Utilisateurs
         </button>
         <button
-          className={`w-1/2 py-2 text-sm font-semibold rounded-lg transition-all 
+          className={`w-1/2 py-2 text-sm font-semibold rounded-lg transition-all flex items-center gap-2 justify-center
             ${!showUser
               ? "text-blue-600 dark:text-blue-400 border-b-4 border-blue-500"
               : "text-gray-600 dark:text-gray-400 hover:text-gray-800 dark:hover:text-gray-200"
             }`}
           onClick={() => setShowUser(false)}
         >
-          Groupes
+          Groupes <span className="block w-2 h-2 rounded-full bg-red-500"></span>
         </button>
       </div>
 
@@ -108,12 +108,13 @@ const Sidebar = ({
                     </div>
                     <div className="flex-1 min-w-0">
                       <p className="font-semibold text-gray-900 dark:text-white truncate">{g.nomgroupe}</p>
-                      <p className="text-sm text-gray-500 dark:text-gray-400 truncate">
+                      <p className="text-sm text-gray-500 flex items-center justify-between dark:text-gray-400 truncate">
                         {lastMsg
                           ? lastMsg.idutilisateurexpediteur === user.idutilisateur
                             ? <>Vous : {lastMsg.contenumessage}</>
                             : <strong>{lastMsg.contenumessage}</strong>
                           : "Groupe de discussion"}
+                          <span className="block w-2 h-2 rounded-full bg-red-500"></span>
                       </p>
                     </div>
                   </div>

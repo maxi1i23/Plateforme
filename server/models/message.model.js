@@ -172,11 +172,7 @@ module.exports = {
             FROM message m
             LEFT JOIN messageSupprimer ms
               ON m.idMessage = ms.idMessage AND ms.idUtilisateur = $1
-            WHERE (m.idUtilisateurRecepteur = $1 OR m.idGroupe IN (
-                      SELECT idGroupe
-                      FROM groupeMembre
-                      WHERE idUtilisateur = $1
-                  ))
+            WHERE m.idUtilisateurRecepteur = $1
               AND ms.idMessage IS NULL
               AND m.etat = FALSE;
         `, [idUtilisateur]);
