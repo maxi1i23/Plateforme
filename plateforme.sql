@@ -81,7 +81,7 @@ CREATE TABLE activiter(
 CREATE TABLE groupe (
     idGroupe SERIAL PRIMARY KEY,
     nomGroupe VARCHAR(100) NOT NULL,
-    dateCreation TIMESTAMP DEFAULT now()
+    dateCreation TIMESTAMP DEFAULT now(),
     idUtilisateurCreateur INTEGER REFERENCES utilisateur(idUtilisateur) ON DELETE SET NULL
 );
 
@@ -92,7 +92,7 @@ CREATE TABLE message (
     etat BOOLEAN DEFAULT FALSE, 
     idUtilisateurExpediteur INTEGER REFERENCES utilisateur(idUtilisateur) ON DELETE CASCADE ON UPDATE CASCADE,
     idUtilisateurRecepteur INTEGER REFERENCES utilisateur(idUtilisateur) ON DELETE CASCADE ON UPDATE CASCADE,
-    idGroupe INT REFERENCES groupe(idGroupe) ON DELETE CASCADE;
+    idGroupe INT REFERENCES groupe(idGroupe) ON DELETE CASCADE
 );
 
 CREATE TABLE fichierMessage (
