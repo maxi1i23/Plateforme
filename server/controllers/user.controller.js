@@ -12,8 +12,8 @@ exports.getAllUsers = async (req, res) => {
 exports.updateUser = async (req, res) => {
     const id = req.params.id;
     const { nomUtilisateur, emailUtilisateur, motDePasseUtilisateur, roleUtilisateur } = req.body;
-    let email;
-    let role;
+    let email = emailUtilisateur;
+    let role = roleUtilisateur;
 
     try {
         let hashedPassword;
