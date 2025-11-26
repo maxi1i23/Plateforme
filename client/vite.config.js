@@ -15,7 +15,7 @@ export default defineConfig({
         manualChunks: {
           // Separate vendor chunks
           vendor: ['react', 'react-dom', 'react-router-dom'],
-          ui: ['lucide-react', 'sweetalert2'],
+          ui: ['lucide-react', 'sweetalert2', 'framer-motion'],
           charts: ['chart.js', 'react-chartjs-2'],
           utils: ['axios', 'jwt-decode', 'socket.io-client']
         }
