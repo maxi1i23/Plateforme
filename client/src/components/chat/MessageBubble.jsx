@@ -94,16 +94,16 @@ const MessageBubble = ({ message, isOwn, getMessage, getGroupeMessage, color }) 
                 <div key={f.idfichier} className="relative">
                   {f.typefichier.startsWith("image/") ? (
                     <img
-                      src={`http://localhost:8000${f.urlfichier}`}
+                      src={`${import.meta.env.VITE_SOCKET}${f.urlfichier}`}
                       alt={f.nomfichier || "Image attachée"}
                       className="w-full h-auto rounded-lg cursor-pointer object-cover"
-                      onClick={() => setModalSrc(`http://localhost:8000${f.urlfichier}`)}
+                      onClick={() => setModalSrc(`${import.meta.env.VITE_SOCKET}${f.urlfichier}`)}
                       loading="lazy"
                     />
                   ) : (
                     <div className="bg-gray-50 dark:bg-gray-700 rounded-lg flex items-center justify-between p-3 gap-2">
                       <a
-                        href={`http://localhost:8000${f.urlfichier}`}
+                        href={`${import.meta.env.VITE_SOCKET}${f.urlfichier}`}
                         download={f.nomfichier}
                         rel="noopener noreferrer"
                         className="flex items-center gap-2 text-sm font-medium text-blue-600 dark:text-blue-400 hover:underline"
