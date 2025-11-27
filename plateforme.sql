@@ -129,5 +129,6 @@ CREATE TABLE avisBriefing (
 CREATE TABLE userNotif(
     idUserNotif SERIAL PRIMARY KEY,
     idUtilisateur INTEGER REFERENCES utilisateur(idUtilisateur) ON DELETE CASCADE ON UPDATE CASCADE,
-    idNotification INTEGER REFERENCES notification(idNotification) ON DELETE CASCADE ON UPDATE CASCADE
+    idNotification INTEGER REFERENCES notification(idNotification) ON DELETE CASCADE ON UPDATE CASCADE,
+    statut BOOLEAN DEFAULT FALSE,
 );

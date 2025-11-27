@@ -28,6 +28,16 @@ const Layout = () => {
     }
   }
 
+  {/** Mettre à jour le conteur pour notification */}
+  const updateNotificationCount = async ()=>{
+    try {
+      await api.put('/notification/updateStatut/' + user.id)
+      setNotificationCount(0)
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
   {/** Pour avoir le titre de la page active */ }
   const getCurrentPageTitle = () => {
     const currentItem = menuItems?.find((item) => item.to === location.pathname)
@@ -58,7 +68,9 @@ const Layout = () => {
     const fetchUnreadCount = async () => {
       try {
         const res = await api.get('/message/unread/count');
+        const resNot = await api.get('/notification/count/' + user.id);
         setMessageCount(res.data.count);
+        setNotificationCount(resNot.data.count);
       } catch (err) {
         console.log(err);
       }
@@ -71,7 +83,7 @@ const Layout = () => {
     if (!socket) return;
 
     const handleNouvelleDemande = (data) => {
-      setNotificationCount(prev => prev + 1);
+      setNotificationCount(prev => parseInt(prev) + 1);
     };
 
     const handleNouvellePublication = (data) => {
@@ -116,7 +128,7 @@ const Layout = () => {
         {/* Navbar */}
         <NavBAr
           logout={logout} messageCount={messageCount}
-          notificationCount={notificationCount} setNotificationCount={setNotificationCount}
+          notificationCount={notificationCount} setNotificationCount={updateNotificationCount}
           setShowProfile={setShowProfile} setShowUserMenu={setShowUserMenu}
           setSidebarOpen={setSidebarOpen} user={user} updateMessageCount={updateMessageCount}
           getCurrentPageTitle={getCurrentPageTitle} showProfile={showProfile} showUserMenu={showUserMenu}

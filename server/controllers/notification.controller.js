@@ -5,112 +5,135 @@ const User = require('../models/user.model')
 module.exports.getAllNotifications = async (req, res) => {
     try {
         const result = await Notification.getAllNotifications();
-        if(result){
+        if (result) {
             return res.json(result)
         }
-        else{
-            return res.status(401).json({message:"Aucune notification"})
+        else {
+            return res.status(401).json({ message: "Aucune notification" })
         }
     } catch (error) {
         res.status(500).json({ error: error.message });
     }
 }
 
-module.exports.getNotificationById = async(req,res)=>{
+module.exports.getNotificationById = async (req, res) => {
     try {
         const id = req.params.id;
         const result = await Notification.getAllNotifications(id);
-        if(result.rowCount > 0){
+        if (result.rowCount > 0) {
             return res.json({
-                notification : result,
-                message : "notification trouvé"
+                notification: result,
+                message: "notification trouvé"
             })
         }
-        else{
-            return res.status(401).json({message:"Aucune notification"})
+        else {
+            return res.status(401).json({ message: "Aucune notification" })
         }
-    }catch(error){
+    } catch (error) {
         res.status(500).json({ error: error.message });
     }
 }
 
-module.exports.createNotification = async(req,res)=>{
+module.exports.createNotification = async (req, res) => {
     try {
-        const {contenu, raisonNotification, idUtilisateurDestinataire} = req.body;
+        const { contenu, raisonNotification, idUtilisateurDestinataire } = req.body;
         const result = await Notification.createNotification(contenu, raisonNotification, idUtilisateurDestinataire);
-        if(result){
+        if (result) {
             // La notification est destiner à un utilisateur
-            if(result.idutilisateurdestinataire){
+            if (result.idutilisateurdestinataire) {
                 await UserNotif.add(idUtilisateurDestinataire, result.idnotification)
-            }else{
+            } else {
                 // La notification est destinée à toutes les utilisateurs
                 const user = await User.getAll();
-                user.forEach(async(u)=>{
+                user.forEach(async (u) => {
                     await UserNotif.add(u.idutilisateur, result.idnotification)
                 })
             }
             return res.json(result)
         }
-        else{
-            return res.status(401).json({message:"Erreur lors de l'ajout"})
+        else {
+            return res.status(401).json({ message: "Erreur lors de l'ajout" })
         }
-    }catch(error){
+    } catch (error) {
         res.status(500).json(error.message);
     }
 }
-module.exports.updateNotification = async(req,res)=>{
+module.exports.updateNotification = async (req, res) => {
     try {
         const id = req.params.id;
-        const {contenu, raisonNotification, idUtilisateurDestinataire} = req.body;
+        const { contenu, raisonNotification, idUtilisateurDestinataire } = req.body;
         const result = await Notification.updateNotification(id, contenu, raisonNotification, idUtilisateurDestinataire);
-        if(result){
+        if (result) {
             return res.json({
-                notification : result,
-                message : "notification modifié avec succès"
+                notification: result,
+                message: "notification modifié avec succès"
             })
         }
-        else{
-            return res.status(401).json({message:"Erreur lors de la modification"})
+        else {
+            return res.status(401).json({ message: "Erreur lors de la modification" })
         }
-    }catch(error){
+    } catch (error) {
         res.status(500).json({ error: error.message });
     }
 }
 
-module.exports.deleteNotification = async(req,res)=>{
+module.exports.deleteNotification = async (req, res) => {
     try {
         const id = req.params.id;
         const result = await Notification.deleteNotification(id);
-        if(result){
+        if (result) {
             return res.json({
-                message : "notification supprimé avec succès"
+                message: "notification supprimé avec succès"
             })
         }
-        else{
-            return res.status(401).json({message:"Erreur lors de la suppression"})
+        else {
+            return res.status(401).json({ message: "Erreur lors de la suppression" })
         }
-    }catch(error){
+    } catch (error) {
         res.status(500).json({ error: error.message });
     }
 }
 
-module.exports.getNotificationByUser = async(req, res)=>{
+module.exports.getNotificationByUser = async (req, res) => {
     try {
         const id = req.params.id
         const result = await UserNotif.query(id)
         return res.json(result)
     } catch (error) {
-        return res.status(500).json({message : "Erreur serveur"})
+        return res.status(500).json({ message: "Erreur serveur" })
     }
 }
 
-module.exports.deleteNotifUser = async (req, res)=>{
+module.exports.deleteNotifUser = async (req, res) => {
     try {
         const id = req.params.id
         const result = await UserNotif.delete(id)
-        if(result) return res.json({message : "notification supprimé avec succès"});
-        return res.status(401).json({message:"Erreur lors de la suppression"})
+        if (result) return res.json({ message: "notification supprimé avec succès" });
+        return res.status(401).json({ message: "Erreur lors de la suppression" })
     } catch (error) {
-        return res.status(500).json({message : "Une erreur serveur"})
+        return res.status(500).json({ message: "Une erreur serveur" })
+    }
+}
+
+module.exports.count = async (req, res) => {
+    try {
+        const id = req.params.id
+        const result = await UserNotif.count(id)
+        console.log(result)
+        return res.json(result)
+    } catch (error) {
+        return res.status(500).json(error)
+    }
+}
+
+module.exports.updateStatut = async (req, res) => {
+    try {
+        const id = req.params.id
+        const result = await UserNotif.updateStatut(id)
+        console.log(result)
+        return res.json(result)
+    } catch (error) {
+        console.log(error)
+        return res.status(500).json({ message: "Erreur serveur" })
     }
 }

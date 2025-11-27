@@ -65,7 +65,7 @@ const NavBAr = (
                     hover:bg-gray-100 dark:hover:bg-gray-800
                     transition-all duration-200 shadow-sm
                 "
-                        onClick={() => setNotificationCount(0)}
+                        onClick={setNotificationCount}
                     >
                         <Bell size={20} className="text-slate-600 dark:text-gray-300" />
                     </Link>
