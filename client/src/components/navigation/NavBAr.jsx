@@ -69,16 +69,14 @@ const NavBAr = (
                     >
                         <Bell size={20} className="text-slate-600 dark:text-gray-300" />
                     </Link>
-                    <span
-                        className="
-                    pointer-events-none absolute -top-1 -right-1 
-                    bg-gradient-to-r from-red-500 to-red-600 
-                    text-white text-xs font-bold px-1.5 py-0.5 rounded-full shadow-lg
-                    min-w-[18px] h-[18px] flex items-center justify-center
-                "
-                    >
-                        {notificationCount > 0 ? (notificationCount > 99 ? "99+" : notificationCount) : ""}
-                    </span>
+                    {
+                        notificationCount > 0 && (
+                            <span
+                                className="pointer-events-none absolute -top-1 -right-1 bg-gradient-to-r from-red-500 to-red-600 text-white text-xs font-bold px-1.5 py-0.5 rounded-full shadow-lg min-w-[18px] h-[18px] flex items-center justify-center">
+                                {notificationCount}
+                            </span>
+                        )
+                    }
                 </div>
                 {/* Messages */}
                 <div className="relative">
