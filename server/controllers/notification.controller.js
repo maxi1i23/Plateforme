@@ -1,4 +1,6 @@
 const Notification = require('../models/notification.model');
+const UserNotif = require('../models/userNotif.model');
+const User = require('../models/user.model')
 
 module.exports.getAllNotifications = async (req, res) => {
     try {
@@ -37,6 +39,16 @@ module.exports.createNotification = async(req,res)=>{
         const {contenu, raisonNotification, idUtilisateurDestinataire} = req.body;
         const result = await Notification.createNotification(contenu, raisonNotification, idUtilisateurDestinataire);
         if(result){
+            // La notification est destiner à un utilisateur
+            if(result.idutilisateurdestinataire){
+                const response = await UserNotif.add(idUtilisateurDestinataire, result.idnotification)
+            }else{
+                // La notification est destinée à toutes les utilisateurs
+                const user = await User.getAll();
+                user.forEach(async(u)=>{
+                    await UserNotif.add(u.idutilisateur, result.idnotification)
+                })
+            }
             return res.json(result)
         }
         else{
@@ -79,5 +91,17 @@ module.exports.deleteNotification = async(req,res)=>{
         }
     }catch(error){
         res.status(500).json({ error: error.message });
+    }
+}
+
+module.exports.getNotificationByUser = async(req, res){
+    try {
+        const id = req.params.id
+        const result = await UserNotif.query(id)
+        console.log(result.rows)
+        return result.rows
+    } catch (error) {
+        console.error(error)
+        return res.status(500).json({message : "Erreur serveur"})
     }
 }
