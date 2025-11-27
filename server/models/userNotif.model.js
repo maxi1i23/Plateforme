@@ -14,7 +14,13 @@ module.exports = {
         return result.rowCount > 0;
     },
     query : async (idUtilisateur) => {
-        const result = await pool.query(`SELECT * FROM userNotif WHERE idUtilisateur=$1`, [idUtilisateur])
+        const result = await pool.query(
+            `SELECT n.*, un.idUserNotif, un.idutilisateur 
+            FROM userNotif un
+            JOIN notification n ON un.idNotification = n.idNotification 
+            WHERE idUtilisateur=$1
+            ORDER BY n.datenotification DESC`
+            , [idUtilisateur])
         return result.rows;
     }
 }

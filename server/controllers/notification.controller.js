@@ -41,7 +41,7 @@ module.exports.createNotification = async(req,res)=>{
         if(result){
             // La notification est destiner à un utilisateur
             if(result.idutilisateurdestinataire){
-                const response = await UserNotif.add(idUtilisateurDestinataire, result.idnotification)
+                await UserNotif.add(idUtilisateurDestinataire, result.idnotification)
             }else{
                 // La notification est destinée à toutes les utilisateurs
                 const user = await User.getAll();
@@ -94,14 +94,23 @@ module.exports.deleteNotification = async(req,res)=>{
     }
 }
 
-module.exports.getNotificationByUser = async(req, res){
+module.exports.getNotificationByUser = async(req, res)=>{
     try {
         const id = req.params.id
         const result = await UserNotif.query(id)
-        console.log(result.rows)
-        return result.rows
+        return res.json(result)
     } catch (error) {
-        console.error(error)
         return res.status(500).json({message : "Erreur serveur"})
+    }
+}
+
+module.exports.deleteNotifUser = async (req, res)=>{
+    try {
+        const id = req.params.id
+        const result = await UserNotif.delete(id)
+        if(result) return res.json({message : "notification supprimé avec succès"});
+        return res.status(401).json({message:"Erreur lors de la suppression"})
+    } catch (error) {
+        return res.status(500).json({message : "Une erreur serveur"})
     }
 }

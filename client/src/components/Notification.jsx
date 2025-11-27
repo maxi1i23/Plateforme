@@ -15,19 +15,17 @@ const Notification = () => {
     const [loading, setLoading] = useState(true)
     const { user } = useContext(AuthContext)
     const notificationsPerPage = 9
+    const isAdmin = user.role === "Admin"
 
     const getNotifications = async () => {
         try {
             setLoading(true)
-            const response = await api.get("/notification")
-            const raisonForgetPass = "Mot de passe oublié"
-            const result = response.data.filter(
-                (item) => item.idutilisateurdestinataire == user.idutilisateur || (item.idutilisateurdestinataire == null && item.raisonnotification != raisonForgetPass)
-            );
-            if (user.role == "Admin") {
+            if (isAdmin) {
+                const response = await api.get("/notification")
                 setNotification(response.data)
             } else {
-                setNotification(result)
+                const response = await api.get("/notification/" + user.id)
+                setNotification(response.data)
             }
         } catch (err) {
             console.log(err)
@@ -36,7 +34,7 @@ const Notification = () => {
         }
     }
 
-    const handleDelete = async (idnotification) => {
+    const handleDelete = async (id) => {
         const result = await Swal.fire({
             title: "Êtes-vous sûr ?",
             text: "Cette notification sera supprimée définitivement !",
@@ -50,8 +48,13 @@ const Notification = () => {
 
         if (result.isConfirmed) {
             try {
-                await api.delete(`/notification/delete/${idnotification}`)
-                setNotification((prev) => prev.filter((n) => n.idnotification !== idnotification))
+                if(isAdmin){
+                    await api.delete(`/notification/delete/${id}`)
+                    setNotification((prev) => prev.filter((n) => n.idnotification !== id))
+                }else{
+                    await api.delete(`/notification/deleteNotifUser/${id}`)
+                    setNotification((prev) => prev.filter((n) => n.idusernotif !== id))
+                }
                 Swal.fire({
                     icon: "success",
                     title: "Notification supprimée",
@@ -97,7 +100,7 @@ const Notification = () => {
                 title={'Notifications'}
                 description={'Restez informé de toutes vos activités'}
                 allowedRoles={['']}
-                search={false} 
+                search={false}
             />
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
                 <Card Icon={Bell}
@@ -145,24 +148,22 @@ const Notification = () => {
 
                                 <div className="relative p-6">
                                     <div className="absolute top-4 right-4 menu-notification">
-                                        {
-                                            user.role === "Admin" && (<div>
-                                                <button
-                                                    onClick={() => setOpenMenuId(openMenuId === notif.idnotification ? null : notif.idnotification)}
-                                                    className="p-2 rounded-full hover:bg-gray-100/80 transition-colors duration-200 backdrop-blur-sm dark:hover:bg-gray-600">
-                                                    <MoreVertical className="w-5 h-5 text-gray-600 dark:text-gray-300 " />
-                                                </button>
-                                                {openMenuId === notif.idnotification && (
-                                                    <div className="absolute right-0 mt-2 w-48 bg-white/95 backdrop-blur-sm border border-gray-100 rounded-xl shadow-xl z-10 overflow-hidden">
-                                                        <button
-                                                            onClick={() => handleDelete(notif.idnotification)}
-                                                            className="flex items-center w-full px-4 py-3 text-sm text-red-600 hover:bg-red-50 transition-colors duration-200">
-                                                            <Trash className="w-4 h-4 mr-3" /> Supprimer
-                                                        </button>
-                                                    </div>
-                                                )}
-                                            </div>)
-                                        }
+                                        <div>
+                                            <button
+                                                onClick={() => setOpenMenuId(openMenuId === notif.idnotification ? null : notif.idnotification)}
+                                                className="p-2 rounded-full hover:bg-gray-100/80 transition-colors duration-200 backdrop-blur-sm dark:hover:bg-gray-600">
+                                                <MoreVertical className="w-5 h-5 text-gray-600 dark:text-gray-300 " />
+                                            </button>
+                                            {openMenuId === notif.idnotification && (
+                                                <div className="absolute right-0 mt-2 w-48 bg-white/95 backdrop-blur-sm border border-gray-100 rounded-xl shadow-xl z-10 overflow-hidden">
+                                                    <button
+                                                        onClick={() => handleDelete(isAdmin ? notif.idnotification : notif.idusernotif)}
+                                                        className="flex items-center w-full px-4 py-3 text-sm text-red-600 hover:bg-red-50 transition-colors duration-200">
+                                                        <Trash className="w-4 h-4 mr-3" /> Supprimer
+                                                    </button>
+                                                </div>
+                                            )}
+                                        </div>
                                     </div>
                                     <div className="flex items-start gap-3 mb-4">
                                         <div className="bg-gradient-to-r from-blue-500 to-purple-500 p-2 rounded-lg">
