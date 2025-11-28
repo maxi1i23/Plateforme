@@ -77,7 +77,7 @@ function UserForm({ user, onClose }) {
                     </p>
                 </div>
 
-                <form onSubmit={handleSubmit} className="p-6 space-y-6">
+                <form onSubmit={handleSubmit} className="p-6 space-y-6" autoComplete='off'>
                     {/* Nom */}
                     <div>
                         <label className="block text-sm font-medium text-gray-700 mb-2">Nom complet</label>

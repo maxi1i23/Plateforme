@@ -24,7 +24,7 @@ const AutreForm = React.memo(({ autre, handleChange, handleSubmit, onClose, mana
                     }
                 </div>
 
-                <form className="p-6 space-y-6" onSubmit={handleSubmit}>
+                <form className="p-6 space-y-6" onSubmit={handleSubmit} autoComplete='off'>
                     <div>
                         <label className="block text-sm font-medium text-gray-700 mb-2">Type du demande</label>
                         <input type="text"

@@ -20,7 +20,7 @@ const ActiviterForm = React.memo(({formData, setFormData, handleSubmit, onClose,
                     </p>
                 </div>
 
-                <form onSubmit={handleSubmit} className="p-6 space-y-6">
+                <form onSubmit={handleSubmit} className="p-6 space-y-6" autoComplete='off'>
                     <div>
                         <label className="block text-sm font-medium text-gray-700 mb-2">Nombre d'appels</label>
                         <div className="relative">
