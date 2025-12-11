@@ -2,8 +2,8 @@ CREATE DATABASE plateforme;
 
 CREATE TABLE utilisateur (
     idUtilisateur SERIAL PRIMARY KEY,
-    nomUtilisateur VARCHAR(100) NOT NULL,
-    emailUtilisateur VARCHAR(100) UNIQUE NOT NULL,
+    nomUtilisateur VARCHAR(50) NOT NULL,
+    emailUtilisateur VARCHAR(50) UNIQUE NOT NULL,
     motDePasseUtilisateur VARCHAR(255) NOT NULL,
     dateInscription TIMESTAMP DEFAULT now(),
     roleUtilisateur VARCHAR(10) NOT NULL CHECK (roleUtilisateur IN ('Admin', 'Manager', 'Agent'))
